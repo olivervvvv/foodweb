@@ -1,5 +1,4 @@
 <script>
-import "../../assets/inextMainCsscopy.css"; 
 export default {
   data() {
     return {      
