@@ -1,3 +1,24 @@
+<script>
+export default {
+  data() {
+    return {      
+      pathText:"",
+    };
+  },
+  methods: {
+    handlePathClick(event) {
+      // 獲取點擊的 path 元素的 ID
+      const pathId = event.target.id;
+      // 在控制台輸出 path 的 ID
+      console.log('Clicked Path ID:', pathId);
+      this.pathText = event.target.id;
+    }
+  },
+  computed: {
+
+  }
+};
+</script>
 <template>
   <!-- Generator: Adobe Illustrator 24.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
   <svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -190,6 +211,12 @@
   <polygon id="_x31_" class="st0" points="669.9,455.7 669.9,455.7 669.9,455.7 669.9,455.7 "/>
   <polygon id="_x32_" class="st0" points="569.7,951 569.7,951 569.7,951 569.7,951 "/>
   </svg>  
+
+  <div style="height: 300px;width: 600px;">
+    <h1 style="color: white;">{{pathText}}</h1>
+    <h1 style="color: white;" v-if="pathText">{{pathText}}的內容</h1>
+  </div>
+
 </template>
 
 <style scoped>
