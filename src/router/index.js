@@ -29,7 +29,7 @@ const router = createRouter({
       name: 'post',
       component: () => import('../components/icons/Post.vue')
     }
-    
+
   ]
 })
 
