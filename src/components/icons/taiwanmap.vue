@@ -25,10 +25,25 @@ export default {
 };
 </script>
 <template>
-<div  style="display: flex;">
+
+  
+
+
+<div  style="display: flex;align-items: center">
+
+  <div  class="showArea">
+    <h1 style="color: white;">{{pathText}}</h1>
+    
+    <div class="btnArea" v-if="pathText">
+      <div class="msgBox" v-for="(num, index) in mesNum" :key="index" @click="handleMsgBoxClick(index)">
+        <p>{{ pathText }}的</p>
+        <p>{{ index+1 }}號內容</p>
+      </div>
+    </div>
+  </div>
   <!-- Generator: Adobe Illustrator 24.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
   <svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-      viewBox="0 0 1000 1295" style="enable-background:new 0 0 1000 1295;" xml:space="preserve" >
+      viewBox="400 0 600 1295" style="enable-background:new 0 0 1000 1295;" xml:space="preserve" >
   <!-- 	高雄 -->
   <path id="TWN1156" @click="handlePathClick" class="st0" d="M739.8,786.9l1.9,5.8l-3,5l-5.6,2.4l-1.4,3.2l1,4l5.6,3.6l6.3,5.2l2.8,7.6l0.3,2.5l-15.6,3.8
     l-6.4,4.1l-4,3.9l-7.8,5.1l-0.9,5.7l2.3,6l-2.7,4.9l-7.4,4l-0.8,6.9l2.1,9.9l-3,13.2l-0.1,11.2l-4.3,5.9l-8.5,7.2l-2.3,9.8l1.3,8.1
@@ -220,16 +235,6 @@ export default {
 
 
 
-  <div  class="showArea">
-    <h1 style="color: white;">{{pathText}}</h1>
-    
-    <div class="btnArea" v-if="pathText">
-      <div class="msgBox" v-for="(num, index) in mesNum" :key="index" @click="handleMsgBoxClick(index)">
-        <p>{{ pathText }}的</p>
-        <p>{{ index+1 }}號內容</p>
-      </div>
-    </div>
-  </div>
 
 
 
