@@ -24,6 +24,7 @@ const router = createRouter({
       name: 'test2',
       component: () => import('../components/oliver/test2.vue')
     },
+    {
       path: '/post',
       name: 'post',
       component: () => import('../components/icons/Post.vue')
