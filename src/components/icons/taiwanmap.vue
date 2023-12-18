@@ -26,14 +26,15 @@ export default {
 </script>
 <template>
 
-  
+
+
 
 
 <div  style="display: flex;align-items: center">
 
   <div  class="showArea">
     <h1 style="color: white;">{{pathText}}</h1>
-    
+
     <div class="btnArea" v-if="pathText">
       <div class="msgBox" v-for="(num, index) in mesNum" :key="index" @click="handleMsgBoxClick(index)">
         <p>{{ pathText }}的</p>
