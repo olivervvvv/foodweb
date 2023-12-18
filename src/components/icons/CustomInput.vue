@@ -53,7 +53,7 @@ export default {
 }
 
 .form-control {
-  width: 100%;
+  width: 200%;
   height: 100%;
   text-indent: 30px; /* 初始文本縮進為0 */
   transition: text-indent 0.2s; /* 添加過渡效果 */

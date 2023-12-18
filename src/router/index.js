@@ -17,13 +17,18 @@ const router = createRouter({
     {
       path: '/testOliver',
       name: 'testOliver',
-      component: () => import('../components/testOliver.vue')
+      component: () => import('../components/oliver/testOliver.vue')
     },
     {
       path: '/test2',
       name: 'test2',
-      component: () => import('../components/test2.vue')
+      component: () => import('../components/oliver/test2.vue')
+    },
+      path: '/post',
+      name: 'post',
+      component: () => import('../components/icons/Post.vue')
     }
+    
   ]
 })
 
