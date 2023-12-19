@@ -1,6 +1,11 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+<<<<<<< HEAD
 
+=======
+import taiwanmap from './components/icons/taiwanmap.vue'
+import search from './components/icons/CustomInput.vue'
+>>>>>>> 4a340ddc67563b30462b38a5309ac52cbf11fdc6
 </script>
 
 <template>
@@ -36,7 +41,7 @@ svg{
 }
 .search{
   position: absolute;
-  top: 40%;
+  top: 1%;
   left: 35%;
   width: 250px;
   height: 40px;
