@@ -280,6 +280,7 @@ path {
   margin-top: 3%;
   height: 300px;
   width: 600px;
+  margin-right: 3%;
   .btnArea{
     height: 100%;
     width: 100%;

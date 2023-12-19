@@ -1,6 +1,5 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
 import taiwanmap from './components/icons/taiwanmap.vue'
 import search from './components/icons/CustomInput.vue'
 </script>
@@ -47,7 +46,7 @@ svg{
 }
 .search{
   position: absolute;
-  top: 40%;
+  top: 1%;
   left: 35%;
   width: 250px;
   height: 40px;
