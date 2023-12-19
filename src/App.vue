@@ -5,7 +5,6 @@ import search from './components/icons/CustomInput.vue'
 </script>
 
 <template>
-
   <RouterView />
 </template>
 
