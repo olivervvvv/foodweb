@@ -1,11 +1,7 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-<<<<<<< HEAD
-
-=======
 import taiwanmap from './components/icons/taiwanmap.vue'
 import search from './components/icons/CustomInput.vue'
->>>>>>> 4a340ddc67563b30462b38a5309ac52cbf11fdc6
 </script>
 
 <template>
