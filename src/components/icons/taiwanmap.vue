@@ -254,6 +254,7 @@ export default {
 
 svg {
   height: 100vh;
+  margin-left: 5%;
 }
 
 body {
@@ -278,6 +279,7 @@ path {
 }
 .showArea{
   margin-top: 3%;
+  /* margin-right: 25%; */
   height: 300px;
   width: 600px;
   .btnArea{

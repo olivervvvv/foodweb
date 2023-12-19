@@ -1,20 +1,9 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-import taiwanmap from './components/icons/taiwanmap.vue'
-import search from './components/icons/CustomInput.vue'
+
 </script>
 
 <template>
-
-  <div class="leftsearch">
-    <div class="search">
-      <search></search>
-    </div>
-  </div>
-  <div class="rightmap">
-    <taiwanmap></taiwanmap>
-  </div>
 
   <RouterView />
 </template>

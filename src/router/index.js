@@ -10,9 +10,21 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/about',
-      name: 'about',
-      component: () => import('../views/AboutView.vue')
+      path: '/PostPage',
+      name: 'PostPage',
+      component: () => import('../views/PostPage.vue'),
+      children: [
+        {
+          path: '/PostFront',
+          name:'PostFront',
+          component: () => import('../components/PostGroup/PostFront.vue')
+        },
+        {
+          path: '/PostRank',
+          name:'PostRank',
+          component: () => import('../components/PostGroup/PostRank.vue')
+        },
+      ]
     },
     {
       path: '/testOliver',
@@ -29,7 +41,6 @@ const router = createRouter({
       name: 'post',
       component: () => import('../components/icons/Post.vue')
     }
-
   ]
 })
 
