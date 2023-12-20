@@ -15,11 +15,11 @@ export default {
     methods: {
         async editQuestionnaire() {
             var postId=4
-            // 将postId转为整数
+            // 將postId轉為整數
             const intPostId = parseInt(postId, 10);
             try {
                 const response = await axios.get(`http://localhost:8081/posts/getPost?postId=${intPostId}`);
-                const postData = response.data; // 这里假设后端返回的数据包含问卷的所有信息
+                const postData = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
                 console.log('postData from DB:', postData);
                 this.imgurl=postData.postInfo.filePath;
                 this.likeNumber=postData.postInfo.postLikeNumber;
