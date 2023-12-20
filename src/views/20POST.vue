@@ -22,7 +22,7 @@ export default {
     methods: {
         async getPost() {
             var postId=4
-            // 将postId转为整数
+            // 將postId轉為整數
             const intPostId = parseInt(postId, 10);
             try {
                 const response = await axios.get(`http://localhost:8081/posts/random-top-twenty`);
@@ -57,7 +57,6 @@ export default {
                 const DBdata = response.data; // 这里假设后端返回的数据包含问卷的所有信息
                 console.log('postData from DB:', DBdata);
                 post.postLikeNumber = response.data.postInfo.postLikeNumber;
-
 
             } catch (error) {
                 console.error('Error fetching quiz data:', error);
