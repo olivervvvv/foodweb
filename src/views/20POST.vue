@@ -135,21 +135,29 @@ export default {
 
 </template>
 <style>
-.instagram-post {
-    width: 70%;
-    padding: 5px 0;
-}
-
-
-
 body {
-    color: #ffffff;
+    color: #000000;
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
 }
 body, button, input, select, textarea {
     font-family: BlinkMacSystemFont,-apple-system,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+.post-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: 10px;
+}
+.instagram-post {
+    width: 70%;
+    padding: 5px 0;
+    background-color: white;
+    margin: 5px;
+    padding: 2%;
+    border-radius: 5%;
 }
 .fa-heart:before {
     content: "\f004";
