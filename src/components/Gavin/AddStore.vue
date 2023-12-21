@@ -10,6 +10,7 @@ export default {
             locationCity:"",
             address:"",
             name:"",
+            foodStyle:""
         }
     },
     components: {
@@ -22,19 +23,27 @@ export default {
             this.showCityList=false;
         },
         async addStore() {
-            const formData = {
+
+            // 检查必填字段
+            if (!this.name || !this.address || !this.locationCity||this.foodStyle) {
+                // 使用 alert 显示提示框
+                alert('请填写所有必填字段');
+                return;
+            }
+            const formData ={
+                storeInfo: {
                 name:this.name,
                 address:this.address,
-                locationCity:this.locationCity
+                locationCity:this.locationCity,
+                foodStyle:this.foodStyle
+                }
             }
             console.log('formData: ', formData);
             // console.log('this.name:', this.name);
             // console.log('this.address',this.address);
             // console.log('this.locationCity:', this.locationCity);
             try {
-                const response = await axios.post(`http://localhost:8081/foodMap/create?name=${this.name}&address=${this.address}&locationCity=${this.locationCity}`);
-                const DBdata = response.data; // Assuming the backend returns the data you need
-                console.log('postData from DB:', DBdata);
+                const response = await axios.post('http://localhost:8081/foodMap/create',formData)
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -52,6 +61,8 @@ export default {
         <input type="text" name="" id="storeName" v-model="name">
         <label for="storeAddress">商店地址</label>
         <input type="text" name="" id="storeAddress" v-model="address">
+        <label for="foodStyle">商店類型</label>
+        <input type="text" name="" id="foodStyle" v-model="foodStyle">
         <label for="locaCity">所在城市</label>
         <input type="text" name="" id="locaCity" v-model="locationCity" disabled>
         <button class="city-btn" @click="showCityList = true">選擇所在城市</button>
