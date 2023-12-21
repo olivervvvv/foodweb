@@ -46,6 +46,11 @@ const router = createRouter({
       name: '20POST',
       component: () => import('../components/Gavin/20POST.vue')
     },
+    {
+      path: '/AddStore',
+      name: 'AddStore',
+      component: () => import('../components/Gavin/AddStore.vue')
+    },
 
     
   ]
