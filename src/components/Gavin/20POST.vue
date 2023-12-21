@@ -4,7 +4,7 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            postData:[],
+            postData:{},
             postId:0,
             imgurl:"",
             likeNumber:0,
@@ -21,14 +21,15 @@ export default {
     },
     methods: {
         async getPost() {
-            var postId=4
-            // 將postId轉為整數
-            const intPostId = parseInt(postId, 10);
             try {
                 const response = await axios.get(`http://localhost:8081/posts/random-top-twenty`);
                 const DBdata = response.data; // 这里假设后端返回的数据包含问卷的所有信息
                 console.log('postData from DB:', DBdata);
-                this.postData = response.data; // 更新组件的数据
+                this.postData = response.data.commVoList; // 更新组件的数据
+                console.log('this.postData from DB:', this.postData);
+
+
+
                 // this.description=postData.postInfo.description;
                 // this.imgurl=postData.postInfo.filePath;
                 // this.postId=postData.postInfo.postId;
@@ -53,10 +54,10 @@ export default {
             console.log('output:',output);
 
             try {
-                const response = await axios.post(`http://localhost:8081/posts/getPostLike?postId=${post.postId}&addNumber=${output}`);
+                const response = await axios.post(`http://localhost:8081/posts/getPostLike?postId=${post.postInfo.postId}&addNumber=${output}`);
                 const DBdata = response.data; // 这里假设后端返回的数据包含问卷的所有信息
                 console.log('postData from DB:', DBdata);
-                post.postLikeNumber = response.data.postInfo.postLikeNumber;
+                post.postInfo.postLikeNumber = response.data.postInfo.postLikeNumber;
 
             } catch (error) {
                 console.error('Error fetching quiz data:', error);
@@ -81,17 +82,17 @@ export default {
         <div>
             <div>
                 <figure>
-                    <img :src="post.filePath" style="height: 100%;width: 100%;">
+                    <img :src="post.postInfo.filePath" style="height: 100%;width: 100%;">
                 </figure> 
                 <span class="username">username</span>
-                <p>{{post.description}}</p>
+                <p>{{post.postInfo.description}}</p>
             </div>
         </div>
         <div class="content">
             <div class="heart" @click="clickLike(post)">
                 <i v-if="!post.isLiked" class="far fa-heart fa-lg" style="color: #000000;"></i>
                 <i v-if="post.isLiked" class="fas fa-heart fa-lg" style="color: #ff0000;"></i>
-            </div> <p class="likes">{{post.postLikeNumber}}like</p>
+            </div> <p class="likes">{{post.postInfo.postLikeNumber}}like</p>
                 <p class="caption">
                 <span>留言者1</span> When you're too ready for summer '18 ☀️</p>
         </div>
