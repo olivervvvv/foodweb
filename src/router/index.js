@@ -45,15 +45,8 @@ const router = createRouter({
       path: '/20POST',
       name: '20POST',
       component: () => import('../views/20POST.vue')
-<<<<<<< HEAD
-=======
     },
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import('../components/sally/Login.vue')
->>>>>>> 186227f667f5ac4fecc38c4fd0c9d65d3b259c62
-    }
+
     
   ]
 })
