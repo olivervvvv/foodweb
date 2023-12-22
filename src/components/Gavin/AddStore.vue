@@ -98,7 +98,7 @@ export default {
     flex-direction: column;
 }
 .input-container{
-    width: 70%;
+    width: 85%;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
