@@ -26,9 +26,9 @@ export default {
         async getPost() {
             try {
                 const response = await axios.get(`http://localhost:8081/posts/random-top-twenty`);
-                const DBdata = response.data; // 这里假设后端返回的数据包含问卷的所有信息
+                const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
                 console.log('postData from DB:', DBdata);
-                this.postData = response.data.commVoList; // 更新组件的数据
+                this.postData = response.data.commVoList; // 更新組件的數據
                 console.log('this.postData from DB:', this.postData);
                 // this.description=postData.postInfo.description;
                 // this.imgurl=postData.postInfo.filePath;
@@ -38,7 +38,7 @@ export default {
                 // this.storeId=postData.postInfo.storeId;
                 // this.userId=postData.postInfo.userId;
 
-                // 遍历每个帖子，获取前两条评论
+                // 遍歷每個帖子，獲取前兩條評論
                 for (const post of this.postData) {
                 post.comments = await this.getTopTwoComments(post.postInfo.postId);
                 }
@@ -51,7 +51,7 @@ export default {
             try {
                 const response = await axios.get(`http://localhost:8081/posts/${postId}/comments`);
                 const comments = response.data;
-                return comments.slice(0, 2); // 返回前两条评论
+                return comments.slice(0, 2); // 返回前兩條評論
             } catch (error) {
                 console.error('Error fetching comments:', error);
                 return [];
@@ -61,7 +61,7 @@ export default {
             this.showcomment=true;
             this.postId=postId;
             try {
-                // 使用反引号定义模板字符串
+                // 使用反引號定義模板字符串
                 const getComment = await axios.get(`http://localhost:8081/posts/${postId}/comments`);
                 const Comment = getComment.data;
                 console.log('Comment from DB:',Comment);
@@ -78,18 +78,18 @@ export default {
         async clickLike(post) {
             //改變like樣式
             post.isLiked = !post.isLiked;
-            // 假设你的 post 对象中有一个属性用于跟踪先前的颜色
+            // 假設你的 post 對象中有一個屬性用於跟蹤先前的顏色
             const previousColor = post.previousColor || '#000000';
-            // 更新颜色属性
+            // 更新顏色屬性
             post.previousColor = post.isLiked ? '#ff0000' : '#000000';
-            // 如果从 #ff0000 变为 #000000，则输出 1；如果从 #000000 变为 #ff0000，则输出 -1
+            // 如果從 #ff0000 變為 #000000，則輸出 1；如果從 #000000 變為 #ff0000，則輸出 -1
             const output =  (previousColor === '#000000' && post.previousColor === '#ff0000')? 1 :
                 (previousColor === '#ff0000' && post.previousColor === '#000000') ? -1 : 0;
             console.log('output:',output);
 
             try {
                 const response = await axios.post(`http://localhost:8081/posts/getPostLike?postId=${post.postInfo.postId}&addNumber=${output}`);
-                const DBdata = response.data; // 这里假设后端返回的数据包含问卷的所有信息
+                const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
                 console.log('postData from DB:', DBdata);
                 post.postInfo.postLikeNumber = response.data.postInfo.postLikeNumber;
 
@@ -218,19 +218,19 @@ i{
     background-color: #ffffff;
     border-radius: 20px;
     position: fixed;
-    top: 10%; /* 距离顶部的距离，根据需要调整 */
+    top: 10%; /* 距離頂部的距離，根據需要調整 */
     overflow: auto;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.559); /* 添加阴影 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.559); /* 添加陰影 */
 }
 .blur-background {
-    backdrop-filter: blur(5px); /* 调整像素值以增加或减少模糊效果 */
-    background-color: rgba(255, 255, 255, 0.5); /* 调整颜色和透明度 */
+    backdrop-filter: blur(5px); /* 調整像素值以增加或減少模糊效果 */
+    background-color: rgba(255, 255, 255, 0.5); /* 調整顏色和透明度 */
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 10; /* 确保在其他元素之上 */
+    z-index: 10; /* 確保在其他元素之上 */
     display: flex;
     align-items: center;
     justify-content: center;
