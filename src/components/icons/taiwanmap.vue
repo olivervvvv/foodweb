@@ -42,7 +42,7 @@ export default {
 
 
 
-<div  style="display: flex;align-items: center">
+<div  style="display: flex;align-items: center" class="maincon">
 
   <div  class="showArea" style="user-select: none;">
     <h1 style="color: white;">{{pathText}}</h1>

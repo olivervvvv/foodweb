@@ -1,5 +1,4 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
 import taiwanmap from '../components/icons/taiwanmap.vue'
 import search from '../components/icons/CustomInput.vue'
 </script>
@@ -17,14 +16,13 @@ import search from '../components/icons/CustomInput.vue'
 body{
   background-color: rgb(66, 65, 65);
 }
-#app {
+/* #app {
   display: flex;
-
   max-width: 1280px;
   margin: 0 auto;
   padding: 0;
   font-weight: normal;
-}
+} */
 .search{
 position: absolute;
 top: 20%;
