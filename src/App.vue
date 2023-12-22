@@ -9,7 +9,7 @@ import search from './components/icons/CustomInput.vue'
 </template>
 
 <style>
-#app {
+/* #app {
     display: flex;
     max-width: 1280px;
     margin: 0 auto;
@@ -20,7 +20,7 @@ import search from './components/icons/CustomInput.vue'
 position: relative;
   width: 60%;
   min-height: 100vh;
-  /* background-color: aliceblue; */
+background-color: aliceblue;
 }
 .rughtmap{
   width: calc(100% - 60%);
@@ -36,5 +36,5 @@ svg{
   left: 35%;
   width: 250px;
   height: 40px;
-}
+} */
 </style>
