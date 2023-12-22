@@ -30,6 +30,7 @@ export default {
         <div class="storeArea">
             <div class="storeCard" @click="goToPostPage(storeInfo.storeId)" v-for="(storeInfo, index) in this.piniaStoreInfo">
                 <div class="storePhoto">
+                    <img :src="storeInfo.filePath" alt="">
                 </div>
                 <div class="storeInfo" >
                     <span class="storeTitle">{{ storeInfo.name }}</span>
@@ -51,13 +52,18 @@ export default {
     </div>
 </template>
 <style lang="scss" scoped>
+body{
+
+    background-color: pink;
+}
 .body {
-    width: 95vw; //目前不能滿版！
+    width: 100vw; //目前不能滿版！
     height: 100vh;
     // padding: 10% 5% 0;
     // border: 1px solid black;
     display: flex;
     flex-direction: column;
+    background-color: #F9E8D9;
 
     .storeArea {
         width: 60%;
@@ -68,6 +74,7 @@ export default {
     .storeCard {
         width: 100%;
         height: 150px;
+        background-color: white;
         border-radius: 10px;
         // border: 1px solid rgba(0, 0, 0, 0.2);
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);

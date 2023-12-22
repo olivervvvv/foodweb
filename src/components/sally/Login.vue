@@ -1,6 +1,7 @@
 <script>
 import { mapState, mapActions } from "pinia";
 import indexState from "/src/stores/indexState.js";
+import axios from "axios";
 
 export default {
     data() {
@@ -10,15 +11,46 @@ export default {
         };
     },
     computed:{
-        ...mapState(indexState, ["piniaEmail", "piniaPassword"]),
+        ...mapState(indexState, ["piniaEmail", "piniaPassword","statusNum"]),
     },
     methods: {
         setEmailAndPassword(){
             this.setEmail(this.email);
             this.setPassword(this.password);
-            this.login()
+            // this.login()
+            // let loginStatus = this.login()
+            // console.log(loginStatus)
+            // if(loginStatus == 200){
+            //     console.log(loginStatus)
+            //     this.$router.push('/storePage')
+            // }
         },
-        ...mapActions(indexState, ["login", "setEmail", "setPassword"])
+        ...mapActions(indexState, ["login", "setEmail", "setPassword"]),
+        login() {
+            axios.post("http://localhost:8081/users/login",
+                {
+                    "email": this.email,
+                    "password": this.password
+                },
+                {
+                    withCredentials: true,
+                })
+                .then(response => {
+                    console.log(response.status);
+                    if (response.status == 200) {
+                        console.log("xxx")
+                        this.$router.push('/storePage')
+                        console.log("200")
+                        return 200
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                    if (error.response.status != 200) {
+                        alert(error.response.data);
+                    }
+                });
+        }
 
     },
     mounted(){
@@ -44,7 +76,7 @@ export default {
                     <a href="#">Recover Password</a>
                 </p>
             </form>
-            <button type="button" @click="setEmailAndPassword">Sign in</button>
+            <button type="button" @click="this.setEmailAndPassword(), this.login()">Sign in</button>
             <p class="or">----- or continue with -----</p>
             <div class="not-member">Not a member? <a href="#">Register Now</a></div>
         </div>

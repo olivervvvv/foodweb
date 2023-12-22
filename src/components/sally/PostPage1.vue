@@ -43,6 +43,7 @@ export default {
         </div>
         <div class="storeCard">
             <div class="storePhoto">
+                <img src="" alt="">
             </div>
             <div class="storeInfo">
                 <span class="storeTitle">太初麵食りょうり</span>
@@ -62,12 +63,8 @@ export default {
         </div>
         <div class="postArea">
             <span class="line">關於<span>{{ "太初麵食りょうり" }}</span>的貼文</span>
-            <div class="post" >
-                <p class="postTitle">太初麵食りょうり的相關貼文</p>
-                <button class="moreBtn">More...</button>
-            </div>
-            <div class="post">
-                <p class="postTitle">太初麵食りょうり的相關貼文</p>
+            <div class="post" v-for="(post, index) in postInfoList">
+                <p class="postTitle">{{ post.postTitle}}</p>
                 <button class="moreBtn">More...</button>
             </div>
         </div>
@@ -75,6 +72,9 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+body{
+    background-color: pink;
+}
 .body {
     width: 95vw; //目前不能滿版！
     height: 100vh;
@@ -89,7 +89,7 @@ export default {
     .storeCard {
         width: 60%;
         height: 150px;
-        background: white;
+        background-color: white;
         border-radius: 10px;
         // border: 1px solid rgba(0, 0, 0, 0.2);
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
