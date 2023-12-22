@@ -1,22 +1,34 @@
 <script>
+import axios from 'axios';
 export default {
   data() {
     return {      
       pathText:"",
-      mesNum:[1,2,3,4],
+      storeDetail:"",
     };
   },
   methods: {
-    handlePathClick(event) {
+    async handlePathClick(event) {
       // 獲取點擊的 path 元素的 ID
       const pathId = event.target.id;
       // 在控制檯輸出 path 的 ID
       console.log('Clicked Path ID:', pathId);
-      this.pathText = event.target.id;
+      this.pathText=event.target.id;
+
+      try {
+            const response = await axios.get(`http://localhost:8081/foodMap/getlocationTop4?locationCity=${event.target.id}`);
+            const DBdata = response.data; // 这里假设后端返回的数据包含问卷的所有信息
+            console.log('postData from DB:', DBdata);
+            this.storeDetail = DBdata;
+            console.log('this.storeDetail:', this.storeDetail);
+            } catch (error) {
+              console.error('Error fetching Post data:', error);
+            }
     },
-    handleMsgBoxClick(index) {
-      console.log((index+1)+"號btn, "+`index為${index}`);
-      // 在這裡你可以執行其他邏輯，或者更新其他數據
+    handleMsgBoxClick(store, index) {
+      console.log((index+1)+"號btn, "+`index為${index}`+'value:'+ store.name+'store ID:'+ store.storeId);
+      this.$router.push({ name: 'postPage1', params: { storeId: store.storeId } });
+
     },
   },
   computed: {
@@ -32,16 +44,16 @@ export default {
 
 <div  style="display: flex;align-items: center">
 
-  <div  class="showArea">
+  <div  class="showArea" style="user-select: none;">
     <h1 style="color: white;">{{pathText}}</h1>
-
     <div class="btnArea" v-if="pathText">
-      <div class="msgBox" v-for="(num, index) in mesNum" :key="index" @click="handleMsgBoxClick(index)">
-        <p>{{ pathText }}的</p>
-        <p>{{ index+1 }}號內容</p>
+      <div class="msgBox" v-for="(store, index) in storeDetail" :key="index" @click="handleMsgBoxClick(store, index)">
+        <p style="font-size: 16pt;">{{ store.foodStyle }}</p>
+        <p>{{ store.name}}</p>
       </div>
     </div>
   </div>
+
   <!-- Generator: Adobe Illustrator 24.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
   <svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
       viewBox="500 0 300 1295" style="enable-background:new 0 0 1000 1295;" xml:space="preserve" >
@@ -65,7 +77,7 @@ export default {
     l-4.8-4.2l-2.6-1.6l8.1-20.5l-0.4-8.2l-2.7-7.5l0.1-7.1l5.7-21.2l0.1-9.5l-0.5-7l2.6-7.9l1.3-7.2l1.7-4.9l17.8,1.1l8-2.8l6.4-7.1
     l9.4-4.5l13.1,6.6l6.6-5.9l7.2-1.8l7.6,8.9l5.9,5.5l8.5-6.7l4.3-0.2L696.1,952.3L696.1,952.3z"/>
   <!-- 臺南	 -->
-  <path id="臺南市" @click="handlePathClick" class="st0" d="M483.8,897.9l-0.6,1.2l-2.3-2l-1.7-4.2l0.3-1.3h0.7l0.9,1.2l0.7,1.9l2.1,2.2L483.8,897.9
+  <path id="台南市" @click="handlePathClick" class="st0" d="M483.8,897.9l-0.6,1.2l-2.3-2l-1.7-4.2l0.3-1.3h0.7l0.9,1.2l0.7,1.9l2.1,2.2L483.8,897.9
     L483.8,897.9z M484.3,870.3l-2.9,6.8l3.9-13.3l0.6,0.1L484.3,870.3z M487.8,857.5l3.5-9.9l0.5-0.1l0.2,1.9L487.8,857.5z M494.1,835
     l-0.4,2.4l0.6-10.6l0.5,0.2L494.1,835L494.1,835z M643.6,846.5l-2.3,6.6l-10.4,15.1l-10,17l-6.5,8.4l-7.4,7.2l-6.5,5.4l-6.1,6.4
     l-5.3,7.1l-3,5.2l-2.4,5.5l-6.3,4.4l-6.5,2.6l-3.5,2.6l-4.2,1.5l-8.4-1l-8.2,0.9l-15.7-2.2l-4.8-2.5l-3.9-8.6l-0.2-0.5l-6.1,3.7
@@ -175,8 +187,8 @@ export default {
     l-1.9-7.2l2.4-1.6l2.5-2.3l3.8-1.5l1-3.5l-5.6-2.9l-3.9-1.4l-3.6-3.3l-2.1-6.3l0.9-13.4l1.2-6.6l0.1-5.7l1.6-5.4l2-4.6l-0.5-4
     l1.2-2.9l4.3-1.6l-0.1-3.6l4.3,0.2l17.9,2.5l4.2-0.6l5-4.8l7.6-14.4l3.7-8.5l6.4-3l10.1,1.4l6-0.2l5.8-7.7l3-1.9l8.9,6.7l3.5-0.9
     l2.6-5.5l4.7-3.9l6.6,0.1l5-1.9l7.9-7.6l5.1-2.9l4.4-0.8l8.8-4.7l6.2-0.2l6.3-1l11.1-4.4l4.6-0.3l4.7,1L825,557.2L825,557.2z"/>
-  <!-- 臺中 -->
-    <path id="臺中市" @click="handlePathClick" class="st0" d="M803.7,500.1l0.8-0.6l10.6-1l2.8,0.8l3.6,1l-0.6,5.5l1.4,3.8l4.9,1l4.4,2.6l3.7,2.5l4-0.6l4.7-2.3
+  <!-- 台中 -->
+    <path id="台中市" @click="handlePathClick" class="st0" d="M803.7,500.1l0.8-0.6l10.6-1l2.8,0.8l3.6,1l-0.6,5.5l1.4,3.8l4.9,1l4.4,2.6l3.7,2.5l4-0.6l4.7-2.3
     h4.9l5.9,4.7l-4.7,4.9l-0.4,4.2l-2.4,6.2l-7.5,4.7l-3,5l-1.3,5.1l-3.1,3.8l-3.4,1.7l-1.2,2.1l-2.8,2l-13.4-1.3l-4.7-1l-4.6,0.3
     l-11.1,4.4l-6.3,1l-6.2,0.2l-8.8,4.7l-4.4,0.8l-5.1,2.9l-7.9,7.6l-5,1.9l-6.6-0.1l-4.7,3.9l-2.6,5.5l-3.5,0.9l-8.9-6.7l-3,1.9
     l-5.8,7.7l-6,0.2l-10.1-1.4l-6.4,3l-3.7,8.5l-7.6,14.4l-5,4.8l-4.2,0.6l-17.9-2.5l-4.3-0.2v-1.4l-5.4-3.5l-4.3-0.8l-1.2-3.3l-0.1-4
@@ -280,8 +292,8 @@ path {
 .showArea{
   margin-top: 3%;
   /* margin-right: 25%; */
-  height: 300px;
-  width: 600px;
+  height: 380px;
+  width: 900px;
   margin-right: 3%;
   .btnArea{
     height: 100%;

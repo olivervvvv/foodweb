@@ -9,9 +9,6 @@ import search from './components/icons/CustomInput.vue'
 </template>
 
 <style>
-body{
-  background-color: rgb(66, 65, 65);
-}
 #app {
     display: flex;
     max-width: 1280px;
