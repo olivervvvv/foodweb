@@ -10,7 +10,7 @@ const router = createRouter({
       component: HomeView
     },
     {
-<<<<<<< HEAD
+
       path: '/PostPage',
       name: 'PostPage',
       component: () => import('../views/PostPage.vue'),
@@ -46,19 +46,21 @@ const router = createRouter({
       path: '/20POST',
       name: '20POST',
       component: () => import('../views/20POST.vue')
-=======
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
     },
     {
       path: '/login',
       name: 'login',
       component: () => import('../components/sally/Login.vue')
->>>>>>> sally
+    },
+    {
+      path: '/storePage',
+      name: 'storePage',
+      component: () => import('../components/sally/StorePage.vue')
+    },
+    {
+      path: '/postPage1/:storeId',
+      name: 'postPage1',
+      component: () => import('../components/sally/PostPage1.vue')
     }
     
   ]
