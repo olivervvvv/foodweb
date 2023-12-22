@@ -44,6 +44,7 @@ const router = createRouter({
     {
       path: '/20POST',
       name: '20POST',
+
       component: () => import('../components/Gavin/20POST.vue')
     },
     {
@@ -60,6 +61,21 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: () => import('../components/tong/register.vue')
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('../components/sally/Login.vue')
+    },
+    {
+      path: '/storePage',
+      name: 'storePage',
+      component: () => import('../components/sally/StorePage.vue')
+    },
+    {
+      path: '/postPage1/:storeId',
+      name: 'postPage1',
+      component: () => import('../components/sally/PostPage1.vue')
     }
 
     

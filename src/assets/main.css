@@ -6,6 +6,9 @@
   padding: 2rem;
 /* font-weight: normal; */
 }
+i:before{
+  font-weight: 900;
+}
 
 a,
 .green {
