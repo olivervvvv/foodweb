@@ -51,6 +51,16 @@ const router = createRouter({
       name: 'AddStore',
       component: () => import('../components/Gavin/AddStore.vue')
     },
+    {
+      path: '/createPost',
+      name: 'createPost',
+      component: () => import('../components/tong/createPost.vue')
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import('../components/tong/register.vue')
+    }
 
     
   ]
