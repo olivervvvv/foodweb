@@ -134,8 +134,8 @@ export default {
         <!-- Like按鈕 -->
         <div class="content">
             <div class="heart">
-                <i v-if="!post.isLiked" class="far fa-heart fa-lg" style="color: #000000;" @click="clickLike(post)"></i>
-                <i v-if="post.isLiked" class="fas fa-heart fa-lg" style="color: #ff0000;" @click="clickLike(post)"></i>
+                <i v-if="!post.isLiked" class="fa-regular fa-heart fa-lg" style="color: #000000;" @click="clickLike(post)"></i>
+                <i v-if="post.isLiked" class="fa-solid fa-heart fa-lg" style="color: #ff0000;" @click="clickLike(post)"></i>
                 <span class="likes">{{post.postInfo.postLikeNumber}}like</span>
             </div> 
         </div>
