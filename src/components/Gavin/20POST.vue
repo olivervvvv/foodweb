@@ -101,7 +101,7 @@ export default {
         sendComment(postId){
             console.log('commentInput:', this.commentInput);
 
-            
+
 
 
             this.showComment(postId);
@@ -144,9 +144,7 @@ export default {
             <div v-for="(comment, cIndex) in post.comments" :key="cIndex">
             <span style="font-weight: bold;">{{comment.name}}</span> <p>{{comment.comment}}</p>
             </div>
-        </div>
-        <!-- 顯示完整評論btn -->
-        <div class="content">
+            <!-- 顯示完整評論btn -->
             <button class="blue-city-btn" @click="showComment(post.postInfo.postId)">顯示完整評論</button>
         </div>
     </div>
@@ -203,7 +201,7 @@ i{
 .blue-city-btn{
     width: 100px;
     padding: 10px;
-    margin: 5px;
+    /* margin: 5px; */
     background-color: #0800ff;
     color: white;
     border: none;
