@@ -30,6 +30,17 @@ export default {
       this.$router.push({ name: 'postPage1', params: { storeId: store.storeId } });
 
     },
+    login(){
+      console.log('login');
+    },
+    singup(){
+      console.log('singup');
+    }
+
+
+
+
+
   },
   computed: {
 
@@ -41,9 +52,17 @@ export default {
 
 
 
-
 <div  style="display: flex;align-items: center" class="maincon">
 
+  
+<div class="btn-container" >
+    <button class="green-btn" @click="login()">登陸</button>
+    <button class="blue-btn" @click="singup()">註冊</button>
+  </div>
+
+
+
+<div style="display: flex;">
   <div  class="showArea" style="user-select: none;">
     <h1 style="color: white;">{{pathText}}</h1>
     <div class="btnArea" v-if="pathText">
@@ -53,6 +72,10 @@ export default {
       </div>
     </div>
   </div>
+
+
+  
+
 
   <!-- Generator: Adobe Illustrator 24.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
   <svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -246,7 +269,7 @@ export default {
   <polygon id="_x32_" class="st0" points="569.7,951 569.7,951 569.7,951 569.7,951 "/>
   </svg>  
 
-
+</div>
 
 
 
@@ -262,10 +285,41 @@ export default {
 </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+.btn-container{
+  margin-top: 1%;
+  margin-left: 50%;
+  display: flex;
+}
+.blue-btn{
+    width: 100px;
+    padding: 10px;
+    margin: 5px;
+    background-color: #0800ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.blue-btn:hover {
+    background-color: #050093;
+}
+.green-btn{
+    width: 100px;
+    padding: 10px;
+    margin: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.green-btn:hover {
+    background-color: #3b8a3e;
+}
 
 svg {
-  height: 100vh;
+  height: 90vh;
   margin-left: 5%;
 }
 
@@ -276,6 +330,11 @@ body {
   align-items: center;
   width: 100%;
   height: 100%;
+}
+.maincon{
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
 }
 
 path {
@@ -290,11 +349,11 @@ path {
   }
 }
 .showArea{
-  margin-top: 3%;
-  /* margin-right: 25%; */
+  margin-top: 5%;
+  // margin-left: 5%;
   height: 380px;
   width: 900px;
-  margin-right: 3%;
+
   .btnArea{
     height: 100%;
     width: 100%;

@@ -72,22 +72,35 @@ export default {
         <button class="blue-city-btn" @click="addStore()">新增商店</button>
     </div>
 
-
-    <div class="btn-container" v-if="showCityList">
+<div v-if="showCityList" class="blur-background">
+    <div class="btn-container" >
         <div class="btn-div">
             <button class="city-btn" v-for="(cityName, index) in city" :key="index" @click="selectCity(cityName)">{{ cityName }}</button>
             <div class="btn-container2">
                 <button class="red-city-btn" @click="showCityList=false">取消</button>
             </div>
         </div>
-
     </div>
+</div>
 
 
 
 </div>
 </template>
-<style>
+<style lang="scss" scoped>
+.blur-background {
+    backdrop-filter: blur(5px); /* 調整像素值以增加或減少模糊效果 */
+    background-color: rgba(255, 255, 255, 0.5); /* 調整顏色和透明度 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10; /* 確保在其他元素之上 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .main-container{
     width: 100vw;
     height: 100vh;
@@ -105,7 +118,7 @@ export default {
 }
 .btn-container{
     width: 70%;
-    height: 25%;
+    height: 35%;
     z-index: 99;
     position: absolute;
     background-color: #ffffff;

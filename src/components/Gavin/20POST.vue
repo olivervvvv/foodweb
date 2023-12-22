@@ -154,8 +154,13 @@ export default {
         <div class="comment-container">
             <!-- 顯示評論區域 -->
             <div class="comment-text-container">
-                <div class="content" v-for="(comment, index) in commentData">
+                <!-- 有評論顯示 -->
+                <div class="content"  v-for="(comment, index) in commentData" v-if="commentData.length > 0">
                     <span style="font-weight: bold;">{{comment.name}}</span> <p>{{comment.comment}}</p>
+                </div>
+                <!-- 無評論顯示 -->
+                <div  v-else class="no-content">
+                    <span style="font-weight: bold;font-size: 40pt;">目前沒有評論</span>
                 </div>
             </div>
             <!-- 輸入區域 -->
@@ -175,7 +180,7 @@ export default {
 </div>
 
 </template>
-<style>
+<style lang="scss" scoped>
 .header{
     display: flex;
     margin: 2%;
@@ -186,6 +191,7 @@ export default {
     align-items: center;
     justify-content: space-evenly;
     margin: 10px;
+    width: 94vw;
 }
 .instagram-post {
     width: 70%;
@@ -240,6 +246,13 @@ i{
     height: 60%;
     padding: 5%;
     overflow: auto;
+}
+.no-content{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .green-btn{
     width: 100px;

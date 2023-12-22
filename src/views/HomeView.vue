@@ -25,10 +25,11 @@ body{
 } */
 .search{
 position: absolute;
-top: 20%;
+top: 3%;
 left: 10%;
-width: 250px;
-height: 40px;
+width: 42%;
+height: 15%;
+display: flex;
 }
 .rightmap{
 width: calc(100%);
