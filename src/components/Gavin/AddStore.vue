@@ -27,7 +27,7 @@ export default {
             // 检查必填字段
             if (!this.name || !this.address || !this.locationCity||this.foodStyle) {
                 // 使用 alert 显示提示框
-                alert('请填写所有必填字段');
+                alert('請填寫所有資料');
                 return;
             }
             const formData ={
@@ -80,7 +80,6 @@ export default {
                 <button class="red-city-btn" @click="showCityList=false">取消</button>
             </div>
         </div>
-
     </div>
 
 

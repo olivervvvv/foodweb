@@ -5,6 +5,7 @@ export default {
     data() {
         return {
             postData:{},
+            commentData:{},
             postId:0,
             imgurl:"",
             likeNumber:0,
@@ -12,6 +13,8 @@ export default {
             postTitle:"",
             storeId:0,
             userId:0,
+            showcomment:false,
+            commentInput:"",
         }
     },
     components: {
@@ -27,9 +30,6 @@ export default {
                 console.log('postData from DB:', DBdata);
                 this.postData = response.data.commVoList; // 更新组件的数据
                 console.log('this.postData from DB:', this.postData);
-
-
-
                 // this.description=postData.postInfo.description;
                 // this.imgurl=postData.postInfo.filePath;
                 // this.postId=postData.postInfo.postId;
@@ -37,10 +37,44 @@ export default {
                 // this.postTitle=postData.postInfo.postTitle;
                 // this.storeId=postData.postInfo.storeId;
                 // this.userId=postData.postInfo.userId;
+
+                // 遍历每个帖子，获取前两条评论
+                for (const post of this.postData) {
+                post.comments = await this.getTopTwoComments(post.postInfo.postId);
+                }
+
             } catch (error) {
-                console.error('Error fetching quiz data:', error);
+                console.error('Error fetching Post data:', error);
             }
         },
+        async getTopTwoComments(postId) {
+            try {
+                const response = await axios.get(`http://localhost:8081/posts/${postId}/comments`);
+                const comments = response.data;
+                return comments.slice(0, 2); // 返回前两条评论
+            } catch (error) {
+                console.error('Error fetching comments:', error);
+                return [];
+            }
+        },
+        async showComment(postId) {
+            this.showcomment=true;
+            this.postId=postId;
+            try {
+                // 使用反引号定义模板字符串
+                const getComment = await axios.get(`http://localhost:8081/posts/${postId}/comments`);
+                const Comment = getComment.data;
+                console.log('Comment from DB:',Comment);
+                this.commentData = getComment.data;
+                console.log('this.commentData from DB:',this.commentData);
+            } catch (error) {
+                console.error('Error in the second request:', error);
+            }
+        },
+
+
+
+        //處理點讚
         async clickLike(post) {
             //改變like樣式
             post.isLiked = !post.isLiked;
@@ -60,8 +94,17 @@ export default {
                 post.postInfo.postLikeNumber = response.data.postInfo.postLikeNumber;
 
             } catch (error) {
-                console.error('Error fetching quiz data:', error);
+                console.error('Error fetching Like data:', error);
             }
+        },
+        //處理送出留言
+        sendComment(postId){
+            console.log('commentInput:', this.commentInput);
+
+            
+
+
+            this.showComment(postId);
         }
     }
 }
@@ -69,16 +112,16 @@ export default {
 </script>
 
 <template>
-<div class="post-container">
-
-
+<div class="post-container" style="user-select: none;">
     <div class="instagram-post" v-for="(post, index) in postData" :key="index">
+        <!-- 發文者頭像及名子 -->
         <div class="header">
             <figure style="height:32px;width: 32px;margin-right: 2%;">
                 <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1211695/me2.png" style="height: auto;width: 100%;border-radius: 99px;">
             </figure> 
             <span class="username">username</span>
         </div>
+        <!-- 貼文內容 -->
         <div>
             <div>
                 <figure>
@@ -88,13 +131,44 @@ export default {
                 <p>{{post.postInfo.description}}</p>
             </div>
         </div>
+        <!-- Like按鈕 -->
         <div class="content">
-            <div class="heart" @click="clickLike(post)">
-                <i v-if="!post.isLiked" class="far fa-heart fa-lg" style="color: #000000;"></i>
-                <i v-if="post.isLiked" class="fas fa-heart fa-lg" style="color: #ff0000;"></i>
-            </div> <p class="likes">{{post.postInfo.postLikeNumber}}like</p>
-                <p class="caption">
-                <span>留言者1</span> When you're too ready for summer '18 ☀️</p>
+            <div class="heart">
+                <i v-if="!post.isLiked" class="far fa-heart fa-lg" style="color: #000000;" @click="clickLike(post)"></i>
+                <i v-if="post.isLiked" class="fas fa-heart fa-lg" style="color: #ff0000;" @click="clickLike(post)"></i>
+                <span class="likes">{{post.postInfo.postLikeNumber}}like</span>
+            </div> 
+        </div>
+        <!-- 預覽前兩筆留言 -->
+        <div class="comment-preview">
+            <div v-for="(comment, cIndex) in post.comments" :key="cIndex">
+            <span style="font-weight: bold;">{{comment.name}}</span> <p>{{comment.comment}}</p>
+            </div>
+        </div>
+        <!-- 顯示完整評論btn -->
+        <div class="content">
+            <button class="blue-city-btn" @click="showComment(post.postInfo.postId)">顯示完整評論</button>
+        </div>
+    </div>
+
+    <!-- 跳出完整評論頁面 -->
+    <div v-if="showcomment" class="blur-background">
+        <div class="comment-container">
+            <!-- 顯示評論區域 -->
+            <div class="comment-text-container">
+                <div class="content" v-for="(comment, index) in commentData">
+                    <span style="font-weight: bold;">{{comment.name}}</span> <p>{{comment.comment}}</p>
+                </div>
+            </div>
+            <!-- 輸入區域 -->
+            <div class="btn-container2">
+                <textarea name="commentInput" rows="4" style="width: 80%;" v-model="commentInput"></textarea>
+            </div>
+            <!-- 按鈕區域 -->
+            <div class="btn-container2">
+                <button class="green-btn" @click="sendComment(this.postId)">送出</button>
+                <button class="red-btn" @click="showcomment=false">取消</button>
+            </div>
         </div>
     </div>
 
@@ -123,4 +197,82 @@ export default {
     padding: 2%;
     border-radius: 5%;
 }
+i{
+    cursor: pointer;
+}
+.blue-city-btn{
+    width: 100px;
+    padding: 10px;
+    margin: 5px;
+    background-color: #0800ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.blue-city-btn:hover {
+    background-color: #050093;
+}
+.comment-container{
+    width: 70%;
+    height: 60%;
+    z-index: 99;
+    background-color: #ffffff;
+    border-radius: 20px;
+    position: fixed;
+    top: 10%; /* 距离顶部的距离，根据需要调整 */
+    overflow: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.559); /* 添加阴影 */
+}
+.blur-background {
+    backdrop-filter: blur(5px); /* 调整像素值以增加或减少模糊效果 */
+    background-color: rgba(255, 255, 255, 0.5); /* 调整颜色和透明度 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10; /* 确保在其他元素之上 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.comment-text-container{
+    width: 100%;
+    height: 60%;
+    padding: 5%;
+    overflow: auto;
+}
+.green-btn{
+    width: 100px;
+    padding: 10px;
+    margin: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.green-btn:hover {
+    background-color: #3b8a3e;
+}
+.red-btn{
+    width: 100px;
+    padding: 10px;
+    margin: 5px;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.red-btn:hover {
+    background-color: #b40000;
+}
+.btn-container2{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 </style>
