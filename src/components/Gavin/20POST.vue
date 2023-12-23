@@ -191,7 +191,7 @@ export default {
     align-items: center;
     justify-content: space-evenly;
     margin: 10px;
-    width: 94vw;
+    width: 98vw;
 }
 .instagram-post {
     width: 70%;
