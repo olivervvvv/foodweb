@@ -8,6 +8,7 @@ export default defineStore("indexState", {
         piniaStoreName: "",
         piniaLocationCity: "",
         piniaStoreInfo: [],
+        statusNum:0
 
     }),
     actions: {
@@ -33,11 +34,15 @@ export default defineStore("indexState", {
                     withCredentials: true,
                 })
                 .then(response => {
-                    console.log(response);
-                    if (response.status == 200) {
-                        // this.$router.push({ name: 'loginAfter' });
-                        console.log("200")
-                    }
+                    console.log(response.status);
+                    // if (response.status == 200) {
+                    //     console.log("xxx")
+                    //     console.dir(this.$router)
+                    //     console.log(this.$router)
+                    //     this.$router.push('/storePage')
+                    //     console.log("200")
+                    //     return 200
+                    // }
                 })
                 .catch(error => {
                     console.log(error);

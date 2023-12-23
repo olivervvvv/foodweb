@@ -111,7 +111,7 @@ export default {
 }
 </script>
 <template>
-    <div class="area">
+    <div class="bgArea">
         <div class="searchArea">
             <input class="searchName" type="text" placeholder="搜尋店名" v-model="this.storeName">
             <select class="searchLocation" name="" id="location" @change="this.getLocation()">
@@ -122,9 +122,18 @@ export default {
         </div>
     </div>
 </template>
-<style lang="scss" scoped>
-.area {
-    width: 95vw;
+<style lang="scss">
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+body{
+    background: #F9E8D9;
+}
+.bgArea {
+    width: 100vw;
     height: 20vh;
     background-color: #EE7214;
     display: flex;
