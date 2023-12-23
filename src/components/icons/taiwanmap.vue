@@ -286,36 +286,47 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+.st0 {
+        fill: #84a36d; /* 修改這裡的顏色值為你想要的顏色 */
+        stroke: #0b4500; /* 邊線顏色，修改這裡的顏色值為你想要的邊線顏色 */
+        stroke-width: 2; /* 邊線寬度，根據需要調整 */
+    }
 .btn-container{
-  margin-top: 1%;
-  margin-left: 50%;
+  position: fixed;
+  right: 3%;
+  top: 4%;
   display: flex;
 }
 .blue-btn{
     width: 100px;
     padding: 10px;
     margin: 5px;
-    background-color: #0800ff;
-    color: white;
+    background-color: #e3b82c;
+    color: rgb(0, 0, 0);
+    font-size: 12pt;
+    font-weight:800;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 .blue-btn:hover {
-    background-color: #050093;
+    background-color: #e6e5bc;
 }
 .green-btn{
     width: 100px;
     padding: 10px;
     margin: 5px;
-    background-color: #4CAF50;
-    color: white;
+    background-color: #3b64e1;
+    font-size: 12pt;
+    font-weight:800;
+    color: rgb(226, 224, 255);
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 .green-btn:hover {
-    background-color: #3b8a3e;
+    background-color: #d6d5e9;
+    color: black;
 }
 
 svg {
@@ -343,13 +354,13 @@ path {
   transition: 0.5s;
 
   &:hover {
-    fill: #F6E3CE;
+    fill: #d0f6ce;
     cursor: pointer;
     transform: translate(-10px, -5px);
   }
 }
 .showArea{
-  margin-top: 5%;
+  margin-top: 18%;
   // margin-left: 5%;
   height: 380px;
   width: 900px;
@@ -378,6 +389,6 @@ path {
   }
 }
 .msgBox:hover {
-	background-color: #F6E3CE; /* 滑過時的背景顏色，可以根據需要更改顏色 */
+	background-color: #ddf6ce; /* 滑過時的背景顏色，可以根據需要更改顏色 */
   }
 </style>

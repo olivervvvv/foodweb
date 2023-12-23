@@ -26,9 +26,9 @@ body{
 }
 .search{
 position: absolute;
-top: 3%;
+top: 8%;
 left: 10%;
-width: 42%;
+width: 80%;
 height: 15%;
 display: flex;
 }
