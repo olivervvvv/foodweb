@@ -37,7 +37,7 @@ export default {
 </script>
 
 <template>
-    <div class="body">
+    <div class="bgArea">
         <div class="header">
             <Header></Header>
         </div>
@@ -71,20 +71,26 @@ export default {
     </div>
 </template>
 
-<style lang="scss" scoped>
-body{
-    background-color: pink;
+<style lang="scss">
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
 }
-.body {
-    width: 95vw; //目前不能滿版！
-    height: 100vh;
+body{
+    background: #F9E8D9;
+}
+.bgArea {
+    // width: 100vw;
+    // height: 100vh;
     // padding: 10% 5% 0;
-    border: 1px solid black;
+    // border: 1px solid black;
     display: flex;
     flex-direction: column;
     // justify-content: center;
     align-items: center;
-    background: #F9E8D9;
+    // background: #F9E8D9;
 
     .storeCard {
         width: 60%;
