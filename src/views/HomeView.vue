@@ -34,6 +34,7 @@ display: flex;
 }
 .rightmap{
 width: calc(100%-10%);
+z-index: 22;
 /* padding-right: 0.5rem;  */
 }
 svg{
