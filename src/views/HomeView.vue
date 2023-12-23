@@ -28,13 +28,13 @@ body{
 position: absolute;
 top: 8%;
 left: 10%;
-width: 80%;
+width: 50%;
 height: 15%;
 display: flex;
 }
 .rightmap{
 width: calc(100%-10%);
-z-index: 22;
+z-index: 88;
 /* padding-right: 0.5rem;  */
 }
 svg{

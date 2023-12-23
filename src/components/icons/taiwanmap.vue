@@ -65,8 +65,10 @@ export default {
         <div class="btnArea" v-if="pathText">
           <div class="msgBox" v-for="(store, index) in storeDetail" :key="index" @click="handleMsgBoxClick(store, index)" :style="{ backgroundImage: 'url(' + store.filePath
  + ')' }">
-            <p style="font-size: 16pt;">{{ store.foodStyle }}</p>
-            <p style="display: inline-block;text-align: center;margin-top: 1%;">{{ store.name }}</p>
+        <div class="pText">
+          <p style="font-size: 16pt;">{{ store.foodStyle }}</p>
+          <p style="display: inline-block;text-align: center;margin-top: 1%;">{{ store.name }}</p>
+        </div>
           </div>
         </div>
       </div>
@@ -415,9 +417,21 @@ path {
     font-weight: 700;
   }
 }
-
 .msgBox:hover {
   background-color: #ddf6ce;
   /* 滑過時的背景顏色，可以根據需要更改顏色 */
+}
+
+.pText{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(3px);
+  p {
+    color: rgb(255, 255, 255);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-weight: 700;
+  }
 }
 </style>

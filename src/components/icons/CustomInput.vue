@@ -47,7 +47,7 @@ export default {
 
 .text-input-with-icon {
   position: relative;
-  width: 45%;
+  width: 100%;
   height: 40%;
 }
 .text-input-with-icon ::placeholder{
