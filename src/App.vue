@@ -1,7 +1,7 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import taiwanmap from './components/icons/taiwanmap.vue'
-import search from './components/icons/CustomInput.vue'
+import { RouterLink, RouterView } from "vue-router";
+import taiwanmap from "./components/icons/taiwanmap.vue";
+import search from "./components/icons/CustomInput.vue";
 </script>
 
 <template>
@@ -9,6 +9,9 @@ import search from './components/icons/CustomInput.vue'
 </template>
 
 <style>
+body {
+  background-color: aliceblue;
+}
 /* #app {
     display: flex;
     max-width: 1280px;
