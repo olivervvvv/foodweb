@@ -1,11 +1,11 @@
 <template>
-  <label class="text-input-with-icon">
+  <label class="text-input-with-icon" style="display: flex;">
     <input
       type="search"
       class="form-control"
       @focus="hideIcon"
       @blur="showIcon"
-      placeholder="搜尋"
+      placeholder="搜尋店家或是地區"
     />
     <div v-if="showIcon" class="icontext">
       <img
@@ -15,6 +15,7 @@
         style="max-width: 20px; max-height: 20px;"
       />
     </div>
+    <input type="button" value="搜尋" style="width: 80px;border-radius: 50px;margin-left: 0.5%;">
   </label>
 </template>
 
@@ -39,8 +40,9 @@ export default {
 <style lang="scss" scoped>
 .icontext {
   position: absolute;
-  top: 20%;
+  top: 30%;
   left: 2%;
+  z-index: 1;
 }
 
 .text-input-with-icon {

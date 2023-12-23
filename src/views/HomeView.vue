@@ -14,29 +14,30 @@ import search from '../components/icons/CustomInput.vue'
 </template>
 <style>
 body{
-  background-color: rgb(66, 65, 65);
+  width: 100vw;
+  background-color: rgb(90, 122, 147);
 }
-/* #app {
+#app {
   display: flex;
   max-width: 1280px;
-  margin: 0 auto;
+  margin: 0;
   padding: 0;
   font-weight: normal;
-} */
+}
 .search{
 position: absolute;
-top: 3%;
+top: 8%;
 left: 10%;
-width: 42%;
+width: 80%;
 height: 15%;
 display: flex;
 }
 .rightmap{
-width: calc(100%);
-padding-right: 0.5rem;
+width: calc(100%-10%);
+/* padding-right: 0.5rem;  */
 }
 svg{
 width: 100%;
-padding-right: 2rem;
+/* padding-right: 2rem; */
 }
 </style>
