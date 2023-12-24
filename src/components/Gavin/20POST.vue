@@ -133,6 +133,7 @@ export default {
                         console.error('Error registering user:', error);
                     }
             //=========================================送出留言邏輯===================================================
+            this.commentInput="";
             this.showComment(postId,storeId);
         }
     }
