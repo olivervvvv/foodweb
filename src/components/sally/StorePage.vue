@@ -1,8 +1,8 @@
 <script>
-import Header from "../sally/Header.vue";
-import rightCityBtn from "../yifeng/test.vue";
-import { mapState } from "pinia";
-import indexState from '../../stores/indexState'
+// import Header from "../sally/Header.vue";
+// import rightCityBtn from "../yifeng/test.vue";
+// import { mapState } from "pinia";
+// import indexState from '../../stores/indexState'
 import axios from "axios";
 export default {
     data() {
@@ -16,8 +16,8 @@ export default {
         this.setInputValue();
     },
     components: {
-        Header,
-        rightCityBtn,
+        // Header,
+        // rightCityBtn,
     },
     methods: {
         goToPostPage(storeId) {

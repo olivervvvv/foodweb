@@ -1,5 +1,5 @@
 <script>
-import Header from "../sally/Header.vue";
+// import Header from "../sally/Header.vue";
 import tongHeader from "../tong/Header.vue"
 import { mapState } from "pinia";
 import indexState from "../../stores/indexState";
@@ -28,7 +28,7 @@ export default {
         };
     },
     components: {
-        Header,
+        // Header,
         tongHeader
     },
     mounted() {

@@ -24,7 +24,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss"  scoped>
 .searchBtn {
             width: 120px;
             height: 30px;
