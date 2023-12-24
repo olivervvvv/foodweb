@@ -39,7 +39,7 @@ export default {
                     console.log(response.status);
                     if (response.status == 200) {
                         console.log("xxx")
-                        this.$router.push('/storePage')
+                        this.$router.push('/20POST')
                         console.log("200")
                         return 200
                     }
