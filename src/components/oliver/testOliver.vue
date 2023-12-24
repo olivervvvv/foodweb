@@ -4,6 +4,7 @@
         <input v-model="storeId" type="text" name="storeId" value="1">
         <input v-model="userId" type="text" name="userId" value="1">
         <textarea v-model="description" name="description">This is a new post</textarea>
+        <input v-model="locationCity" type="text" name="locationCity" value="1" placeholder="輸入區域">
         <input type="file" @change="handleFileChange" accept="image/*">
         <button type="submit">Submit</button>
       </form>
@@ -20,6 +21,7 @@
         userId: 1,
         description: 'This is a new post',
         picture: null,
+        locationCity:"",
       };
     },
     methods: {
@@ -31,6 +33,7 @@
         formData.append('storeId', this.storeId);
         formData.append('userId', this.userId);
         formData.append('description', this.description);
+        formData.append('locationCity',this.locationCity);
         formData.append('picture', this.picture);
   
         axios.post('http://localhost:8081/posts/create', formData)
