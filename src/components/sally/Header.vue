@@ -176,7 +176,7 @@ body{
         .searchBtn {
             width: 60px;
             height: 30px;
-            background-color: #F7B787;
+            background-color: #EE7214;
             border: none;
             border-radius: 5px;
             color: white;
