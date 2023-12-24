@@ -1,5 +1,6 @@
 <script>
-import Header from "../sally/Header.vue";
+// import Header from "../sally/Header.vue";
+import tongHeader from "../tong/Header.vue"
 import { mapState } from "pinia";
 import indexState from "../../stores/indexState";
 import axios from "axios";
@@ -27,7 +28,8 @@ export default {
         };
     },
     components: {
-        Header,
+        // Header,
+        tongHeader
     },
     mounted() {
         this.getPostInfo();
@@ -125,7 +127,8 @@ export default {
     <div class="bgArea">
         <!-- 搜尋列 -->
         <div class="header">
-            <Header></Header>
+            <!-- <Header></Header> -->
+            <tongHeader></tongHeader>
         </div>
         <!-- 店家資訊 -->
         <div class="storeCard1">
@@ -193,7 +196,7 @@ export default {
     </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" >
 * {
     margin: 0;
     padding: 0;
@@ -201,12 +204,13 @@ export default {
     font-family: "Poppins", sans-serif;
 }
 
-body {
-    background: #F9E8D9;
-}
+// body {
+//     background: #F9E8D9;
+// }
 
 .bgArea {
     // padding: 10% 5% 0;
+    width: 100VW;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -539,7 +543,7 @@ body {
             .moreBtn {
                 width: 60px;
                 height: 25px;
-                background-color: #F7B787;
+                background-color: #EE7214;
                 border: none;
                 border-radius: 5px;
                 color: white;

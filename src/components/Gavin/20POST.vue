@@ -224,7 +224,7 @@ export default {
     width: 99vw;
 }
 .instagram-post {
-    width: 70%;
+    width: 40%;
     padding: 5px 0;
     background-color: white;
     margin: 5px;
