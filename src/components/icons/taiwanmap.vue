@@ -53,8 +53,8 @@ export default {
 
 
     <div class="btn-container">
-      <button class="green-btn" @click="login()">登陸</button>
-      <button class="blue-btn" @click="singup()">註冊</button>
+      <button class="green-btn" @click="login()">登陸&註冊</button>
+      <!-- <button class="blue-btn" @click="singup()">註冊</button> -->
     </div>
 
 

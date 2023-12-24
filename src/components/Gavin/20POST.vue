@@ -15,14 +15,20 @@ export default {
             userId:0,
             showcomment:false,
             commentInput:"",
+
+            InputValue:"",
         }
     },
     components: {
     },
     mounted() {
         this.getPost();
+        this.setInputValue();
     },
     methods: {
+        setInputValue(){
+            console.log("傳入之資料: ",this.$route.query.value);
+        },
         async getPost() {
             try {
                 const response = await axios.get(`http://localhost:8081/posts/random-top-twenty`);
@@ -72,7 +78,7 @@ export default {
             }
         },
 
-
+//=========================================================================================================================
 
         //處理點讚
         async clickLike(post) {
@@ -191,7 +197,7 @@ export default {
     align-items: center;
     justify-content: space-evenly;
     margin: 10px;
-    width: 98vw;
+    width: 99vw;
 }
 .instagram-post {
     width: 70%;

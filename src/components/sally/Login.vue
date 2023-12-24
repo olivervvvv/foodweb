@@ -7,7 +7,14 @@ export default {
     data() {
         return {
             email: "",
-            password: ""
+            password: "",
+            showPasswordIcon: false,
+            clearOnRotate: false,
+            signupAccount: "",
+            signupEmail:"",
+            signupPassword: "",
+            repeatPassword: "",
+            isChecked: false,
         };
     },
     computed:{
@@ -17,16 +24,9 @@ export default {
         setEmailAndPassword(){
             this.setEmail(this.email);
             this.setPassword(this.password);
-            // this.login()
-            // let loginStatus = this.login()
-            // console.log(loginStatus)
-            // if(loginStatus == 200){
-            //     console.log(loginStatus)
-            //     this.$router.push('/storePage')
-            // }
         },
         ...mapActions(indexState, ["login", "setEmail", "setPassword"]),
-        login() {
+        async login() {
             axios.post("http://localhost:8081/users/login",
                 {
                     "email": this.email,
@@ -50,7 +50,64 @@ export default {
                         alert(error.response.data);
                     }
                 });
-        }
+        },
+        // 註冊
+        async register() {
+            const inputAccount = this.signupAccount;
+            const inputEmail = this.signupEmail;
+            const inputPassword = this.signupPassword;
+            const inputRepeatPassword = this.repeatPassword;
+            const users = JSON.parse(localStorage.getItem("users")) || []; 
+            const isAccountExists = users.some((user) => user.Account === inputAccount);
+
+            if (inputAccount === "" || inputPassword === ""||inputEmail==="") {
+                alert("帳號、Email及密碼不得為空");
+            } else {
+                if (inputPassword === inputRepeatPassword) {
+                //=======================註冊邏輯=========================
+                    const singupData = {
+                        name: inputAccount,
+                        email: inputEmail,
+                        password: inputPassword,
+                    };
+                    try {
+                        const response = await axios.post(`http://localhost:8081/users/register`, singupData);
+                        const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
+                        console.log('postData from DB:', DBdata);
+                        if(DBdata.role){
+                            alert("註冊成功");
+                            this.isChecked = !this.isChecked;
+                        }
+                    } catch (error) {
+                        console.error('Error registering user:', error);
+                    }
+                //=======================註冊邏輯=========================
+
+                } else {
+                    alert("輸入密碼不相同");
+                }
+            }
+        },
+        //選轉時清除輸入
+        cleartxt(){
+            this.email="";
+            this.password="";
+            this.signupAccount="";
+            this.signupPassword="";
+            this.signupEmail="";
+            this.repeatPassword="";
+        },
+        //顯示輸入密碼
+        showPassword() {
+            this.showPasswordIcon = true;
+            this.$refs.password.type = "text";
+        },
+        //隱藏輸入密碼
+        hidePassword() {
+            this.showPasswordIcon = false;
+            this.$refs.password.type = "password";
+        },
+
 
     },
     mounted(){
@@ -61,7 +118,7 @@ export default {
 
 
 <template>
-    <h1>登入</h1>
+    <!-- <h1>登入</h1>
     <span style="font-family: verdana, geneva, sans-serif">
         <div class="wrapper">
             <h1>Hello Again!</h1>
@@ -80,118 +137,398 @@ export default {
             <p class="or">----- or continue with -----</p>
             <div class="not-member">Not a member? <a href="#">Register Now</a></div>
         </div>
-    </span>
+    </span> -->
+
+
+
+
+
+
+<link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.9/css/unicons.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" />
+<div class="coollogin">
+    
+
+    <div class="section pb-5 pt-5 pt-sm-2 text-center">
+        <!-- 頁面標籤 -->
+        <h6 class="mb-0 pb-3"><span style="color: rgb(0, 0, 0);">登陸 </span><span style="color: rgb(0, 0, 0);">註冊</span></h6>
+        <input class="checkbox" type="checkbox" id="reg-log"  name="reg-log" @click="cleartxt" v-model="isChecked" />
+        <label for="reg-log"></label>
+        <div class="card-3d-wrap mx-auto">
+            <div class="card-3d-wrapper">
+                <!-- 登陸-->
+                <div class="card-front">
+                    <div class="center-wrap">
+                        <div class="section text-center">
+                            <h4 class="mb-4 pb-3" style="color: white;">登陸</h4>
+                            <div class="form-group">
+                                <!-- 帳號輸入區 -->
+                                <input type="text" name="logemail" class="form-style" placeholder="請輸入email" id="email" v-model="email" autocomplete="off" />
+                                <i class="input-icon uil uil-at" style="color: white;"></i>
+                            </div>
+                            <div class="form-group mt-2" >
+                                <!-- 密碼輸入區 -->
+                                <input type="password" name="logpass" class="form-style" placeholder="請輸入密碼" id="Password" v-model="password" autocomplete="off" ref="password" />
+                                <i v-if="showPasswordIcon" class="input-icon uil uil-eye" style="cursor: pointer;pointer-events: auto;color: white;" @mousedown="showPassword" @mouseup="hidePassword" @mouseleave="hidePassword" ></i>
+                                <i v-else class="input-icon uil uil-eye-slash" style="cursor: pointer;pointer-events: auto;color: white;" @mousedown="showPassword" @mouseup="hidePassword" @mouseleave="hidePassword" ></i>
+                            </div>
+                            <!-- 按鈕區-->
+                            <RouterLink to="#" class="btn mt-4" id="add" @click="this.setEmailAndPassword(), this.login()" style="color: white;" >登陸</RouterLink>
+                            <p class="mb-0 mt-4 text-center"><a href="#" class="link" style="color: white;">忘記密碼?</a></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- 註冊 -->
+                <div class="card-back">
+                    <div class="center-wrap">
+                        <div class="section text-center">
+                            <h4  style="color: white;">註冊</h4>
+                            <div class="form-group">
+                                <input type="text" name="logname" class="form-style" placeholder="請輸入帳號" id="singupAccount" v-model="signupAccount" autocomplete="off" />
+                                <i style="color: white;" class="input-icon uil uil-user"></i>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="logname" class="form-style" placeholder="請輸入e-mail" id="singupEmail" v-model="signupEmail" autocomplete="off" />
+                                <i style="color: white;" class="input-icon uil uil-user"></i>
+                            </div>
+                            <div class="form-group mt-2">
+                                <input type="text" name="logemail" class="form-style" placeholder="請輸入密碼" id="singupPassword" v-model="signupPassword" autocomplete="off" />
+                                <i style="color: white;" class="input-icon uil uil-lock-alt"></i>
+                            </div>
+                            <div class="form-group mt-2">
+                                <input type="text" name="logpass" class="form-style" placeholder="請重複輸入密碼" id="RepeatPassword" v-model="repeatPassword" autocomplete="off" />
+                                <i style="color: white;" class="input-icon uil uil-lock-alt"></i>
+                            </div>
+                            <a href="#" class="btn" id="SignUpBtn" style="margin-top: 0;color: white;" @click="register()">註冊</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </template>
 
 <style lang="scss">
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
+
+.coollogin {
+width: 100vw;
 }
 
-body {
-    background: #dfe9f5;
-}
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
 
-.wrapper {
-    width: 330px;
-    padding: 2rem 0 1rem 0;
-    margin: 50px auto;
-    background: #fff;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
-}
 
-h1 {
-    font-size: 2rem;
-    color: #07001f;
-}
 
-p {
-    margin-bottom: 1.7rem;
-}
-
-form input {
-    width: 85%;
-    outline: none;
-    border: none;
-    background: #dfe9f5;
-    padding: 12px 14px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-}
-
-.recover {
-    text-align: right;
-    font-size: 0.8rem;
-    margin: 0.2rem 1.7rem 0 0;
-}
-
-.recover a {
-    text-decoration: none;
-    color: #07001f;
-}
-
-button {
-    font-size: 1.1rem;
-    margin-top: 1rem;
-    padding: 8px 0;
-    border-radius: 5px;
-    outline: none;
-    border: none;
-    width: 85%;
-    background: tomato;
-    color: #fff;
+a {
     cursor: pointer;
-}
-
-button:hover {
-    background: rgba(122, 30, 30, 0.767);
-}
-
-.or {
-    font-size: 0.8rem;
-    margin-top: 1.5rem;
-}
-
-.icons i {
-    color: #07001f;
-    padding: 00.8rem 1.5rem;
-    border-radius: 10px;
-    margin-left: 0.9rem;
-    font-size: 1.5rem;
-    cursor: pointer;
-    border: 2px solid #dfe9f5;
-}
-
-.icons i:hover {
-    color: #fff !important;
-    background: #07001f;
-    transition: 1s;
-}
-
-.icons i:first-child {
-    color: green;
-}
-
-.icons i:last-child {
-    color: blue;
-}
-
-.not-member {
-    font-size: 0.8rem;
-    margin-top: 1.4rem;
-}
-
-.not-member a {
-    color: tomato;
-    text-decoration: none;
+    transition: all 200ms linear;
 }
 
 a:hover {
-    text-decoration: underline;
+    text-decoration: none;
+}
+
+.link {
+    color: #c4c3ca;
+}
+
+.link:hover {
+    color: #ffeba7;
+}
+
+p {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+h4 {
+    font-weight: 600;
+}
+
+h6 span {
+    padding: 0 20px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.section {
+    position: relative;
+    width: 100%;
+    display: block;
+}
+
+.full-height {
+    min-height: 100vh;
+}
+
+[type="checkbox"]:checked,
+[type="checkbox"]:not(:checked) {
+    position: absolute;
+    left: -9999px;
+}
+
+.checkbox:checked+label,
+.checkbox:not(:checked)+label {
+    position: relative;
+    display: block;
+    text-align: center;
+    width: 60px;
+    height: 16px;
+    border-radius: 8px;
+    padding: 0;
+    margin: 10px auto;
+    cursor: pointer;
+    background-color: #ffeba7;
+}
+
+.checkbox:checked+label:before,
+.checkbox:not(:checked)+label:before {
+    position: absolute;
+    display: block;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: #ffeba7;
+    background-color: #279EFF;
+    font-family: 'unicons';
+    content: '\eb4f';
+    z-index: 20;
+    top: -10px;
+    left: -10px;
+    line-height: 36px;
+    text-align: center;
+    font-size: 24px;
+    transition: all 0.5s ease;
+}
+
+.checkbox:checked+label:before {
+    transform: translateX(44px) rotate(-270deg);
+}
+
+
+.card-3d-wrap {
+    position: relative;
+    width: 440px;
+    max-width: 100%;
+    height: 400px;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    perspective: 800px;
+    margin-top: 60px;
+}
+
+.card-3d-wrapper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    transition: all 600ms ease-out;
+}
+
+.card-front,
+.card-back {
+    width: 100%;
+    height: 100%;
+    background-color: #2a2b38;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    background-size: 300%;
+    position: absolute;
+    border-radius: 6px;
+    left: 0;
+    top: 0;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -o-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.card-back {
+    transform: rotateY(180deg);
+}
+
+.checkbox:checked~.card-3d-wrap .card-3d-wrapper {
+    transform: rotateY(180deg);
+}
+
+.center-wrap {
+    position: absolute;
+    width: 100%;
+    padding: 0 35px;
+    top: 50%;
+    left: 0;
+    transform: translate3d(0, -50%, 35px) perspective(100px);
+    z-index: 20;
+    display: block;
+}
+
+
+.form-group {
+    position: relative;
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+.form-style {
+    padding: 13px 20px;
+    padding-left: 55px;
+    height: 48px;
+    width: 100%;
+    font-weight: 500;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0.5px;
+    outline: none;
+    color: #c4c3ca;
+    background-color: #1f2029;
+    border: none;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+    box-shadow: 0 4px 8px 0 rgba(21, 21, 21, .2);
+}
+
+.form-style:focus,
+.form-style:active {
+    border: none;
+    outline: none;
+    box-shadow: 0 4px 8px 0 rgba(21, 21, 21, .2);
+}
+
+.input-icon {
+    position: absolute;
+    top: 0;
+    left: 18px;
+    height: 48px;
+    font-size: 24px;
+    line-height: 48px;
+    text-align: left;
+    color: #ffeba7;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+.form-group input:-ms-input-placeholder {
+    color: #c4c3ca;
+    opacity: 0.7;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+.form-group input::-moz-placeholder {
+    color: #c4c3ca;
+    opacity: 0.7;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+.form-group input:-moz-placeholder {
+    color: #c4c3ca;
+    opacity: 0.7;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+.form-group input::-webkit-input-placeholder {
+    color: #c4c3ca;
+    opacity: 0.7;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+.form-group input:focus:-ms-input-placeholder {
+    opacity: 0;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+.form-group input:focus::-moz-placeholder {
+    opacity: 0;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+.form-group input:focus:-moz-placeholder {
+    opacity: 0;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+.form-group input:focus::-webkit-input-placeholder {
+    opacity: 0;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+.btn {
+    border-radius: 4px;
+    height: 44px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    -webkit-transition: all 200ms linear;
+    transition: all 200ms linear;
+    padding: 0 30px;
+    letter-spacing: 1px;
+    display: -webkit-inline-flex;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    -ms-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    -ms-justify-content: center;
+    justify-content: center;
+    -ms-flex-pack: center;
+    text-align: center;
+    border: none;
+    background-color: #ffeba7;
+    color: #102770;
+    box-shadow: 0 8px 24px 0 rgba(255, 235, 167, .2);
+}
+
+.btn:active,
+.btn:focus {
+    background-color: #279EFF;
+    color: #ffeba7;
+    box-shadow: 0 8px 24px 0 rgba(16, 39, 112, .2);
+}
+
+.btn:hover {
+    background-color: #279EFF;
+    color: #ffeba7;
+    box-shadow: 0 8px 24px 0 rgba(16, 39, 112, .2);
 }
 </style>
