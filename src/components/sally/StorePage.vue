@@ -69,6 +69,7 @@ body{
     .storeArea {
         width: 60%;
         height: 80vh;
+        margin: 20px;
     }
 
     .storeCard {
