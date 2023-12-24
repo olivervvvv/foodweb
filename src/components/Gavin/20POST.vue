@@ -32,7 +32,9 @@ export default {
         },
         async getPost() {
             try {
-                const response = await axios.get(`http://localhost:8081/posts/random-top-twenty`);
+                const response = await axios.get(`http://localhost:8081/posts/random-top-twenty`,{
+                    withCredentials: true,
+                });
                 const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
                 console.log('postData from DB:', DBdata);
                 this.postData = response.data.commVoList; // 更新組件的數據
@@ -56,7 +58,9 @@ export default {
         },
         async getTopTwoComments(postId) {
             try {
-                const response = await axios.get(`http://localhost:8081/posts/${postId}/comments`);
+                const response = await axios.get(`http://localhost:8081/posts/${postId}/comments`,{
+                    withCredentials: true,
+                });
                 const comments = response.data;
                 return comments.slice(0, 2); // 返回前兩條評論
             } catch (error) {
@@ -119,7 +123,9 @@ export default {
                         comment: this.commentInput,
                     };
                     try {
-                        const response = await axios.post(`http://localhost:8081/users/currentUser/comment`, commentData);
+                        const response = await axios.post(`http://localhost:8081/users/currentUser/comment`, commentData,{
+                        withCredentials: true,
+                    });
                         const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
                         console.log('postData from DB:', DBdata);
 
