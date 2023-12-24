@@ -6,8 +6,9 @@
       @focus="hideIcon"
       @blur="showIcon"
       placeholder="搜尋店家或是地區"
+      v-model="inputValue"
     />
-    <div v-if="showIcon" class="icontext">
+    <div v-if="isShowIcon" class="icontext">
       <img
         src="../../../public/icon/4213417_explore_find_glass_magnifier_search_icon.png"
         alt="Icon"
@@ -15,29 +16,45 @@
         style="max-width: 20px; max-height: 20px;"
       />
     </div>
-    <input type="button" value="搜尋" style="width: 80px;border-radius: 50px;margin-left: 0.5%;">
+    <input type="button" value="搜尋" class="search-btn" @click="search()">
   </label>
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   data() {
     return {
-      showIcon: true,
+      isShowIcon: true,
+      inputValue:"",
     };
   },
   methods: {
     hideIcon() {
-      this.showIcon = false;
+      this.isShowIcon = false;
     },
     showIcon() {
-      this.showIcon = true;
+      this.isShowIcon = true;
     },
+    search(){
+      console.log("search inputtext : ",this.inputValue);
+      // 使用 $router.push 实现页面跳转，并传递参数
+      this.$router.push({
+        name: "storePage",
+        query: { value: this.inputValue }
+      });
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.search-btn{
+  width: 80px;
+  border-radius: 50px;
+  margin-left: 0.5%;
+  cursor: pointer;
+}
 .icontext {
   position: absolute;
   top: 30%;

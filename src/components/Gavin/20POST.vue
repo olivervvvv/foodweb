@@ -7,6 +7,7 @@ export default {
             postData:{},
             commentData:{},
             postId:0,
+            storeId:0,
             imgurl:"",
             likeNumber:0,
             description:"",
@@ -15,17 +16,25 @@ export default {
             userId:0,
             showcomment:false,
             commentInput:"",
+
+            InputValue:"",
         }
     },
     components: {
     },
     mounted() {
         this.getPost();
+        this.setInputValue();
     },
     methods: {
+        setInputValue(){
+            console.log("傳入之資料: ",this.$route.query.value);
+        },
         async getPost() {
             try {
-                const response = await axios.get(`http://localhost:8081/posts/random-top-twenty`);
+                const response = await axios.get(`http://localhost:8081/posts/random-top-twenty`,{
+                    withCredentials: true,
+                });
                 const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
                 console.log('postData from DB:', DBdata);
                 this.postData = response.data.commVoList; // 更新組件的數據
@@ -49,7 +58,9 @@ export default {
         },
         async getTopTwoComments(postId) {
             try {
-                const response = await axios.get(`http://localhost:8081/posts/${postId}/comments`);
+                const response = await axios.get(`http://localhost:8081/posts/${postId}/comments`,{
+                    withCredentials: true,
+                });
                 const comments = response.data;
                 return comments.slice(0, 2); // 返回前兩條評論
             } catch (error) {
@@ -57,9 +68,12 @@ export default {
                 return [];
             }
         },
-        async showComment(postId) {
+        async showComment(postId,storeId) {
             this.showcomment=true;
             this.postId=postId;
+            this.storeId=storeId;
+            console.log('postId  :',postId);
+            console.log('storeId :',storeId);
             try {
                 // 使用反引號定義模板字符串
                 const getComment = await axios.get(`http://localhost:8081/posts/${postId}/comments`);
@@ -72,7 +86,7 @@ export default {
             }
         },
 
-
+//=========================================================================================================================
 
         //處理點讚
         async clickLike(post) {
@@ -98,13 +112,29 @@ export default {
             }
         },
         //處理送出留言
-        sendComment(postId){
+        async sendComment(postId,storeId){
             console.log('commentInput:', this.commentInput);
+            console.log('postId  :',postId);
+            console.log('storeId :',storeId);
+            //=========================================送出留言邏輯===================================================
+            const commentData = {
+                        postId:  postId,
+                        storeId: storeId,
+                        comment: this.commentInput,
+                    };
+                    try {
+                        const response = await axios.post(`http://localhost:8081/users/currentUser/comment`, commentData,{
+                        withCredentials: true,
+                    });
+                        const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
+                        console.log('postData from DB:', DBdata);
 
-
-
-
-            this.showComment(postId);
+                    } catch (error) {
+                        console.error('Error registering user:', error);
+                    }
+            //=========================================送出留言邏輯===================================================
+            this.commentInput="";
+            this.showComment(postId,storeId);
         }
     }
 }
@@ -145,7 +175,7 @@ export default {
             <span style="font-weight: bold;">{{comment.name}}</span> <p>{{comment.comment}}</p>
             </div>
             <!-- 顯示完整評論btn -->
-            <button class="blue-city-btn" @click="showComment(post.postInfo.postId)">顯示完整評論</button>
+            <button class="blue-city-btn" @click="showComment(post.postInfo.postId,post.postInfo.storeId)">顯示完整評論</button>
         </div>
     </div>
 
@@ -169,7 +199,7 @@ export default {
             </div>
             <!-- 按鈕區域 -->
             <div class="btn-container2">
-                <button class="green-btn" @click="sendComment(this.postId)">送出</button>
+                <button class="green-btn" @click="sendComment(this.postId,this.storeId)">送出</button>
                 <button class="red-btn" @click="showcomment=false">取消</button>
             </div>
         </div>
@@ -191,7 +221,7 @@ export default {
     align-items: center;
     justify-content: space-evenly;
     margin: 10px;
-    width: 98vw;
+    width: 99vw;
 }
 .instagram-post {
     width: 70%;
