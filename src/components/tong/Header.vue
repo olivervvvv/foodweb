@@ -2,6 +2,7 @@
   <button type="button" class="searchBtn" @click="goToStorePage()">回店家搜尋頁</button>
   <button type="button" class="searchBtn" @click="goToMap()">回地圖</button>
   <button type="button" class="searchBtn" @click="goToLogin()">登入</button>
+  <button type="button" class="searchBtn" @click="goToUserInfo()">個人資料</button>
 </template>
 
 <script>
@@ -16,6 +17,9 @@ export default {
     },
     goToStorePage(){
       this.$router.push({name:"storePage"});
+    },
+    goToUserInfo(){
+      this.$router.push({name:"userInfo"});
     }
 
 
