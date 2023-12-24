@@ -42,16 +42,25 @@ export default {
         },
         simulateFileInputClick() {
             this.$refs.fileInput.click(); // 触发文件输入框的点击事件
-        }
+        },
+        goToMap() {
+            this.$router.push({ name: "home" });
+        },
+        goToLogin() {
+            this.$router.push({ name: "login" });
+        },
+        goToStorePage() {
+            this.$router.push({ name: "storePage" });
+        },
     },
-}
+};
 </script>
 
 <template>
     <div class="bgArea">
         <!-- 會員頭像 -->
         <div class="userPhoto">
-            <img src="" alt="">
+            <img src="" alt="" />
             <button class="updateBtn" @click="updateImgPage = true">編輯頭像</button>
         </div>
         <!-- 會員資訊 -->
@@ -87,7 +96,9 @@ export default {
                         <div ref="fileName" class="fileName"></div>
                     </div>
                     <input ref="fileInput" type="file" @change="handleFileChange" accept="image/*" hidden />
-                    <button class="selectImgBtn" @click="simulateFileInputClick">上傳圖片</button>
+                    <button class="selectImgBtn" @click="simulateFileInputClick">
+                        上傳圖片
+                    </button>
                 </div>
 
                 <div class="btnArea">
@@ -99,20 +110,27 @@ export default {
 
         <!-- 更換密碼彈框 -->
         <div class="overlay" v-if="updatePwdPage">
-            <div class="updateArea" style="width: 40vw; height: 60vh;">
-                <div class="insideArea inputArea" style="width: 90%;">
+            <div class="updateArea" style="width: 40vw; height: 60vh">
+                <div class="insideArea inputArea" style="width: 90%">
                     <label for="oldPwd">舊密碼：</label>
-                    <input type="text" id="oldPwd" placeholder="請輸入舊密碼">
+                    <input type="text" id="oldPwd" placeholder="請輸入舊密碼" />
                     <label for="newPwd">新密碼：</label>
-                    <input type="text" id="newPwd" placeholder="請輸入新密碼">
+                    <input type="text" id="newPwd" placeholder="請輸入新密碼" />
                     <label for="checkPwd">確認新密碼：</label>
-                    <input type="text" id="checkPwd" placeholder="請再次確認密碼">
+                    <input type="text" id="checkPwd" placeholder="請再次確認密碼" />
                 </div>
                 <div class="btnArea">
                     <button class="btn" @click="updatePwdPage = false">取消</button>
                     <button class="btn" @click="">送出</button>
                 </div>
             </div>
+        </div>
+        <div class="btnHomeAndLogOut">
+            <button type="button" class="searchBtn" @click="goToStorePage()">
+                回店家搜尋頁
+            </button>
+            <button type="button" class="searchBtn" @click="goToMap()">登出</button>
+            <!-- <button type="button" class="searchBtn" @click="goToLogin()">登入</button> -->
         </div>
     </div>
 </template>
@@ -126,9 +144,9 @@ export default {
     font-family: "Poppins", sans-serif;
 }
 
-body {
-    background: #F9E8D9;
-}
+// body {
+//     background: #F9E8D9;
+// }
 
 .bgArea {
     width: 100vw;
@@ -136,6 +154,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: row;
 
     .userPhoto {
         width: 40%;
@@ -379,10 +398,20 @@ body {
             &:hover {
                 border-color: #527853;
                 outline: 0;
-                -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px #527853c4;
-                box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px #527853c4;
+                -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+                    0 0 8px #527853c4;
+                box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #527853c4;
             }
         }
+    }
+    .btnHomeAndLogOut{
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        justify-content: space-between;
+        width: 10%;
+        top: 5%;
+        right: 5%;
     }
 }
 </style>

@@ -9,20 +9,18 @@ export default {
     data() {
         return {
             storeId: 0,
-            postInfoList: {},
-            storeInfoList: {},
-            storeInfo:{},
-            goToPostpostId:0,
-            // storeInfo: {
-            //     address: null,
-            //     filePath: null,
-            //     foodStyle: null,
-            //     locationCity: null,
-            //     name: null,
-            //     storeId: null,
-            //     updateTime: null,
-            //     userLike: null
-            // },
+            postInfoList: [],
+            storeInfoList: [],
+            storeInfo: {
+                address: null,
+                filePath: null,
+                foodStyle: null,
+                locationCity: null,
+                name: null,
+                storeId: null,
+                updateTime: null,
+                userLike: null
+            },
             showCreatePost: false, // 控制是否显示创建贴文的页面
             description: "", // 存储新贴文的内容
             postTitle: "",
@@ -35,48 +33,24 @@ export default {
     },
     mounted() {
         this.getPostInfo();
-        this.getStoreInfo();
-        // console.log(this.piniaStoreInfo);
-        // this.piniaStoreInfo.forEach(element => {
-        //     if (this.$route.params.storeId == element.storeId) {
-        //         this.storeInfo = element;
-        //     }
-        // });
+        console.log(this.piniaStoreInfo);
+        this.piniaStoreInfo.forEach(element => {
+            if (this.$route.params.storeId == element.storeId) {
+                this.storeInfo = element;
+            }
+        });
     },
     methods: {
-        async getStoreInfo() {
+        getPostInfo() {
             this.storeId = this.$route.params.storeId;
-            console.log("this.storeId : ",this.storeId);
-                try {
-                const response = await axios.get(`http://localhost:8081/foodMap/searchStoreId?storeId=${this.storeId}`);
-                const storeData = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
-                console.log('storeData from DB:', storeData);
-                this.storeInfo = storeData.storeInfo;
-                console.log('this.storeInfoList :', this.storeInfo);
-                } catch (error) {
-                    console.error('Error getStoreInfo : ', error);
-                }
-        },
-        async getPostInfo() {
-            this.storeId = this.$route.params.storeId;
-            console.log("this.storeId : ",this.storeId);
-                try {
-                const response = await axios.get(`http://localhost:8081/posts/getPostList?storeId=${this.storeId}`);
-                const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
-                console.log('postData from DB:', DBdata);
-                this.postInfoList = DBdata.postInfoList
-                console.log('this.postInfoList:', this.postInfoList);
-                } catch (error) {
-                    console.error('Error getPostInfo() : ', error);
-                }
-        },
-        goToPostView(postId){
-            console.log('postId:', postId);
-            this.goToPostpostId=postId;
-            this.$router.push({
-                name: "postView",
-                query: { value: this.goToPostpostId }
-            });
+            axios.get(`http://localhost:8081/posts/getPostList?storeId=${this.storeId}`)
+                .then(response => {
+                    console.log(response);
+                    this.postInfoList = response.data.postInfoList
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         },
         resetPost() {
             this.postTitle = "";
@@ -159,10 +133,10 @@ export default {
         <!-- 店家資訊 -->
         <div class="storeCard1">
             <div class="storePhoto">
-                <img :src="(`../../../${storeInfo.filePath}`)">
+                <img :src="storeInfo.filePath" alt="">
             </div>
             <div class="storeInfoArea">
-                <span class="storeTitle">{{ this.storeInfo.name }}</span>
+                <span class="storeTitle">{{ storeInfo.name }}</span>
                 <div class="storeStyle">
                     <i class="fa-solid fa-utensils"></i>
                     <span>{{ storeInfo.foodStyle }}</span>
@@ -214,9 +188,9 @@ export default {
         <!-- 店家貼文 -->
         <div class="postArea">
             <span class="line">關於<span>{{ storeInfo.name }}</span>的貼文</span>
-            <div class="post" v-for="(post, index) in this.postInfoList">
-                <p class="postTitle">{{ post.description }}</p>
-                <button class="moreBtn" @click="goToPostView(post.postId)" >More...</button>
+            <div class="post" v-for="(post, index) in postInfoList">
+                <p class="postTitle">{{ post.postTitle }}</p>
+                <button class="moreBtn">More...</button>
             </div>
         </div>
     </div>
@@ -257,14 +231,8 @@ export default {
 
         .storePhoto {
             width: 40%;
-            max-height: 100%; /* 最大高度為父元素的100% */
-            // width: 40%;
-            // height: inherit;
-        }
-        .storePhoto img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* 圖片填滿整個區域，可能裁切部分內容 */
+            height: inherit;
+            // border: 1px solid black;
         }
 
         .storeInfoArea {

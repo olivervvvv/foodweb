@@ -1,6 +1,7 @@
 <!-- 登入後顯示此畫面 -->
 <script>
 import axios from 'axios';
+import tongHeader from "../tong/Header.vue"
 export default {
     data() {
         return {
@@ -21,6 +22,7 @@ export default {
         }
     },
     components: {
+        tongHeader,
     },
     mounted() {
         this.getPost();
@@ -142,6 +144,10 @@ export default {
 </script>
 
 <template>
+    <div class="headerBtn">
+        <!-- <Header></Header> -->
+        <tongHeader></tongHeader>
+    </div>
 <div class="post-container" style="user-select: none;">
     <div class="instagram-post" v-for="(post, index) in postData" :key="index">
         <!-- 發文者頭像及名子 -->
@@ -213,6 +219,12 @@ export default {
 <style lang="scss" scoped>
 .header{
     display: flex;
+    margin: 2%;
+}
+.headerBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: 2%;
 }
 .post-container{

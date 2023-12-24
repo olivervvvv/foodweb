@@ -15,7 +15,7 @@ import search from '../components/icons/CustomInput.vue'
 <style>
 body{
   width: 100vw;
-  background-color: rgb(90, 122, 147);
+  background-color: #F9E8D9;
 }
 /* #app {
   display: flex;
