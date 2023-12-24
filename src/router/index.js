@@ -81,8 +81,12 @@ const router = createRouter({
       path: '/postPage1/:storeId',
       name: 'postPage1',
       component: () => import('../components/sally/PostPage1.vue')
+    },
+    {
+      path: '/postView',
+      name: 'postView',
+      component: () => import('../components/Gavin/postView.vue')
     }
-
     
   ]
 })
