@@ -32,6 +32,11 @@ const router = createRouter({
       component: () => import('../components/oliver/testOliver.vue')
     },
     {
+      path: '/test',
+      name: 'test',
+      component: () => import('../components/yifeng/test.vue')
+    },
+    {
       path: '/test2',
       name: 'test2',
       component: () => import('../components/oliver/test2.vue')

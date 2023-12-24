@@ -196,7 +196,7 @@ export default {
     </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped >
 * {
     margin: 0;
     padding: 0;
@@ -204,12 +204,13 @@ export default {
     font-family: "Poppins", sans-serif;
 }
 
-body {
-    background: #F9E8D9;
-}
+// body {
+//     background: #F9E8D9;
+// }
 
 .bgArea {
     // padding: 10% 5% 0;
+    width: 100VW;
     display: flex;
     flex-direction: column;
     align-items: center;
