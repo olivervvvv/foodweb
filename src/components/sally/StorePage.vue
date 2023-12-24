@@ -66,6 +66,26 @@ export default {
                 throw error;
             }
         },
+        //搜尋btn
+        async getStoreNameAndLocationCity() {
+            try {
+                const response = await axios.get("http://localhost:8081/foodMap/searchNameAndLocal", {
+                    params: {
+                        "name": this.storeName,
+                        "locationCity":""
+                    },
+                });
+                console.log(response);
+                this.piniaStoreInfo = response.data.storeInfoList
+                console.log(this.piniaStoreInfo)
+                if (response.status === 200) {
+                    console.log("200")
+                }
+            } catch (error) {
+                console.error(error);
+                throw error;
+            }
+        },
 
     },
     computed:{
@@ -75,10 +95,28 @@ export default {
 </script>
 <template>
     <div class="bgArea">
-        
+
         <div class="header">
-            <Header></Header>
+            <div class="headerdiv">
+                <div class="logo">
+                    <img src="../sally/logo 2.png" style="width: 100px;" alt="">
+                </div>
+                <div class="searchArea">
+                    <input class="searchName" type="text" placeholder="搜尋店名" v-model="this.storeName">
+                    <!-- <select class="searchLocation" name="" id="location" @change="this.getLocation()">
+                        <option value="">地區</option>
+                        <option v-for="item in this.locationArr" :value="item.name">{{ item.name }}</option>
+                    </select> -->
+                    <button class="searchBtn" type="button" @click="getStoreNameAndLocationCity()">search</button>
+                </div>
+            </div>
         </div>
+
+
+
+
+
+
         <div class="storeArea">
             <div class="storeCard" @click="goToPostPage(storeInfo.storeId)" v-for="(storeInfo, index) in this.piniaStoreInfo">
                 <div class="storePhoto">
@@ -113,12 +151,49 @@ export default {
 
     </div>
 </template>
-<style lang="scss" scoped>
+<style lang="scss" >
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
+}
+.headerdiv{
+    width: 100vw;
+    height: 20vh;
+    background-color: #EE7214;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.searchArea {
+        width: 50vw;
+        height: 40px;
+        background-color: white;
+        border-radius: 40px;
+        display: flex;
+        padding: 5px 0 5px 10px;
+}
+.searchName {
+    width: 85%;
+    height: 30px;
+    border: none;
+    outline: none;
+    background-color: white;
+    border-top-left-radius: 100px;
+    border-bottom-left-radius: 100px;
+    font-size: larger;
+    text-indent: 20px;
+}
+.searchBtn {
+    width: 60px;
+    height: 30px;
+    background-color: #EE7214;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bolder;
+    cursor: pointer;
 }
 // body{
 //     background: #F9E8D9;
@@ -170,7 +245,7 @@ export default {
         width: 60%;
         height: 80vh;
         margin: 20px;
-        margin-left: 8%;
+
     }
 
     .storeCard {
