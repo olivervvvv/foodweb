@@ -76,8 +76,12 @@ const router = createRouter({
       path: '/postPage1/:storeId',
       name: 'postPage1',
       component: () => import('../components/sally/PostPage1.vue')
+    },
+    {
+      path: '/userInfo',
+      name: 'userInfo',
+      component: () => import('../components/sally/UserInfo.vue')
     }
-
     
   ]
 })
