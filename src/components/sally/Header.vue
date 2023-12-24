@@ -112,6 +112,9 @@ export default {
 </script>
 <template>
     <div class="bgArea">
+        <div class="logo">
+            <img src="../sally/logo 2.png" style="width: 100px;" alt="">
+        </div>
         <div class="searchArea">
             <input class="searchName" type="text" placeholder="搜尋店名" v-model="this.storeName">
             <select class="searchLocation" name="" id="location" @change="this.getLocation()">
