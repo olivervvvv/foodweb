@@ -35,8 +35,12 @@
         formData.append('description', this.description);
         formData.append('locationCity',this.locationCity);
         formData.append('picture', this.picture);
-  
-        axios.post('http://localhost:8081/posts/create', formData)
+
+
+        axios.post('http://localhost:8081/posts/create', formData,                    
+        {
+            withCredentials: true,
+        })
           .then(response => {
             console.log(response.data);
             // 處理成功響應

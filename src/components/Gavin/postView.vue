@@ -184,7 +184,7 @@ export default {
                         </figure> 
                         <span style="font-weight: bold;margin: 2%;">{{comment.name}}</span> 
                     </div>
-                    <p>{{comment.comment}}</p>
+                    <p style="padding-left: 5%;">{{comment.comment}}</p>
                 </div>
                 <!-- 無評論顯示 -->
                 <div  v-else class="no-content">

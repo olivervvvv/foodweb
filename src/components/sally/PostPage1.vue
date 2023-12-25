@@ -84,34 +84,44 @@ export default {
             this.picture = null;
             this.showCreatePost = false;
         },
-        createPost() {
-            const formData = new FormData();
-            formData.append('storeId', this.storeId);
-            formData.append('postTitle', this.postTitle);
-            formData.append('description', this.description);
-            formData.append('picture', this.picture);
-            axios
-                .post(`http://localhost:8081/posts/create`,
-                    formData,
-                    {
-                        withCredentials: true,
-                    })
-                .then((response) => {
-                    console.log(response);
-                    console.log("发布贴文:", this.postTitle);
-                    // 发布后可以隐藏创建贴文的页面
-                    this.showCreatePost = false;
-                })
-                .catch((error) => {
-                    console.log(error);
-                    if (error.response.status == 401) {
-                        alert("你尚未登入");
-                    }
+        async createPost() {
 
-                });
-            console.log("发布贴文:", this.description);
-            // 发布后可以隐藏创建贴文的页面
-            this.showCreatePost = false;
+            // const formData = new FormData();
+            // formData.append('storeId', this.storeId);
+            // formData.append('postTitle', this.postTitle);
+            // formData.append('description', this.description);
+            // formData.append('picture', this.picture);
+            let formData ={
+                storeId:this.storeId,
+                postTitle:this.postTitle,
+                description:this.description,
+                picture:this.picture
+            }
+
+            console.log("this.storeId",this.storeId);
+            console.log("this.postTitle",this.postTitle);
+            console.log("this.description",this.description);
+            console.log("this.picture",this.picture);
+            console.log("formData : ",formData);
+            axios.post(`http://localhost:8081/posts/create`,formData,
+            {
+                withCredentials: true,
+            })
+            .then((response) => {
+                console.log(response);
+                console.log("发布贴文:", this.postTitle);
+                // 发布后可以隐藏创建贴文的页面
+                this.showCreatePost = false;
+            })
+            .catch((error) => {
+                console.log(error);
+                if (error.response.status == 401) {
+                    alert("你尚未登入");
+                }
+            });
+        // console.log("发布贴文:", this.description);
+        // // 发布后可以隐藏创建贴文的页面
+        // this.showCreatePost = false;
         },
         handleFileChange(event) {
             this.picture = event.target.files[0];
@@ -144,7 +154,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(indexState, ["piniaStoreInfo"]),
+        // ...mapState(indexState, ["piniaStoreInfo"]),
     },
 };
 </script>
@@ -152,14 +162,15 @@ export default {
 <template>
     <div class="bgArea">
         <!-- 搜尋列 -->
-        <div class="headerDiv">
+        <div class="header">
             <!-- <Header></Header> -->
             <tongHeader></tongHeader>
         </div>
         <!-- 店家資訊 -->
         <div class="storeCard1">
             <div class="storePhoto">
-                <img :src="(`../../../${storeInfo.filePath}`)" v-if="storeInfo.filePath">
+                <img :src="(`../../../${storeInfo.filePath}`)" v-if="storeInfo.filePath" >
+                <!-- 預設店家圖片 -->
                 <img src="../../main/resources/static/images/project_noPicture.png" alt="" v-else>
             </div>
             <div class="storeInfoArea">
@@ -223,18 +234,14 @@ export default {
     </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped >
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     // font-family: "Poppins", sans-serif;
 }
-.headerDiv{
-    height: 10vh;
-    display: flex;
-    align-items: center;
-}
+
 // body {
 //     background: #F9E8D9;
 // }
