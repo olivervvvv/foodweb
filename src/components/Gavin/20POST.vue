@@ -51,7 +51,7 @@ export default {
 
                 // 遍歷每個帖子，獲取前兩條評論
                 for (const post of this.postData) {
-                post.comments = await this.getTopTwoComments(post.postInfo.postId);
+                    post.comments = await this.getTopTwoComments(post.postInfo.postId);
                 }
 
             } catch (error) {

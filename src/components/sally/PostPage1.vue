@@ -86,22 +86,24 @@ export default {
         },
         async createPost() {
 
-            // const formData = new FormData();
-            // formData.append('storeId', this.storeId);
-            // formData.append('postTitle', this.postTitle);
-            // formData.append('description', this.description);
-            // formData.append('picture', this.picture);
-            let formData ={
-                storeId:this.storeId,
-                postTitle:this.postTitle,
-                description:this.description,
-                picture:this.picture
-            }
+            const formData = new FormData();
+            formData.append('storeId', this.storeId);
+            formData.append('postTitle', this.postTitle);
+            formData.append('description', this.description);
+            formData.append('picture', this.picture);
+            formData.append('locationCity', this.storeInfo.locationCity);
+            // let formData ={
+            //     storeId:this.storeId,
+            //     postTitle:this.postTitle,
+            //     description:this.description,
+            //     picture:this.picture
+            // }
 
             console.log("this.storeId",this.storeId);
             console.log("this.postTitle",this.postTitle);
             console.log("this.description",this.description);
             console.log("this.picture",this.picture);
+            console.log("this.storeInfo.locationCity",this.storeInfo.locationCity);
             console.log("formData : ",formData);
             axios.post(`http://localhost:8081/posts/create`,formData,
             {
@@ -119,6 +121,7 @@ export default {
                     alert("你尚未登入");
                 }
             });
+
         // console.log("发布贴文:", this.description);
         // // 发布后可以隐藏创建贴文的页面
         // this.showCreatePost = false;
