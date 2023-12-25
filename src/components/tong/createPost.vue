@@ -1,5 +1,5 @@
 <template>
-  <div class="totalArea">
+<div class="totalArea">
 
     <div class="topArea">
         <h1 style="width: 200px; font-size: 50px; margin-left: auto; margin-right: auto;">店家名稱</h1>
@@ -23,7 +23,7 @@
         <button type="button" style="border-radius: 15px; width: 150px; height: 50px; font-size: 25px;">建立貼文</button>
     </div>
 
-  </div>
+</div>
 </template>
 
 <script>

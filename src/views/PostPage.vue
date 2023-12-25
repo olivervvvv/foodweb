@@ -25,7 +25,7 @@ export default {
     <router-view></router-view>
   </div>
 </template>
-<style>
+<style scoped>
 .body {
   width: 100vw;
   height: 100vh;

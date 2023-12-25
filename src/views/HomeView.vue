@@ -12,9 +12,9 @@ import search from '../components/icons/CustomInput.vue'
     </div>
   <router-view></router-view>
 </template>
-<style>
+<style >
 body{
-  width: 100vw;
+
   background-color: #F9E8D9;
 }
 /* #app {

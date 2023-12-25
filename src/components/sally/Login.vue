@@ -315,7 +315,7 @@ export default {
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .content {
   height: 100vh;
   background-image: url(../../../public/large-variety-delicious-grilled-seafood-asian-market.jpg);
