@@ -17,6 +17,7 @@ export default {
             showcomment:false,
             commentInput:"",
 
+            comments:"",
             InputValue:"",
         }
     },
@@ -24,13 +25,10 @@ export default {
     },
     mounted() {
         this.getPost();
-        this.setInputValue();
     },
     methods: {
-        setInputValue(){
-            console.log("傳入之資料: ",this.$route.query.value);
-        },
         async getPost() {
+            console.log("傳入之資料: ",this.$route.query.value);
             try {
                 const response = await axios.get(`http://localhost:8081/posts/getPost?postId=${this.$route.query.value}`);
                 const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
@@ -39,10 +37,9 @@ export default {
                 console.log('this.postData from DB:', this.postData);
 
 
-                // // 遍歷每個帖子，獲取前兩條評論
-                // for (const post of this.postData) {
-                // post.comments = await this.getTopTwoComments(post.postInfo.postId);
-                // }
+
+                this.comments = await this.getTopTwoComments(DBdata.postInfo.postId);
+                console.log('this.comments :', this.comments);
                 } catch (error) {
                     console.error('Error getPostInfo() : ', error);
                 }
@@ -155,8 +152,8 @@ export default {
         <!-- Like按鈕 -->
         <div class="content">
             <div class="heart">
-                <i v-if="!postData.isLiked" class="fa-regular fa-heart fa-lg" style="color: #000000;" @click="clickLike(post)"></i>
-                <i v-if="postData.isLiked" class="fa-solid fa-heart fa-lg" style="color: #ff0000;" @click="clickLike(post)"></i>
+                <i v-if="!postData.isLiked" class="fa-regular fa-heart fa-lg" style="color: #000000;" @click="clickLike(postData)"></i>
+                <i v-if="postData.isLiked" class="fa-solid fa-heart fa-lg" style="color: #ff0000;" @click="clickLike(postData)"></i>
                 <span class="likes">{{postData}}like</span>
             </div> 
         </div>
