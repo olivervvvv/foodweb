@@ -1,4 +1,4 @@
-<!-- 登入後顯示此畫面 -->
+<!-- 顯示單一貼文 -->
 <script>
 import axios from 'axios';
 export default {
@@ -30,20 +30,27 @@ export default {
         async getPost() {
             console.log("傳入之資料: ",this.$route.query.value);
             try {
-                const response = await axios.get(`http://localhost:8081/posts/getPost?postId=${this.$route.query.value}`);
-                const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
-                console.log('postData from DB:', DBdata);
-                this.postData = DBdata; // 更新組件的數據
-                console.log('this.postData from DB:', this.postData);
-
-
-
-                this.comments = await this.getTopTwoComments(DBdata.postInfo.postId);
-                console.log('this.comments :', this.comments);
+                    const response = await axios.get(`http://localhost:8081/posts/getPost?postId=${this.$route.query.value}`);
+                    const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
+                    console.log('postData from DB:', DBdata);
+                    this.postData = DBdata; // 更新組件的數據
+                    console.log('this.postData from DB:', this.postData);
+                    //設定貼文內容
+                    this.description=this.postData.postInfo.description;
+                    this.imgurl=this.postData.postInfo.filePath;
+                    this.postId=this.postData.postInfo.postId;
+                    this.likeNumber=this.postData.postInfo.postLikeNumber;
+                    this.postTitle=this.postData.postInfo.postTitle;
+                    this.storeId=this.postData.postInfo.storeId;
+                    this.userId=this.postData.postInfo.userId;
+                    //顯示前兩筆留言
+                    this.comments = await this.getTopTwoComments(DBdata.postInfo.postId);
+                    console.log('this.comments :', this.comments);
                 } catch (error) {
                     console.error('Error getPostInfo() : ', error);
                 }
         },
+        //顯示前兩筆留言函數
         async getTopTwoComments(postId) {
             try {
                 const response = await axios.get(`http://localhost:8081/posts/${postId}/comments`,{
@@ -56,6 +63,7 @@ export default {
                 return [];
             }
         },
+        //顯示完整留言
         async showComment(postId,storeId) {
             this.showcomment=true;
             this.postId=postId;
@@ -73,10 +81,8 @@ export default {
                 console.error('Error in the second request:', error);
             }
         },
-
-//=========================================================================================================================
-
-        //處理點讚
+//===================================================================================================================================
+        //處理點讚邏輯
         async clickLike(post) {
             //改變like樣式
             post.isLiked = !post.isLiked;
@@ -86,25 +92,23 @@ export default {
             post.previousColor = post.isLiked ? '#ff0000' : '#000000';
             // 如果從 #ff0000 變為 #000000，則輸出 1；如果從 #000000 變為 #ff0000，則輸出 -1
             const output =  (previousColor === '#000000' && post.previousColor === '#ff0000')? 1 :
-                (previousColor === '#ff0000' && post.previousColor === '#000000') ? -1 : 0;
+                            (previousColor === '#ff0000' && post.previousColor === '#000000') ? -1 : 0;
             console.log('output:',output);
-
             try {
                 const response = await axios.post(`http://localhost:8081/posts/getPostLike?postId=${post.postInfo.postId}&addNumber=${output}`);
                 const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
                 console.log('postData from DB:', DBdata);
-                post.postInfo.postLikeNumber = response.data.postInfo.postLikeNumber;
-
+                //更改Like值
+                this.likeNumber = response.data.postInfo.postLikeNumber;
             } catch (error) {
                 console.error('Error fetching Like data:', error);
             }
         },
-        //處理送出留言
+        //送出留言邏輯
         async sendComment(postId,storeId){
             console.log('commentInput:', this.commentInput);
             console.log('postId  :',postId);
             console.log('storeId :',storeId);
-            //=========================================送出留言邏輯===================================================
             const commentData = {
                         postId:  postId,
                         storeId: storeId,
@@ -120,7 +124,6 @@ export default {
                     } catch (error) {
                         console.error('Error registering user:', error);
                     }
-            //=========================================送出留言邏輯===================================================
             this.commentInput="";
             this.showComment(postId,storeId);
         }
@@ -143,27 +146,27 @@ export default {
         <div>
             <div>
                 <figure>
-                    <img :src="postData" style="height: 100%;width: 100%;">
+                    <img :src="this.imgurl" style="height: 100%;width: 100%;">
                 </figure> 
                 <span class="username">username</span>
-                <p>{{postData}}</p>
+                <p>{{this.description}}</p>
             </div>
         </div>
         <!-- Like按鈕 -->
         <div class="content">
             <div class="heart">
-                <i v-if="!postData.isLiked" class="fa-regular fa-heart fa-lg" style="color: #000000;" @click="clickLike(postData)"></i>
-                <i v-if="postData.isLiked" class="fa-solid fa-heart fa-lg" style="color: #ff0000;" @click="clickLike(postData)"></i>
-                <span class="likes">{{postData}}like</span>
+                <i v-if="!this.postData.isLiked" class="fa-regular fa-heart fa-lg" style="color: #000000;" @click="clickLike(postData)"></i>
+                <i v-if="this.postData.isLiked" class="fa-solid fa-heart fa-lg" style="color: #ff0000;" @click="clickLike(postData)"></i>
+                <span class="likes">{{this.likeNumber}}like</span>
             </div> 
         </div>
         <!-- 預覽前兩筆留言 -->
         <div class="comment-preview">
-            <!-- <div v-for="(comment, cIndex) in post.comments" :key="cIndex">
+            <div v-for="(comment, cIndex) in this.comments" :key="cIndex">
             <span style="font-weight: bold;">{{comment.name}}</span> <p>{{comment.comment}}</p>
-            </div> -->
+            </div>
             <!-- 顯示完整評論btn -->
-            <button class="blue-city-btn" @click="showComment(post.postInfo.postId,post.postInfo.storeId)">顯示完整評論</button>
+            <button class="blue-city-btn" @click="showComment(this.postId,this.storeId)">顯示完整評論</button>
         </div>
     </div>
 
