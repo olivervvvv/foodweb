@@ -222,10 +222,12 @@ export default {
     margin: 2%;
 }
 .headerBtn{
+    width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 2%;
+    // margin: 2%;
+    
 }
 .post-container{
     display: flex;

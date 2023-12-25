@@ -152,7 +152,7 @@ export default {
 <template>
     <div class="bgArea">
         <!-- 搜尋列 -->
-        <div class="header">
+        <div class="headerDiv">
             <!-- <Header></Header> -->
             <tongHeader></tongHeader>
         </div>
@@ -222,14 +222,18 @@ export default {
     </div>
 </template>
 
-<style lang="scss" >
+<style lang="scss" scoped>
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
+    // font-family: "Poppins", sans-serif;
 }
-
+.headerDiv{
+    height: 10vh;
+    display: flex;
+    align-items: center;
+}
 // body {
 //     background: #F9E8D9;
 // }

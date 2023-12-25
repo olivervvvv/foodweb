@@ -154,8 +154,8 @@ export default {
       <div class="section pb-5 pt-5 pt-sm-2 text-center" >
         <!-- 頁面標籤 -->
         <h6 class="mb-0 pb-3">
-          <span style="color: rgb(255, 255, 255);font-size: 25pt;">登陸 </span
-          ><span style="color: rgb(255, 255, 255);font-size: 25pt;">註冊</span>
+          <span style="color: rgb(255, 255, 255);font-size: 25pt;user-select: none;cursor: pointer;" @click="this.isChecked=false">登陸 </span
+          ><span style="color: rgb(255, 255, 255);font-size: 25pt;user-select: none;cursor: pointer;" @click="this.isChecked=true">註冊</span>
         </h6>
         <input
           class="checkbox"

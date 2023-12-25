@@ -151,12 +151,12 @@ export default {
 
     </div>
 </template>
-<style lang="scss" >
+<style lang="scss" scoped>
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
+    // font-family: "Poppins", sans-serif;
 }
 .headerdiv{
     width: 100vw;
@@ -244,8 +244,7 @@ export default {
     .storeArea {
         width: 60%;
         height: 80vh;
-        margin: 20px;
-
+        margin-left: 32%;
     }
 
     .storeCard {
@@ -258,7 +257,6 @@ export default {
         display: flex;
         transition: 0.5s;
         cursor: pointer;
-
         &:hover {
             scale: 0.98;
         }
