@@ -120,7 +120,9 @@ export default {
         <div class="storeArea">
             <div class="storeCard" @click="goToPostPage(storeInfo.storeId)" v-for="(storeInfo, index) in this.piniaStoreInfo">
                 <div class="storePhoto">
-                    <img :src="storeInfo.filePath" alt="" >
+                    <img :src="storeInfo.filePath" alt="" v-if="storeInfo.filePath">
+                    <!-- 預設店家圖片 -->
+                    <img src="../../main/resources/static/images/project_noPicture.png" alt="" v-else>
                 </div>
                 <div class="storeInfo" >
                     <span class="storeTitle">{{ storeInfo.name }}</span>

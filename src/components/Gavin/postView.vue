@@ -176,8 +176,15 @@ export default {
             <!-- 顯示評論區域 -->
             <div class="comment-text-container">
                 <!-- 有評論顯示 -->
-                <div class="content"  v-for="(comment, index) in commentData" v-if="commentData.length > 0">
-                    <span style="font-weight: bold;">{{comment.name}}</span> <p>{{comment.comment}}</p>
+                <div class="content"  v-for="(comment, index) in commentData" v-if="commentData.length > 0"> 
+                    <div style="display: flex;align-items: center">
+                        <!-- 留言者頭像 -->
+                        <figure style="height:32px;width: 32px;">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1211695/me2.png" style="height: auto;width: 100%;border-radius: 99px;">
+                        </figure> 
+                        <span style="font-weight: bold;margin: 2%;">{{comment.name}}</span> 
+                    </div>
+                    <p>{{comment.comment}}</p>
                 </div>
                 <!-- 無評論顯示 -->
                 <div  v-else class="no-content">

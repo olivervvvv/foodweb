@@ -159,7 +159,8 @@ export default {
         <!-- 店家資訊 -->
         <div class="storeCard1">
             <div class="storePhoto">
-                <img :src="(`../../../${storeInfo.filePath}`)">
+                <img :src="(`../../../${storeInfo.filePath}`)" v-if="storeInfo.filePath">
+                <img src="../../main/resources/static/images/project_noPicture.png" alt="" v-else>
             </div>
             <div class="storeInfoArea">
                 <span class="storeTitle">{{ this.storeInfo.name }}</span>
