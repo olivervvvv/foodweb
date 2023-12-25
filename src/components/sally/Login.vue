@@ -229,7 +229,7 @@ export default {
                     class="btn mt-4"
                     id="add"
                     @click="this.setEmailAndPassword(), this.login()"
-                    style="color: white"
+                    style="color: rgb(0, 0, 0)"
                     >登陸</RouterLink
                   >
                   <p class="mb-0 mt-4 text-center">
@@ -255,7 +255,7 @@ export default {
                     />
                     <i style="color: white" class="input-icon uil uil-user"></i>
                   </div>
-                  <div class="form-group">
+                  <div class="form-group mt-2">
                     <input
                       type="text"
                       name="logname"
@@ -299,9 +299,9 @@ export default {
                   </div>
                   <a
                     href="#"
-                    class="btn"
+                    class="btn mt-4"
                     id="SignUpBtn"
-                    style="margin-top: 0; color: white"
+                    style="margin-top: 0; color: rgb(0, 0, 0)"
                     @click="register()"
                     >註冊</a
                   >
