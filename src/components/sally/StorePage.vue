@@ -7,9 +7,10 @@ import axios from "axios";
 export default {
     data() {
         return {
-            piniaStoreInfo:{},
+            storeInfoList: {},
             city: ['基隆', '台北', '新北', '桃園', '新竹', '苗栗', '台中', '彰化', '南投', '雲林', '嘉義', '台南', '高雄', '屏東', '台東', '花蓮', '宜蘭', '金馬',],
-            locationCity:"",
+            locationCity: "",
+            storeName: "",
         }
     },
     mounted() {
@@ -23,19 +24,22 @@ export default {
         goToPostPage(storeId) {
             this.$router.push({ name: 'postPage1', params: { storeId } });
         },
+        goToHomePage(){
+            this.$router.push("/");
+        },
         //首次載入
-        async setInputValue(){
-            console.log("傳入之資料: ",this.$route.query.value);
+        async setInputValue() {
+            console.log("傳入之資料: ", this.$route.query.value);
             try {
                 const response = await axios.get("http://localhost:8081/foodMap/searchNameAndLocal", {
                     params: {
                         "name": this.$route.query.value,
-                        "locationCity":""
+                        "locationCity": ""
                     },
                 });
                 console.log(response);
-                this.piniaStoreInfo = response.data.storeInfoList
-                console.log(this.piniaStoreInfo)
+                this.storeInfoList = response.data.storeInfoList
+                console.log(this.storeInfoList)
                 if (response.status === 200) {
                     console.log("200")
                 }
@@ -47,7 +51,7 @@ export default {
         //按地區按鈕顯示找到的相對應資料
         async clickArea(city) {
             console.log(city);
-            this.locationCity=city;
+            this.locationCity = city;
             try {
                 const response = await axios.get("http://localhost:8081/foodMap/searchNameAndLocal", {
                     params: {
@@ -56,8 +60,8 @@ export default {
                     },
                 });
                 console.log(response);
-                this.piniaStoreInfo = response.data.storeInfoList
-                console.log(this.piniaStoreInfo)
+                this.storeInfoList = response.data.storeInfoList
+                console.log(this.storeInfoList)
                 if (response.status === 200) {
                     console.log("200")
                 }
@@ -72,12 +76,12 @@ export default {
                 const response = await axios.get("http://localhost:8081/foodMap/searchNameAndLocal", {
                     params: {
                         "name": this.storeName,
-                        "locationCity":""
+                        "locationCity": ""
                     },
                 });
                 console.log(response);
-                this.piniaStoreInfo = response.data.storeInfoList
-                console.log(this.piniaStoreInfo)
+                this.storeInfoList = response.data.storeInfoList
+                console.log(this.storeInfoList)
                 if (response.status === 200) {
                     console.log("200")
                 }
@@ -86,45 +90,34 @@ export default {
                 throw error;
             }
         },
-
     },
-    computed:{
-        // ...mapState(indexState, ["piniaStoreInfo"])
+    computed: {
+        // ...mapState(indexState, ["storeInfoList"])
     }
 }
 </script>
 <template>
     <div class="bgArea">
-
-        <div class="header">
-            <div class="headerdiv">
-                <div class="logo">
-                    <img src="../sally/logo 2.png" style="width: 100px;" alt="">
-                </div>
-                <div class="searchArea">
-                    <input class="searchName" type="text" placeholder="搜尋店名" v-model="this.storeName">
-                    <!-- <select class="searchLocation" name="" id="location" @change="this.getLocation()">
-                        <option value="">地區</option>
-                        <option v-for="item in this.locationArr" :value="item.name">{{ item.name }}</option>
-                    </select> -->
-                    <button class="searchBtn" type="button" @click="getStoreNameAndLocationCity()">search</button>
-                </div>
+        <!-- Header區域 -->
+        <div class="headerArea">
+            <button class="logoBtn" aria-label="回首頁" data-balloon-pos="down" @click="goToHomePage">
+                <img src="../sally/logo 2.png" alt="">
+            </button>
+            <div class="searchArea">
+                <input class="searchName" type="text" placeholder="搜尋店名" v-model="this.storeName">
+                <button class="searchBtn" type="button" @click="getStoreNameAndLocationCity()">搜尋</button>
             </div>
         </div>
-
-
-
-
-
-
+        <!-- 店家資訊區域 -->
         <div class="storeArea">
-            <div class="storeCard" @click="goToPostPage(storeInfo.storeId)" v-for="(storeInfo, index) in this.piniaStoreInfo">
+            <div class="storeCard" @click="goToPostPage(storeInfo.storeId)"
+                v-for="(storeInfo, index) in this.storeInfoList">
                 <div class="storePhoto">
                     <img :src="storeInfo.filePath" alt="" v-if="storeInfo.filePath">
                     <!-- 預設店家圖片 -->
                     <img src="../../main/resources/static/images/project_noPicture.png" alt="" v-else>
                 </div>
-                <div class="storeInfo" >
+                <div class="storeInfo">
                     <span class="storeTitle">{{ storeInfo.name }}</span>
                     <div class="storeStyle">
                         <i class="fa-solid fa-utensils"></i>
@@ -149,8 +142,6 @@ export default {
                 </button>
             </div>
         </div>
-
-
     </div>
 </template>
 <style lang="scss" scoped>
@@ -160,46 +151,57 @@ export default {
     box-sizing: border-box;
     // font-family: "Poppins", sans-serif;
 }
-.headerdiv{
+
+.headerArea {
     width: 100vw;
-    height: 20vh;
+    height: 15vh;
     background-color: #EE7214;
     display: flex;
     align-items: center;
-    flex-direction: column;
-}
-.searchArea {
+
+    .logoBtn {
+            border: none;
+            background: none;
+            padding: 0;
+            cursor: pointer;
+            img{
+                height: 13vh;
+                margin: 0 20px;
+            }
+    }
+
+    .searchArea {
         width: 50vw;
         height: 40px;
         background-color: white;
         border-radius: 40px;
         display: flex;
         padding: 5px 0 5px 10px;
+
+        .searchName {
+            width: 85%;
+            height: 30px;
+            border: none;
+            outline: none;
+            background-color: white;
+            border-top-left-radius: 100px;
+            border-bottom-left-radius: 100px;
+            font-size: larger;
+            text-indent: 20px;
+        }
+
+        .searchBtn {
+            width: 60px;
+            height: 30px;
+            background-color: #EE7214;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: bolder;
+            cursor: pointer;
+        }
+    }
 }
-.searchName {
-    width: 85%;
-    height: 30px;
-    border: none;
-    outline: none;
-    background-color: white;
-    border-top-left-radius: 100px;
-    border-bottom-left-radius: 100px;
-    font-size: larger;
-    text-indent: 20px;
-}
-.searchBtn {
-    width: 60px;
-    height: 30px;
-    background-color: #EE7214;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    font-weight: bolder;
-    cursor: pointer;
-}
-// body{
-//     background: #F9E8D9;
-// }
 
 .rightArea {
     height: 50%;
@@ -210,6 +212,7 @@ export default {
     right: 1%;
     top: 25%;
     border-radius: 30px;
+
     .area {
         position: fixed;
         right: 1%;
@@ -219,6 +222,7 @@ export default {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
+
         .btn1 {
             margin: 5px;
             width: 70px;
@@ -230,14 +234,16 @@ export default {
 
             &:hover {
                 background-color: rgb(122, 134, 125);
-                
+
             }
-            &:active{
+
+            &:active {
                 background-color: rgb(249, 216, 105);
             }
         }
     }
 }
+
 .bgArea {
     // padding: 10% 5% 0;
     display: flex;
@@ -259,20 +265,24 @@ export default {
         display: flex;
         transition: 0.5s;
         cursor: pointer;
+
         &:hover {
             scale: 0.98;
         }
 
         .storePhoto {
             width: 40%;
-            max-height: 100%; /* 最大高度為父元素的100% */
+            max-height: 100%;
+            /* 最大高度為父元素的100% */
             // width: 40%;
             // height: inherit;
         }
+
         .storePhoto img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* 圖片填滿整個區域，可能裁切部分內容 */
+            object-fit: cover;
+            /* 圖片填滿整個區域，可能裁切部分內容 */
         }
 
         .storeInfo {

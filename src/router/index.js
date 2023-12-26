@@ -91,6 +91,16 @@ const router = createRouter({
       path: '/userInfo',
       name: 'userInfo',
       component: () => import('../components/sally/UserInfo.vue')
+    },
+    {
+      path: '/userPost',
+      name: 'userPost',
+      component: () => import('../components/sally/UserPost.vue')
+    },
+    {
+      path: '/test1',
+      name: 'test1',
+      component: () => import('../components/sally/test.vue')
     }
     
   ]

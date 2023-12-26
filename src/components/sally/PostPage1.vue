@@ -4,7 +4,6 @@ import tongHeader from "../tong/Header.vue"
 import { mapState } from "pinia";
 import indexState from "../../stores/indexState";
 import axios from "axios";
-
 export default {
     data() {
         return {
@@ -529,11 +528,7 @@ export default {
                     }
                 }
             }
-
-
         }
-
-
     }
 
     //店家貼文
@@ -599,7 +594,5 @@ export default {
             }
         }
     }
-
-
 }
 </style>
