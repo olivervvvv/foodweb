@@ -19,6 +19,7 @@ export default {
 
             comments:"",
             InputValue:"",
+            isLogIn:false,
         }
     },
     components: {
@@ -63,8 +64,31 @@ export default {
                 return [];
             }
         },
+        // 檢查是否已登入
+        async logInCheck(){
+            try {
+                const response = await axios.get(`http://localhost:8081/users/getcurrentUser`,{
+                    withCredentials: true,
+                });
+                var loginState = response.data;
+                console.log('loginState from DB:', loginState);
+                this.isLogIn=loginState.login;
+                return this.isLogIn;
+            } catch (error) {
+                console.error('Error fetching comments:', error);
+            }
+        },
         // 顯示完整留言
         async showComment(postId, storeId) {
+            //判斷是否登入
+            if (!this.logInCheck()) {
+                // 未登入，顯示提示或導向登入頁面
+                alert('請先登入');
+                return;
+            }
+
+
+
             this.showcomment = true;
             this.postId = postId;
             this.storeId = storeId;
