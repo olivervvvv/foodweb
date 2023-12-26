@@ -93,9 +93,7 @@ export default {
                 alert('請先登入');
                 return;
             }
-
-
-
+            //顯示留言邏輯
             this.showcomment = true;
             this.postId = postId;
             this.storeId = storeId;

@@ -86,9 +86,7 @@ export default {
                 alert('請先登入');
                 return;
             }
-
-
-
+            //顯示留言邏輯
             this.showcomment = true;
             this.postId = postId;
             this.storeId = storeId;
@@ -102,9 +100,7 @@ export default {
                 console.log('this.commentData from DB:', this.commentData);
             } catch (error) {
                 console.error('Error in the second request:', error);
-                // 在這裡可以處理錯誤，或者返回 Promise.reject(error) 以傳遞錯誤給上層
             }
-            // 不再需要使用 return Promise.resolve()
         },
 //===================================================================================================================================
         //處理點讚邏輯

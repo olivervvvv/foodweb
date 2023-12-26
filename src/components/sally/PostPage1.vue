@@ -244,6 +244,9 @@ export default {
     box-sizing: border-box;
     // font-family: "Poppins", sans-serif;
 }
+.header{
+    height: 10vh;
+}
 
 // body {
 //     background: #F9E8D9;
