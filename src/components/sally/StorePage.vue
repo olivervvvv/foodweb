@@ -31,7 +31,7 @@ export default {
         async setInputValue() {
             console.log("傳入之資料: ", this.$route.query.value);
             try {
-                const response = await axios.get("http://localhost:8081/foodMap/searchNameAndLocal", {
+                const response = await axios.get(`http://${locohost}/foodMap/searchNameAndLocal`, {
                     params: {
                         "name": this.$route.query.value,
                         "locationCity": ""
@@ -53,7 +53,7 @@ export default {
             console.log(city);
             this.locationCity = city;
             try {
-                const response = await axios.get("http://localhost:8081/foodMap/searchNameAndLocal", {
+                const response = await axios.get(`http://${locohost}/foodMap/searchNameAndLocal`, {
                     params: {
                         "name": "",
                         "locationCity": this.locationCity
@@ -73,7 +73,7 @@ export default {
         //搜尋btn
         async getStoreNameAndLocationCity() {
             try {
-                const response = await axios.get("http://localhost:8081/foodMap/searchNameAndLocal", {
+                const response = await axios.get(`http://${locohost}/foodMap/searchNameAndLocal`, {
                     params: {
                         "name": this.storeName,
                         "locationCity": ""

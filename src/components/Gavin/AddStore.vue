@@ -43,7 +43,9 @@ export default {
             // console.log('this.address',this.address);
             // console.log('this.locationCity:', this.locationCity);
             try {
-                const response = await axios.post('http://localhost:8081/foodMap/create',formData)
+                const response = await axios.post(`http://${locohost}/foodMap/create`,formData)
+                const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
+                console.log('postData from DB:', DBdata);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }

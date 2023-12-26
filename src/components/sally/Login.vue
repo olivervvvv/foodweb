@@ -29,7 +29,7 @@ export default {
     async login() {
       axios
         .post(
-          "http://localhost:8081/users/login",
+          `http://${locohost}/users/login`,
           {
             email: this.email,
             password: this.password,
@@ -77,7 +77,7 @@ export default {
           };
           try {
             const response = await axios.post(
-              `http://localhost:8081/users/register`,
+              `http://${locohost}/users/register`,
               singupData
             );
             const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息

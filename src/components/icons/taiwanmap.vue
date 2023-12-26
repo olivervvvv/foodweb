@@ -16,7 +16,7 @@ export default {
       this.pathText = event.target.id;
 
       try {
-        const response = await axios.get(`http://localhost:8081/foodMap/getlocationTop4?locationCity=${event.target.id}`);
+        const response = await axios.get(`http://${locohost}/foodMap/getlocationTop4?locationCity=${event.target.id}`);
         const DBdata = response.data; // 這裡假設後端返回的數據包含店家的所有信息
         console.log('postData from DB:', DBdata);
         this.storeDetail = DBdata;

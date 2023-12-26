@@ -26,12 +26,13 @@ export default {
     },
     mounted() {
         this.getPost();
+        this.logInCheck();
     },
     methods: {
         async getPost() {
             console.log("傳入之資料: ",this.$route.query.value);
             try {
-                    const response = await axios.get(`http://localhost:8081/posts/getPost?postId=${this.$route.query.value}`);
+                    const response = await axios.get(`http://${locohost}/posts/getPost?postId=${this.$route.query.value}`);
                     const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
                     console.log('postData from DB:', DBdata);
                     this.postData = DBdata; // 更新組件的數據
@@ -54,7 +55,7 @@ export default {
         //顯示前兩筆留言函數
         async getTopTwoComments(postId) {
             try {
-                const response = await axios.get(`http://localhost:8081/posts/${postId}/comments`,{
+                const response = await axios.get(`http://${locohost}/posts/${postId}/comments`,{
                     withCredentials: true,
                 });
                 const comments = response.data;
@@ -67,13 +68,13 @@ export default {
         // 檢查是否已登入
         async logInCheck(){
             try {
-                const response = await axios.get(`http://localhost:8081/users/getcurrentUser`,{
+                const response = await axios.get(`http://${locohost}/users/getcurrentUser`,{
                     withCredentials: true,
                 });
                 var loginState = response.data;
                 console.log('loginState from DB:', loginState);
                 this.isLogIn=loginState.login;
-                return this.isLogIn;
+                console.log("this.isLogIn : ",this.isLogIn)
             } catch (error) {
                 console.error('Error fetching comments:', error);
             }
@@ -81,11 +82,14 @@ export default {
         // 顯示完整留言
         async showComment(postId, storeId) {
             //判斷是否登入
-            if (!this.logInCheck()) {
-                // 未登入，顯示提示或導向登入頁面
+            await this.logInCheck();
+            console.log("logInCheck : ",this.isLogIn)
+            if (!this.isLogIn) {
                 alert('請先登入');
                 return;
             }
+            
+
             //顯示留言邏輯
             this.showcomment = true;
             this.postId = postId;
@@ -93,7 +97,7 @@ export default {
             console.log('postId  :', postId);
             console.log('storeId :', storeId);
             try {
-                const getComment = await axios.get(`http://localhost:8081/posts/${postId}/comments`);
+                const getComment = await axios.get(`http://${locohost}/posts/${postId}/comments`);
                 const Comment = getComment.data;
                 console.log('Comment from DB:', Comment);
                 this.commentData = getComment.data;
@@ -116,7 +120,7 @@ export default {
                             (previousColor === '#ff0000' && post.previousColor === '#000000') ? -1 : 0;
             console.log('output:',output);
             try {
-                const response = await axios.post(`http://localhost:8081/posts/getPostLike?postId=${post.postInfo.postId}&addNumber=${output}`);
+                const response = await axios.post(`http://${locohost}/posts/getPostLike?postId=${post.postInfo.postId}&addNumber=${output}`);
                 const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
                 console.log('postData from DB:', DBdata);
                 //更改Like值
@@ -136,7 +140,7 @@ export default {
                 comment: this.commentInput,
             };
             try {
-                const response = await axios.post(`http://localhost:8081/users/currentUser/comment`, commentData, {
+                const response = await axios.post(`http://${locohost}/users/currentUser/comment`, commentData, {
                     withCredentials: true,
                 });
                 const DBdata = response.data;
