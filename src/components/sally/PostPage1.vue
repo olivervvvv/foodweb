@@ -47,7 +47,7 @@ export default {
             this.storeId = this.$route.params.storeId;
             console.log("this.storeId : ",this.storeId);
                 try {
-                const response = await axios.get(`http://localhost:8081/foodMap/searchStoreId?storeId=${this.storeId}`);
+                const response = await axios.get(`http://${locohost}/foodMap/searchStoreId?storeId=${this.storeId}`);
                 const storeData = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
                 console.log('storeData from DB:', storeData);
                 this.storeInfo = storeData.storeInfo;
@@ -60,7 +60,7 @@ export default {
             this.storeId = this.$route.params.storeId;
             console.log("this.storeId : ",this.storeId);
                 try {
-                const response = await axios.get(`http://localhost:8081/posts/getPostList?storeId=${this.storeId}`);
+                const response = await axios.get(`http://${locohost}/posts/getPostList?storeId=${this.storeId}`);
                 const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
                 console.log('postData from DB:', DBdata);
                 this.postInfoList = DBdata.postInfoList
@@ -105,7 +105,7 @@ export default {
             console.log("this.storeInfo.locationCity",this.storeInfo.locationCity);
             console.log("formData : ",formData);
             
-            axios.post(`http://localhost:8081/posts/create`,formData,
+            axios.post(`http://${locohost}/posts/create`,formData,
             {
                 withCredentials: true,
             })
@@ -243,6 +243,9 @@ export default {
     padding: 0;
     box-sizing: border-box;
     // font-family: "Poppins", sans-serif;
+}
+.header{
+    height: 10vh;
 }
 
 // body {

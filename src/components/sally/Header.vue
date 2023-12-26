@@ -99,7 +99,7 @@ export default {
         // },
         async getStoreNameAndLocationCity() {
             try {
-                const response = await axios.get("http://localhost:8081/foodMap/searchNameAndLocal", {
+                const response = await axios.get(`http://${locohost}/foodMap/searchNameAndLocal`, {
                     params: {
                         "name": this.storeName,
                         "locationCity":""
