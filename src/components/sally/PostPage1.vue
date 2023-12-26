@@ -104,6 +104,7 @@ export default {
             console.log("this.picture",this.picture);
             console.log("this.storeInfo.locationCity",this.storeInfo.locationCity);
             console.log("formData : ",formData);
+            
             axios.post(`http://localhost:8081/posts/create`,formData,
             {
                 withCredentials: true,

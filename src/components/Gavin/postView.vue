@@ -19,6 +19,7 @@ export default {
 
             comments:"",
             InputValue:"",
+            isLogIn:false,
         }
     },
     components: {
@@ -63,23 +64,47 @@ export default {
                 return [];
             }
         },
-        //顯示完整留言
-        async showComment(postId,storeId) {
-            this.showcomment=true;
-            this.postId=postId;
-            this.storeId=storeId;
-            console.log('postId  :',postId);
-            console.log('storeId :',storeId);
+        // 檢查是否已登入
+        async logInCheck(){
             try {
-                // 使用反引號定義模板字符串
+                const response = await axios.get(`http://localhost:8081/users/getcurrentUser`,{
+                    withCredentials: true,
+                });
+                var loginState = response.data;
+                console.log('loginState from DB:', loginState);
+                this.isLogIn=loginState.login;
+                return this.isLogIn;
+            } catch (error) {
+                console.error('Error fetching comments:', error);
+            }
+        },
+        // 顯示完整留言
+        async showComment(postId, storeId) {
+            //判斷是否登入
+            if (!this.logInCheck()) {
+                // 未登入，顯示提示或導向登入頁面
+                alert('請先登入');
+                return;
+            }
+
+
+
+            this.showcomment = true;
+            this.postId = postId;
+            this.storeId = storeId;
+            console.log('postId  :', postId);
+            console.log('storeId :', storeId);
+            try {
                 const getComment = await axios.get(`http://localhost:8081/posts/${postId}/comments`);
                 const Comment = getComment.data;
-                console.log('Comment from DB:',Comment);
+                console.log('Comment from DB:', Comment);
                 this.commentData = getComment.data;
-                console.log('this.commentData from DB:',this.commentData);
+                console.log('this.commentData from DB:', this.commentData);
             } catch (error) {
                 console.error('Error in the second request:', error);
+                // 在這裡可以處理錯誤，或者返回 Promise.reject(error) 以傳遞錯誤給上層
             }
+            // 不再需要使用 return Promise.resolve()
         },
 //===================================================================================================================================
         //處理點讚邏輯
@@ -104,30 +129,43 @@ export default {
                 console.error('Error fetching Like data:', error);
             }
         },
-        //送出留言邏輯
-        async sendComment(postId,storeId){
+        // 送出留言邏輯
+        async sendComment(postId, storeId) {
             console.log('commentInput:', this.commentInput);
-            console.log('postId  :',postId);
-            console.log('storeId :',storeId);
+            console.log('postId  :', postId);
+            console.log('storeId :', storeId);
             const commentData = {
-                        postId:  postId,
-                        storeId: storeId,
-                        comment: this.commentInput,
-                    };
-                    try {
-                        const response = await axios.post(`http://localhost:8081/users/currentUser/comment`, commentData,{
-                        withCredentials: true,
-                    });
-                        const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
-                        console.log('postData from DB:', DBdata);
+                postId: postId,
+                storeId: storeId,
+                comment: this.commentInput,
+            };
+            try {
+                const response = await axios.post(`http://localhost:8081/users/currentUser/comment`, commentData, {
+                    withCredentials: true,
+                });
+                const DBdata = response.data;
+                console.log('postData from DB:', DBdata);
+            } catch (error) {
+                console.error('Error registering user:', error);
+            }
 
-                    } catch (error) {
-                        console.error('Error registering user:', error);
-                    }
-            this.commentInput="";
-            this.showComment(postId,storeId);
-        }
-    }
+            this.commentInput = "";
+            await this.showComment(postId, storeId); // 等待 showComment 完成
+            // 不再需要使用 $nextTick
+            this.updateComments();
+        },
+        // 在每次評論數據更新時將滑桿固定到底部
+        updateComments() {
+            // 將滑桿固定到底部
+            this.$refs.commentContainer.scrollTop = this.$refs.commentContainer.scrollHeight;
+            // // 尋找最後一個評論元素
+            // const lastComment = this.$refs.commentContainer.lastElementChild;
+            // if (lastComment) {
+            // // 滾動條滾動到最後一個評論元素
+            // lastComment.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            // }
+        },
+    },
 }
 
 </script>
@@ -146,7 +184,10 @@ export default {
         <div>
             <div>
                 <figure>
-                    <img :src="this.imgurl" style="height: 100%;width: 100%;">
+                    <!-- 如果圖片有效，顯示圖片；否則顯示默認圖片 -->
+                    <img :src="imgurl" style="height: 100%; width: 100%;" v-if="imgurl">
+                    <!-- 預設貼文圖片 -->
+                    <img src="../../main/resources/static/images/error 404.png" style="height: 100%; width: 100%;" v-else>
                 </figure> 
                 <span class="username">username</span>
                 <p>{{this.description}}</p>
@@ -172,9 +213,9 @@ export default {
 
     <!-- 跳出完整評論頁面 -->
     <div v-if="showcomment" class="blur-background">
-        <div class="comment-container">
+        <div  class="comment-container">
             <!-- 顯示評論區域 -->
-            <div class="comment-text-container">
+            <div ref="commentContainer" class="comment-text-container">
                 <!-- 有評論顯示 -->
                 <div class="content"  v-for="(comment, index) in commentData" v-if="commentData.length > 0"> 
                     <div style="display: flex;align-items: center">
