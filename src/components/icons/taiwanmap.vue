@@ -5,9 +5,28 @@ export default {
     return {
       pathText: "",
       storeDetail: "",
+      isLogIn:false,
     };
   },
+  mounted() {
+      // 檢查是否已登入
+      this.logInCheck();
+    },
   methods: {
+    // 檢查是否已登入
+    async logInCheck(){
+      try {
+          const response = await axios.get(`http://${locohost}/users/getcurrentUser`,{
+              withCredentials: true,
+          });
+          var loginState = response.data;
+          console.log('loginState from DB:', loginState);
+          this.isLogIn=loginState.login;
+          console.log("this.isLogIn : ",this.isLogIn)
+      } catch (error) {
+          console.error('Error fetching comments:', error);
+      }
+    },
     async handlePathClick(event) {
       // 獲取點擊的 path 元素的 ID
       const pathId = event.target.id;
@@ -28,33 +47,41 @@ export default {
     handleMsgBoxClick(store, index) {
       console.log((index + 1) + "號btn, " + `index為${index}` + 'value:' + store.name + 'store ID:' + store.storeId);
       this.$router.push({ name: 'postPage1', params: { storeId: store.storeId } });
-
     },
     login() {
       console.log('login');
       this.$router.push("/login");
     },
+    async logout(){
+      try {
+        const response = await axios.get(`http://${locohost}/users/logout`,{
+              withCredentials: true,
+          });
+        const DBdata = response.data; // 這裡是後端返回的
+        console.log('postData from DB:', DBdata);
+        this.isLogIn=false;
+        console.log("this.isLogIn : ",this.isLogIn)
+      } catch (error) {
+        console.error('Error fetching Post data:', error);
+      }
+    },
     singup() {
       console.log('singup');
-    }
-
-
-
-
-
+    },
   },
-  computed: {
 
-  }
 };
 </script>
 <template>
   <div style="display: flex;align-items: center" class="maincon">
 
 
-    <div class="btn-container">
+    <div class="btn-container" v-if="!this.isLogIn">
       <button class="green-btn" @click="login()">登陸&註冊</button>
       <!-- <button class="blue-btn" @click="singup()">註冊</button> -->
+    </div>
+    <div class="btn-container" v-if="this.isLogIn" >
+      <button class="green-btn" @click="logout()">登出</button>
     </div>
 
 

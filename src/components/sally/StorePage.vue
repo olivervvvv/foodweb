@@ -8,10 +8,13 @@ export default {
             storeName: "",
             locationCity: "",
             storeInfoList: {},
+            isLogIn:false,
         }
     },
     mounted() {
         this.setInputValue();
+        // 檢查是否已登入
+        this.logInCheck();
     },
     methods: {
         //點擊logo回首頁
@@ -53,6 +56,39 @@ export default {
             } catch (error) {
                 console.error(error);
                 throw error;
+            }
+        },
+        // 檢查是否已登入
+        async logInCheck(){
+            try {
+                const response = await axios.get(`http://${locohost}/users/getcurrentUser`,{
+                    withCredentials: true,
+                });
+                var loginState = response.data;
+                console.log('loginState from DB:', loginState);
+                this.isLogIn=loginState.login;
+                console.log("this.isLogIn : ",this.isLogIn)
+            } catch (error) {
+                console.error('Error fetching comments:', error);
+            }
+        },
+        //登入
+        login() {
+            console.log('login');
+            this.$router.push("/login");
+        },
+        //登出
+        async logout(){
+            try {
+            const response = await axios.get(`http://${locohost}/users/logout`,{
+                withCredentials: true,
+            });
+            const DBdata = response.data; // 這裡是後端返回的
+            console.log('postData from DB:', DBdata);
+            this.isLogIn=false;
+            console.log("this.isLogIn : ",this.isLogIn)
+            } catch (error) {
+                console.error('Error fetching Post data:', error);
             }
         },
         //點擊城市按鈕顯示找到的相對應資料
@@ -122,13 +158,15 @@ export default {
                     <!-- 預設未登入頭貼 -->
                     <img class="userBtn" src="../sally/explorer.png" alt="" @mouseenter="showFnList">
                     <div class="userFnList" :class="{ 'fnListVisible': isFnListVisible }" @mouseleave="showFnList">
-                        <ul>
+                        <!-- 登入顯示 -->
+                        <ul v-if="this.isLogIn">
                             <li @click="goToUserInfoPage">個人資料</li>
                             <li @click="goToUserPostPage">個人貼文</li>
-                            <li>登出</li>
+                            <li @click="logout()">登出</li>
                         </ul>
-                        <ul>
-                            <li>登入</li>
+                        <!-- 未登入顯示 -->
+                        <ul v-if="!this.isLogIn">
+                            <li @click="login()" >登入</li>
                         </ul>
                     </div>
                 </div>
