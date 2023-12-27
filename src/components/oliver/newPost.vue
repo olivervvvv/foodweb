@@ -1,12 +1,10 @@
 <!-- 登入後顯示此畫面 -->
 <script>
-import { ref, onMounted } from "vue";
 import axios from 'axios';
-import tongHeader from "../tong/Header.vue"
 export default {
-
     data() {
         return {
+
             postData: {},
             commentData: {},
             postId: 0,
@@ -27,7 +25,6 @@ export default {
         }
     },
     components: {
-        tongHeader,
     },
     mounted() {
         this.loadContent();

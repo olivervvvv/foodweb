@@ -17,19 +17,61 @@ export default {
             userId:0,
             showcomment:false,
             commentInput:"",
-
             inputValue:"",//搜尋欄輸入值
             isLogIn:false,//登入狀態
+
+            items: [], // Array to store loaded content
+            loading: false,
+            page: 0,
         }
     },
     components: {
     },
     mounted() {
-        this.getPost();
+        this.loadContent();
+        window.addEventListener("scroll", this.handleScroll);
+        // this.getPost();
         this.setInputValue();
         this.logInCheck();
     },
     methods: {
+        async loadContent() {
+            this.loading = true;
+            try {
+                // Make an API request using Axios
+                const response = await axios.get(`http://localhost:8081/posts/getNewPosts?page=${this.page}`);
+                console.log(response.data);
+                this.postData = response.data.commVoList; // 更新組件的數據
+                console.log('this.postData from DB:', this.postData);
+                if (this.postData .length > 0) {
+                    // Append the new items to the existing items array
+                    this.items = [...this.items, ...this.postData ];
+                    // Increment the page number
+                    this.page++;
+                    console.log('this.page:',this.page);
+                }
+
+                // 遍歷每個帖子，獲取前兩條評論
+                for (const post of this.postData) {
+                    post.comments = await this.getTopTwoComments(post.postInfo.postId);
+                }
+
+
+            } catch (error) {
+                console.error('Error loading content:', error);
+            } finally {
+                this.loading = false;
+            }
+        },
+        handleScroll() {
+            if (
+                window.innerHeight + window.scrollY >=
+                document.documentElement.offsetHeight - 100 &&
+                !this.loading
+            ) {
+                this.loadContent();
+            }
+        },
         //點擊logo回首頁
         goToHomePage() {
             this.$router.push("/");
@@ -263,7 +305,7 @@ export default {
 
 
 
-    <div class="instagram-post" v-for="(post, index) in postData" :key="index">
+    <div class="instagram-post" v-for="(post, index) in items" :key="index">
         <!-- 發文者頭像及名子 -->
         <div class="header">
             <figure style="height:32px;width: 32px;margin-right: 2%;">
