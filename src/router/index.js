@@ -96,10 +96,16 @@ const router = createRouter({
       path: '/newPost',
       name: 'newPost',
       component: () => import('../components/oliver/newPost.vue')
-    },{
+    },
+    {
       path: '/OliverUpdatePosts',
       name: 'OliverUpdatePosts',
       component: () => import('../components/oliver/OliverUpdatePosts.vue')
+    },
+    {
+      path: '/HeadshotUpdate',
+      name: 'HeadshotUpdate',
+      component: () => import('../components/oliver/HeadshotUpdate.vue')
     },
     
   ]
