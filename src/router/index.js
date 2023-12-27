@@ -111,7 +111,12 @@ const router = createRouter({
       path: '/test1',
       name: 'test1',
       component: () => import('../components/sally/test.vue')
-    }
+    },
+    {
+      path: '/HeadshotUpdate',
+      name: 'HeadshotUpdate',
+      component: () => import('../components/oliver/HeadshotUpdate.vue')
+    },
     
   ]
 })
