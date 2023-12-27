@@ -35,6 +35,14 @@ export default {
         this.logInCheck();
     },
     methods: {
+        getImage(picture) {
+            // 如果 picture 為 undefined，返回一個空字符串
+            if (!picture) {
+                return "";
+            }
+            // 直接返回 Base64 Data URL
+            return "data:image/jpeg;base64," + picture;
+        },
         async loadContent() {
             this.loading = true;
             try {
@@ -318,9 +326,11 @@ export default {
             <div>
                 <figure>
                     <!-- 如果圖片有效，顯示圖片；否則顯示默認圖片 -->
-                    <img :src="post.postInfo.filePath" style="height: 100%; width: 100%;" v-if="post.postInfo.filePath">
+                    <img :src="getImage(post.postInfo.picture)" style="height: 100%; width: 100%;" v-if="post.postInfo.picture">
+                    <!-- 如果base64為空,則檢查路徑 -->
+                    <img :src="post.postInfo.filePath" style="height: 100%; width: 100%;" v-if="post.postInfo.picture===null">
                     <!-- 預設貼文圖片 -->
-                    <img src="../../main/resources/static/images/error 404.png" style="height: 100%; width: 100%;" v-else>
+                    <img src="../../main/resources/static/images/error 404.png" style="height: 100%; width: 100%;" v-if="post.postInfo.picture===null&&post.postInfo.filePath===''">
                 </figure> 
                 <span class="username">username</span>
                 <p>{{post.postInfo.description}}</p>

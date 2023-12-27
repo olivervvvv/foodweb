@@ -20,6 +20,7 @@ export default {
             comments:"",
             InputValue:"",
             isLogIn:false,
+            imgB64:"",
         }
     },
     components: {
@@ -29,6 +30,14 @@ export default {
         this.logInCheck();
     },
     methods: {
+        getImage(picture) {
+            // 如果 picture 為 undefined，返回一個空字符串
+            if (!picture) {
+                return "";
+            }
+            // 直接返回 Base64 Data URL
+            return "data:image/jpeg;base64," + picture;
+        },
         async getPost() {
             console.log("傳入之資料: ",this.$route.query.value);
             try {
@@ -40,6 +49,7 @@ export default {
                     //設定貼文內容
                     this.description=this.postData.postInfo.description;
                     this.imgurl=this.postData.postInfo.filePath;
+                    this.imgB64=this.postData.postInfo.picture;
                     this.postId=this.postData.postInfo.postId;
                     this.likeNumber=this.postData.postInfo.postLikeNumber;
                     this.postTitle=this.postData.postInfo.postTitle;
@@ -185,9 +195,10 @@ export default {
             <div>
                 <figure>
                     <!-- 如果圖片有效，顯示圖片；否則顯示默認圖片 -->
-                    <img :src="imgurl" style="height: 100%; width: 100%;" v-if="imgurl">
+                    <img :src="getImage(this.imgB64)" style="height: 100%; width: 100%;" v-if="imgB64">
+                    <img :src="imgurl" style="height: 100%; width: 100%;" v-if="imgB64===null">
                     <!-- 預設貼文圖片 -->
-                    <img src="../../main/resources/static/images/error 404.png" style="height: 100%; width: 100%;" v-else>
+                    <img src="../../main/resources/static/images/error 404.png" style="height: 100%; width: 100%;" v-if="imgB64===null&&imgurl===''">
                 </figure> 
                 <span class="username">username</span>
                 <p>{{this.description}}</p>
