@@ -91,7 +91,16 @@ const router = createRouter({
       path: '/userInfo',
       name: 'userInfo',
       component: () => import('../components/sally/UserInfo.vue')
-    }
+    },
+    {
+      path: '/newPost',
+      name: 'newPost',
+      component: () => import('../components/oliver/newPost.vue')
+    },{
+      path: '/OliverUpdatePosts',
+      name: 'OliverUpdatePosts',
+      component: () => import('../components/oliver/OliverUpdatePosts.vue')
+    },
     
   ]
 })
