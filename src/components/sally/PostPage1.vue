@@ -1,48 +1,114 @@
 <script>
-// import Header from "../sally/Header.vue";
-import tongHeader from "../tong/Header.vue"
 import { mapState } from "pinia";
 import indexState from "../../stores/indexState";
 import axios from "axios";
 export default {
     data() {
         return {
+            isFnListVisible: false,//header需要
             storeId: 0,
             postInfoList: {},
             storeInfoList: {},
+
+            storeInfo:{},
+            goToPostpostId:0,
+
+
             storeInfo: {},
             goToPostpostId: 0,
-            // storeInfo: {
-            //     address: null,
-            //     filePath: null,
-            //     foodStyle: null,
-            //     locationCity: null,
-            //     name: null,
-            //     storeId: null,
-            //     updateTime: null,
-            //     userLike: null
-            // },
+
             showCreatePost: false, // 控制是否显示创建贴文的页面
             description: "", // 存储新贴文的内容
             postTitle: "",
             picture: null,
+            inputValue:"",//搜尋欄輸入值
+            isLogIn:false,//登入狀態
         };
     },
     components: {
-        // Header,
-        tongHeader
     },
     mounted() {
         this.getPostInfo();
         this.getStoreInfo();
-        // console.log(this.piniaStoreInfo);
-        // this.piniaStoreInfo.forEach(element => {
-        //     if (this.$route.params.storeId == element.storeId) {
-        //         this.storeInfo = element;
-        //     }
-        // });
+        // 檢查是否已登入
+        this.logInCheck();
     },
     methods: {
+        //點擊logo回首頁
+        goToHomePage() {
+            this.$router.push("/");
+        },
+        //搜尋
+        searchStoreName(){
+            console.log("search inputtext : ",this.inputValue);
+            // 使用 $router.push 实现页面跳转，并传递参数
+            this.$router.push({
+                name: "storePage",
+                query: { value: this.inputValue }
+            });
+        },
+        //點擊頭像顯示功能導覽列
+        showFnList() {
+            this.isFnListVisible = !this.isFnListVisible;
+        },
+        //功能導覽列:至個人資料頁面
+        goToUserInfoPage() {
+            this.$router.push("/userInfo");
+        },
+        //功能導覽列:至個人貼文頁面
+        goToUserPostPage() {
+            this.$router.push("/userPost");
+        },
+        goToPostPage(storeId) {
+            this.$router.push({ name: 'postPage1', params: { storeId } });
+        },
+                // 檢查是否已登入
+                async logInCheck(){
+            try {
+                const response = await axios.get(`http://${locohost}/users/getcurrentUser`,{
+                    withCredentials: true,
+                });
+                var loginState = response.data;
+                console.log('loginState from DB:', loginState);
+                this.isLogIn=loginState.login;
+                console.log("this.isLogIn : ",this.isLogIn)
+            } catch (error) {
+                console.error('Error fetching comments:', error);
+            }
+        },
+        // 檢查是否已登入
+        async logInCheck(){
+            try {
+                const response = await axios.get(`http://${locohost}/users/getcurrentUser`,{
+                    withCredentials: true,
+                });
+                var loginState = response.data;
+                console.log('loginState from DB:', loginState);
+                this.isLogIn=loginState.login;
+                console.log("this.isLogIn : ",this.isLogIn)
+            } catch (error) {
+                console.error('Error fetching comments:', error);
+            }
+        },
+        //登入
+        login() {
+            console.log('login');
+            this.$router.push("/login");
+        },
+        //登出
+        async logout(){
+            try {
+            const response = await axios.get(`http://${locohost}/users/logout`,{
+                withCredentials: true,
+            });
+            const DBdata = response.data; // 這裡是後端返回的
+            console.log('postData from DB:', DBdata);
+            this.isLogIn=false;
+            console.log("this.isLogIn : ",this.isLogIn)
+            } catch (error) {
+                console.error('Error fetching Post data:', error);
+            }
+        },
         async getStoreInfo() {
             this.storeId = this.$route.params.storeId;
             console.log("this.storeId : ", this.storeId);
@@ -91,12 +157,6 @@ export default {
             formData.append('description', this.description);
             formData.append('picture', this.picture);
             formData.append('locationCity', this.storeInfo.locationCity);
-            // let formData ={
-            //     storeId:this.storeId,
-            //     postTitle:this.postTitle,
-            //     description:this.description,
-            //     picture:this.picture
-            // }
 
             console.log("this.storeId", this.storeId);
             console.log("this.postTitle", this.postTitle);
@@ -164,10 +224,39 @@ export default {
 
 <template>
     <div class="bgArea">
-        <!-- 搜尋列 -->
-        <div class="header">
-            <!-- <Header></Header> -->
-            <tongHeader></tongHeader>
+        <!-- Header區域 -->
+        <div class="headerArea">
+            <div class="fixed">
+                <!-- logo -->
+                <div class="logoArea">
+                    <button class="logoBtn" aria-label="回首頁" data-balloon-pos="down" @click="goToHomePage">
+                        <img src="../sally/logo 2.png" alt="">
+                    </button>
+                </div>
+                <!-- 搜尋列 -->
+                <div class="searchArea">
+                    <input class="searchName" type="text" placeholder="搜尋地區或店名" v-model="this.inputValue">
+                    <button class="searchBtn" type="button" @click="searchStoreName()"><i
+                            class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+                <!-- 會員中心 -->
+                <div class="userCenterArea">
+                    <!-- 預設未登入頭貼 -->
+                    <img class="userBtn" src="../sally/explorer.png" alt="" @mouseenter="showFnList">
+                    <div class="userFnList" :class="{ 'fnListVisible': isFnListVisible }" @mouseleave="showFnList">
+                        <!-- 登入顯示 -->
+                        <ul v-if="this.isLogIn">
+                            <li @click="goToUserInfoPage">個人資料</li>
+                            <li @click="goToUserPostPage">個人貼文</li>
+                            <li @click="logout()">登出</li>
+                        </ul>
+                        <!-- 未登入顯示 -->
+                        <ul v-if="!this.isLogIn">
+                            <li @click="login()" >登入</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- 店家資訊 -->
         <div class="storeCard1">
@@ -244,10 +333,137 @@ export default {
     box-sizing: border-box;
     // font-family: "Poppins", sans-serif;
 }
+.headerArea {
+        width: 100vw;
+        height: 80px;
 
-.header {
-    height: 10vh;
-}
+        .fixed {
+            width: 100vw;
+            height: 80px;
+            background-color: #EE7214;
+            box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 99;
+
+            .logoArea {
+                width: 20%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .logoBtn {
+                    border: none;
+                    background: none;
+                    padding: 0;
+                    cursor: pointer;
+
+                    img {
+                        height: 80px;
+                        margin-top: 10px;
+                    }
+                }
+            }
+
+            .searchArea {
+                width: 60vw;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .searchName {
+                    width: 90%;
+                    height: 55%;
+                    background-color: white;
+                    border: none;
+                    outline: none;
+                    border-top-left-radius: 100px;
+                    border-bottom-left-radius: 100px;
+                    font-size: 1.2em;
+                    text-indent: 20px;
+                }
+
+                .searchBtn {
+                    width: 10%;
+                    height: 55%;
+                    background-color: white;
+                    border: none;
+                    outline: none;
+                    border-top-right-radius: 100px;
+                    border-bottom-right-radius: 100px;
+                    color: #EE7214;
+                    font-size: 1.5em;
+                    font-weight: bolder;
+                    cursor: pointer;
+
+                    &:hover {
+                        color: #ee7214b2;
+                        text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+                    }
+                }
+            }
+
+            .userCenterArea {
+                width: 20%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .userBtn {
+                    border: none;
+                    border-radius: 50%;
+                    width: 55px;
+                    height: 55px;
+                    padding: 0;
+                    cursor: pointer;
+                }
+
+                .userFnList {
+                    /* display: none; */
+                    overflow: hidden;
+                    max-height: 0;
+                    position: fixed;
+                    top: 90px;
+                    transition: max-height 0.3s ease-in;
+                    z-index: 2;
+                    background-color: white;
+                    width: 120px;
+                    border-radius: 10px;
+                    font-size: 1.2em;
+                    font-weight: bolder;
+                    color: #EE7214;
+                    display: flex;
+                    justify-content: center;
+
+                    &.fnListVisible {
+                        max-height: 100px;
+                        transition: max-height .3s ease-in;
+                        display: flex;
+                        justify-content: center;
+                    }
+                }
+
+                li {
+                    list-style-type: none;
+                    margin: 2px 0;
+                    cursor: pointer;
+
+                    &:hover {
+                        color: #527853;
+                    }
+                }
+            }
+        }
+    }
+// body {
+//     background: #F9E8D9;
+// }
 
 .bgArea {
     // padding: 10% 5% 0;

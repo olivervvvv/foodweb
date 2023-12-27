@@ -65,6 +65,9 @@ export default {
         console.error('Error fetching Post data:', error);
       }
     },
+    goTo20Post(){
+      this.$router.push("/20POST");
+    },
     singup() {
       console.log('singup');
     },
@@ -77,12 +80,15 @@ export default {
 
 
     <div class="btn-container" v-if="!this.isLogIn">
-      <button class="green-btn" @click="login()">登陸&註冊</button>
+      <button class="blue-btn" @click="login()">登陸&註冊</button>
+      <button class="blue-btn" @click="goTo20Post()">每日貼文</button>
       <!-- <button class="blue-btn" @click="singup()">註冊</button> -->
     </div>
     <div class="btn-container" v-if="this.isLogIn" >
       <button class="green-btn" @click="logout()">登出</button>
+      <button class="green-btn" @click="goTo20Post()">每日貼文</button>
     </div>
+
 
 
 
@@ -338,7 +344,7 @@ export default {
   width: 100px;
   padding: 10px;
   margin: 5px;
-  background-color: #e3b82c;
+  background-color: #3b64e1;;
   color: rgb(0, 0, 0);
   font-size: 12pt;
   font-weight: 800;
@@ -348,14 +354,14 @@ export default {
 }
 
 .blue-btn:hover {
-  background-color: #e6e5bc;
+  background-color: #d6d5e9;
 }
 
 .green-btn {
   width: 100px;
   padding: 10px;
   margin: 5px;
-  background-color: #3b64e1;
+  background-color: #28ba00;
   font-size: 12pt;
   font-weight: 800;
   color: rgb(226, 224, 255);
@@ -365,7 +371,7 @@ export default {
 }
 
 .green-btn:hover {
-  background-color: #d6d5e9;
+  background-color: #1d8700;
   color: black;
 }
 

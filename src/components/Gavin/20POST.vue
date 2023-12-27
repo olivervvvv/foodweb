@@ -1,10 +1,10 @@
 <!-- 登入後顯示此畫面 -->
 <script>
 import axios from 'axios';
-import tongHeader from "../tong/Header.vue"
 export default {
     data() {
         return {
+            isFnListVisible: false,//header需要
             postData:{},
             commentData:{},
             postId:0,
@@ -17,22 +17,108 @@ export default {
             userId:0,
             showcomment:false,
             commentInput:"",
+            inputValue:"",//搜尋欄輸入值
+            isLogIn:false,//登入狀態
 
-            InputValue:"",
-            isLogIn:false,
+            items: [], // Array to store loaded content
+            loading: false,
+            page: 0,
         }
     },
     components: {
-        tongHeader,
     },
     mounted() {
-        this.getPost();
+        this.loadContent();
+        window.addEventListener("scroll", this.handleScroll);
+        // this.getPost();
         this.setInputValue();
         this.logInCheck();
     },
     methods: {
+        async loadContent() {
+            this.loading = true;
+            try {
+                // Make an API request using Axios
+                const response = await axios.get(`http://localhost:8081/posts/getNewPosts?page=${this.page}`);
+                console.log(response.data);
+                this.postData = response.data.commVoList; // 更新組件的數據
+                console.log('this.postData from DB:', this.postData);
+                if (this.postData .length > 0) {
+                    // Append the new items to the existing items array
+                    this.items = [...this.items, ...this.postData ];
+                    // Increment the page number
+                    this.page++;
+                    console.log('this.page:',this.page);
+                }
+
+                // 遍歷每個帖子，獲取前兩條評論
+                for (const post of this.postData) {
+                    post.comments = await this.getTopTwoComments(post.postInfo.postId);
+                }
+
+
+            } catch (error) {
+                console.error('Error loading content:', error);
+            } finally {
+                this.loading = false;
+            }
+        },
+        handleScroll() {
+            if (
+                window.innerHeight + window.scrollY >=
+                document.documentElement.offsetHeight - 100 &&
+                !this.loading
+            ) {
+                this.loadContent();
+            }
+        },
+        //點擊logo回首頁
+        goToHomePage() {
+            this.$router.push("/");
+        },
+        //搜尋
+        searchStoreName(){
+            console.log("search inputtext : ",this.inputValue);
+            // 使用 $router.push 实现页面跳转，并传递参数
+            this.$router.push({
+                name: "storePage",
+                query: { value: this.inputValue }
+            });
+        },
+        //點擊頭像顯示功能導覽列
+        showFnList() {
+            this.isFnListVisible = !this.isFnListVisible;
+            // this.$router.push({ name: 'logi' });
+        },
+        //功能導覽列:至個人資料頁面
+        goToUserInfoPage() {
+            this.$router.push("/userInfo");
+        },
+        //功能導覽列:至個人貼文頁面
+        goToUserPostPage() {
+            this.$router.push("/userPost");
+        },
         setInputValue(){
             console.log("傳入之資料: ",this.$route.query.value);
+        },
+        //登入
+        login() {
+            console.log('login');
+            this.$router.push("/login");
+        },
+        //登出
+        async logout(){
+            try {
+            const response = await axios.get(`http://${locohost}/users/logout`,{
+                withCredentials: true,
+            });
+            const DBdata = response.data; // 這裡是後端返回的
+            console.log('postData from DB:', DBdata);
+            this.isLogIn=false;
+            console.log("this.isLogIn : ",this.isLogIn)
+            } catch (error) {
+                console.error('Error fetching Post data:', error);
+            }
         },
         async getPost() {
             try {
@@ -179,12 +265,47 @@ export default {
 </script>
 
 <template>
-    <div class="headerBtn">
-        <!-- <Header></Header> -->
-        <tongHeader></tongHeader>
-    </div>
 <div class="post-container" style="user-select: none;">
-    <div class="instagram-post" v-for="(post, index) in postData" :key="index">
+        <!-- Header區域 -->
+        <div class="headerArea">
+        <div class="fixed">
+            <!-- logo -->
+            <div class="logoArea">
+                <button class="logoBtn" aria-label="回首頁" data-balloon-pos="down" @click="goToHomePage">
+                    <img src="../sally/logo 2.png" alt="">
+                </button>
+            </div>
+            <!-- 搜尋列 -->
+            <div class="searchArea">
+                <input class="searchName" type="text" placeholder="搜尋地區或店名" v-model="this.inputValue">
+                <button class="searchBtn" type="button" @click="searchStoreName()"><i
+                        class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+            <!-- 會員中心 -->
+            <div class="userCenterArea">
+                <!-- 預設未登入頭貼 -->
+                <img class="userBtn" src="../sally/explorer.png" alt="" @mouseenter="this.showFnList">
+                <div class="userFnList" :class="{ 'fnListVisible': isFnListVisible }" @mouseleave="this.showFnList">
+                    <!-- 登入顯示 -->
+                    <ul v-if="this.isLogIn">
+                        <li @click="goToUserInfoPage">個人資料</li>
+                        <li @click="goToUserPostPage">個人貼文</li>
+                        <li @click="logout()">登出</li>
+                    </ul>
+                    <!-- 未登入顯示 -->
+                    <ul v-if="!this.isLogIn">
+                        <li @click="login()" >登入</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="instagram-post" v-for="(post, index) in items" :key="index">
         <!-- 發文者頭像及名子 -->
         <div class="header">
             <figure style="height:32px;width: 32px;margin-right: 2%;">
@@ -262,18 +383,8 @@ export default {
 
 </template>
 <style lang="scss" scoped>
-.header{
-    display: flex;
-    margin: 2%;
-}
-.headerBtn{
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    // margin: 2%;
-    
-}
+
+
 .post-container{
     display: flex;
     flex-direction: column;
@@ -281,6 +392,135 @@ export default {
     justify-content: space-evenly;
     margin: 10px;
     width: 99vw;
+    .headerArea {
+    width: 100vw;
+    height: 80px;
+
+    .fixed {
+        width: 100vw;
+        height: 80px;
+        background-color: #EE7214;
+        box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 99;
+
+        .logoArea {
+            width: 20%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .logoBtn {
+                border: none;
+                background: none;
+                padding: 0;
+                cursor: pointer;
+
+                img {
+                    height: 80px;
+                    margin-top: 10px;
+                }
+            }
+        }
+
+        .searchArea {
+            width: 60vw;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .searchName {
+                width: 90%;
+                height: 55%;
+                background-color: white;
+                border: none;
+                outline: none;
+                border-top-left-radius: 100px;
+                border-bottom-left-radius: 100px;
+                font-size: 1.2em;
+                text-indent: 20px;
+            }
+
+            .searchBtn {
+                width: 10%;
+                height: 55%;
+                background-color: white;
+                border: none;
+                outline: none;
+                border-top-right-radius: 100px;
+                border-bottom-right-radius: 100px;
+                color: #EE7214;
+                font-size: 1.5em;
+                font-weight: bolder;
+                cursor: pointer;
+
+                &:hover {
+                    color: #ee7214b2;
+                    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+                }
+            }
+        }
+
+        .userCenterArea {
+            width: 20%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .userBtn {
+                border: none;
+                border-radius: 50%;
+                width: 55px;
+                height: 55px;
+                padding: 0;
+                cursor: pointer;
+            }
+
+            .userFnList {
+                /* display: none; */
+                overflow: hidden;
+                max-height: 0;
+                position: fixed;
+                top: 90px;
+                transition: max-height 0.3s ease-in;
+                z-index: 2;
+                background-color: white;
+                width: 120px;
+                border-radius: 10px;
+                font-size: 1.2em;
+                font-weight: bolder;
+                color: #EE7214;
+                display: flex;
+                justify-content: center;
+
+                &.fnListVisible {
+                    max-height: 100px;
+                    transition: max-height .3s ease-in;
+                    display: flex;
+                    justify-content: center;
+                }
+            }
+            ul{
+                padding: 0%;
+            }
+            li {
+                list-style-type: none;
+                margin: 2px 0;
+                cursor: pointer;
+
+                &:hover {
+                    color: #527853;
+                }
+            }
+        }
+    }
+}
 }
 .instagram-post {
     width: 40%;
