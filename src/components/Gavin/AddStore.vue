@@ -23,9 +23,8 @@ export default {
             this.showCityList=false;
         },
         async addStore() {
-
             // 检查必填字段
-            if (!this.name || !this.address || !this.locationCity||this.foodStyle) {
+            if (!this.name || !this.address || !this.locationCity||!this.foodStyle) {
                 // 使用 alert 显示提示框
                 alert('請填寫所有資料');
                 return;
@@ -43,7 +42,9 @@ export default {
             // console.log('this.address',this.address);
             // console.log('this.locationCity:', this.locationCity);
             try {
-                const response = await axios.post(`http://${locohost}/foodMap/create`,formData)
+                const response = await axios.post(`http://${locohost}/foodMap/create`,{
+                    withCredentials: true,
+                },formData)
                 const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
                 console.log('postData from DB:', DBdata);
             } catch (error) {
