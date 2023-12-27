@@ -38,7 +38,7 @@ export default {
     async getPostFromBackend() {
       try {
         const response = await axios.get(
-          "http://localhost:8081/posts/getPhoto?postId=1"
+          "http://localhost:8081/posts/getPost?postId=1"
         );
         console.log(response.data.postInfo);
         this.savedContent = response.data.postInfo; // 設置資料到 savedContent 中
