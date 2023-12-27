@@ -431,7 +431,6 @@ export default {
             display: flex;
             justify-content: center;
             align-items: center;
-
             .userBtn {
                 border: none;
                 border-radius: 50%;
