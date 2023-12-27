@@ -119,12 +119,16 @@ export default {
                 </div>
                 <!-- 會員中心 -->
                 <div class="userCenterArea">
+                    <!-- 預設未登入頭貼 -->
                     <img class="userBtn" src="../sally/explorer.png" alt="" @mouseenter="showFnList">
                     <div class="userFnList" :class="{ 'fnListVisible': isFnListVisible }" @mouseleave="showFnList">
                         <ul>
                             <li @click="goToUserInfoPage">個人資料</li>
                             <li @click="goToUserPostPage">個人貼文</li>
                             <li>登出</li>
+                        </ul>
+                        <ul>
+                            <li>登入</li>
                         </ul>
                     </div>
                 </div>
@@ -331,15 +335,13 @@ export default {
             .storePhoto {
                 width: 40%;
                 max-height: 100%;
+                padding: 10px;
 
-                /* 最大高度為父元素的100% */
-                // width: 40%;
-                // height: inherit;
                 img {
                     width: 100%;
                     height: 100%;
-                    object-fit: cover;
-                    /* 圖片填滿整個區域，可能裁切部分內容 */
+                    border-radius: 5px;
+                    object-fit: cover; /* 圖片填滿整個區域，可能裁切部分內容 */
                 }
             }
 
@@ -394,7 +396,7 @@ export default {
 
     .cityArea {
         width: 150px;
-        background-color: #F7B787;
+        // background-color: #F7B787;
         border: 3px solid #EE7214;
         border-radius: 25px;
         display: flex;
@@ -409,18 +411,22 @@ export default {
             width: 55px;
             height: 35px;
             border: 0px;
-            background-color: #F7B787;
+            // background-color: #F7B787;
+            background: none;
             border-radius: 30px;
-            color: white;
+            color: #EE7214;
             font-size: 1.2em;
             font-weight: bolder;
+            cursor: pointer;
 
             &:hover {
-                background-color: rgb(122, 134, 125);
+                // background-color: rgb(122, 134, 125);
+                color: #527853;
             }
 
             &:active {
-                background-color: rgb(249, 216, 105);
+                // background-color: rgb(249, 216, 105);
+                color: #527853ac;
             }
         }
     }
