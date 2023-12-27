@@ -8,10 +8,22 @@ export default {
         }
     },
     mounted() {
-        
+
     },
     methods: {
-
+        async getStoreInfo() {
+            this.storeId = this.$route.params.storeId;
+            console.log("this.storeId : ", this.storeId);
+            try {
+                const response = await axios.get(`http://${locohost}/posts/getPostByUser?userId=${this.userId}`);
+                const storeData = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
+                console.log('storeData from DB:', storeData);
+                this.storeInfo = storeData.storeInfo;
+                console.log('this.storeInfoList :', this.storeInfo);
+            } catch (error) {
+                console.error('Error getStoreInfo : ', error);
+            }
+        },
     }
 }
 </script>
@@ -66,7 +78,7 @@ export default {
     flex-direction: column;
     align-items: center;
 
-    .postArea{
+    .postArea {
         width: 60%;
         background-color: white;
         border-radius: 10px;
@@ -85,6 +97,7 @@ export default {
             color: #527853;
             position: relative;
         }
+
         .post {
             width: 95%;
             height: 40px;
