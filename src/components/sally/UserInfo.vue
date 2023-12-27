@@ -60,7 +60,7 @@ export default {
     <div class="bgArea">
         <!-- 會員頭像 -->
         <div class="userPhoto">
-            <img src="" alt="" />
+            <img src="../sally/explorer.png" alt="" />
             <button class="updateBtn" @click="updateImgPage = true">編輯頭像</button>
         </div>
         <!-- 會員資訊 -->
@@ -144,10 +144,6 @@ export default {
     // font-family: "Poppins", sans-serif;此行導致icon無法正確顯示
 }
 
-// body {
-//     background: #F9E8D9;
-// }
-
 .bgArea {
     width: 100vw;
     height: 100vh;
@@ -170,7 +166,7 @@ export default {
             width: 250px;
             height: 250px;
             border-radius: 250px;
-            border: 2px dashed gray;
+            // border: 2px dashed gray;
             position: relative;
             transform: translateY(10px);
         }
