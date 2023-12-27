@@ -30,7 +30,7 @@ export default {
 
 <style lang="scss"  scoped>
 .searchBtn {
-            width: 120px;
+            // width: 120px;
             height: 30px;
             margin: 15px;
             background-color: #EE7214;
