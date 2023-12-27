@@ -9,8 +9,13 @@ export default {
             storeId: 0,
             postInfoList: {},
             storeInfoList: {},
+
             storeInfo:{},
             goToPostpostId:0,
+
+
+            storeInfo: {},
+            goToPostpostId: 0,
 
             showCreatePost: false, // 控制是否显示创建贴文的页面
             description: "", // 存储新贴文的内容
@@ -106,33 +111,33 @@ export default {
         },
         async getStoreInfo() {
             this.storeId = this.$route.params.storeId;
-            console.log("this.storeId : ",this.storeId);
-                try {
+            console.log("this.storeId : ", this.storeId);
+            try {
                 const response = await axios.get(`http://${locohost}/foodMap/searchStoreId?storeId=${this.storeId}`);
                 const storeData = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
                 console.log('storeData from DB:', storeData);
                 this.storeInfo = storeData.storeInfo;
                 console.log('this.storeInfoList :', this.storeInfo);
-                } catch (error) {
-                    console.error('Error getStoreInfo : ', error);
-                }
+            } catch (error) {
+                console.error('Error getStoreInfo : ', error);
+            }
         },
         async getPostInfo() {
             this.storeId = this.$route.params.storeId;
-            console.log("this.storeId : ",this.storeId);
-                try {
+            console.log("this.storeId : ", this.storeId);
+            try {
                 const response = await axios.get(`http://${locohost}/posts/getPostList?storeId=${this.storeId}`);
                 const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
                 console.log('postData from DB:', DBdata);
                 this.postInfoList = DBdata.postInfoList
                 console.log('this.postInfoList:', this.postInfoList);
-                } catch (error) {
-                    console.error('Error getPostInfo() : ', error);
-                }
+            } catch (error) {
+                console.error('Error getPostInfo() : ', error);
+            }
         },
-        goToPostView(postId){
+        goToPostView(postId) {
             console.log('postId:', postId);
-            this.goToPostpostId=postId;
+            this.goToPostpostId = postId;
             this.$router.push({
                 name: "postView",
                 query: { value: this.goToPostpostId }
@@ -153,33 +158,33 @@ export default {
             formData.append('picture', this.picture);
             formData.append('locationCity', this.storeInfo.locationCity);
 
-            console.log("this.storeId",this.storeId);
-            console.log("this.postTitle",this.postTitle);
-            console.log("this.description",this.description);
-            console.log("this.picture",this.picture);
-            console.log("this.storeInfo.locationCity",this.storeInfo.locationCity);
-            console.log("formData : ",formData);
-            
-            axios.post(`http://${locohost}/posts/create`,formData,
-            {
-                withCredentials: true,
-            })
-            .then((response) => {
-                console.log(response);
-                console.log("发布贴文:", this.postTitle);
-                // 发布后可以隐藏创建贴文的页面
-                this.showCreatePost = false;
-            })
-            .catch((error) => {
-                console.log(error);
-                if (error.response.status == 401) {
-                    alert("你尚未登入");
-                }
-            });
+            console.log("this.storeId", this.storeId);
+            console.log("this.postTitle", this.postTitle);
+            console.log("this.description", this.description);
+            console.log("this.picture", this.picture);
+            console.log("this.storeInfo.locationCity", this.storeInfo.locationCity);
+            console.log("formData : ", formData);
 
-        // console.log("发布贴文:", this.description);
-        // // 发布后可以隐藏创建贴文的页面
-        // this.showCreatePost = false;
+            axios.post(`http://${locohost}/posts/create`, formData,
+                {
+                    withCredentials: true,
+                })
+                .then((response) => {
+                    console.log(response);
+                    console.log("发布贴文:", this.postTitle);
+                    // 发布后可以隐藏创建贴文的页面
+                    this.showCreatePost = false;
+                })
+                .catch((error) => {
+                    console.log(error);
+                    if (error.response.status == 401) {
+                        alert("你尚未登入");
+                    }
+                });
+
+            // console.log("发布贴文:", this.description);
+            // // 发布后可以隐藏创建贴文的页面
+            // this.showCreatePost = false;
         },
         handleFileChange(event) {
             this.picture = event.target.files[0];
@@ -256,7 +261,7 @@ export default {
         <!-- 店家資訊 -->
         <div class="storeCard1">
             <div class="storePhoto">
-                <img :src="(`../../../${storeInfo.filePath}`)" v-if="storeInfo.filePath" >
+                <img :src="(`../../../${storeInfo.filePath}`)" v-if="storeInfo.filePath">
                 <!-- 預設店家圖片 -->
                 <img src="../../main/resources/static/images/project_noPicture.png" alt="" v-else>
             </div>
@@ -315,7 +320,7 @@ export default {
             <span class="line">關於<span>{{ storeInfo.name }}</span>的貼文</span>
             <div class="post" v-for="(post, index) in this.postInfoList">
                 <p class="postTitle">{{ post.description }}</p>
-                <button class="moreBtn" @click="goToPostView(post.postId)" >More...</button>
+                <button class="moreBtn" @click="goToPostView(post.postId)">More...</button>
             </div>
         </div>
     </div>
@@ -483,14 +488,17 @@ export default {
 
         .storePhoto {
             width: 40%;
-            max-height: 100%; /* 最大高度為父元素的100% */
-            // width: 40%;
-            // height: inherit;
+            max-height: 100%;
+            /* 最大高度為父元素的100% */
+            padding: 10px;
         }
-        .storePhoto img {
+
+        img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* 圖片填滿整個區域，可能裁切部分內容 */
+            border-radius: 5px;
+            object-fit: cover;
+            /* 圖片填滿整個區域，可能裁切部分內容 */
         }
 
         .storeInfoArea {
@@ -806,5 +814,4 @@ export default {
             }
         }
     }
-}
-</style>
+}</style>
