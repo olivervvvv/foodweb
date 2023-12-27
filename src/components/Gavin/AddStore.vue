@@ -23,7 +23,6 @@ export default {
             this.showCityList=false;
         },
         async addStore() {
-
             // 检查必填字段
             if (!this.name || !this.address || !this.locationCity||!this.foodStyle) {
                 // 使用 alert 显示提示框
