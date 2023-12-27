@@ -54,7 +54,9 @@ export default {
     },
     async logout(){
       try {
-        const response = await axios.get(`http://${locohost}/users/logout`);
+        const response = await axios.get(`http://${locohost}/users/logout`,{
+              withCredentials: true,
+          });
         const DBdata = response.data; // 這裡是後端返回的
         console.log('postData from DB:', DBdata);
         this.isLogIn=false;

@@ -79,16 +79,17 @@ export default {
         },
         //登出
         async logout(){
-            console.log('登出按鈕');
-            // try {
-            //     const response = await axios.get(`http://${locohost}/users/logout`);
-            //     const DBdata = response.data; // 這裡是後端返回的
-            //     console.log('postData from DB:', DBdata);
-            //     this.isLogIn=false;
-            //     console.log("this.isLogIn : ",this.isLogIn)
-            // } catch (error) {
-            //     console.error('Error fetching Post data:', error);
-            // }
+            try {
+            const response = await axios.get(`http://${locohost}/users/logout`,{
+                withCredentials: true,
+            });
+            const DBdata = response.data; // 這裡是後端返回的
+            console.log('postData from DB:', DBdata);
+            this.isLogIn=false;
+            console.log("this.isLogIn : ",this.isLogIn)
+            } catch (error) {
+                console.error('Error fetching Post data:', error);
+            }
         },
         //點擊城市按鈕顯示找到的相對應資料
         async searchCity(city) {
