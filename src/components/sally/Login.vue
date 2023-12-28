@@ -17,6 +17,7 @@ export default {
       loginCheckCord:"",
       signupCheckCord:"",
       isChecked: false,
+      showSendBtn: true,
     };
   },
   computed: {
@@ -62,35 +63,42 @@ export default {
       const inputEmail = this.signupEmail;
       const inputPassword = this.signupPassword;
       const inputRepeatPassword = this.repeatPassword;
-      const users = JSON.parse(localStorage.getItem("users")) || [];
-      const isAccountExists = users.some(
-        (user) => user.Account === inputAccount
-      );
+
 
       if (inputAccount === "" || inputPassword === "" || inputEmail === "") {
         alert("帳號、Email及密碼不得為空");
-      } else {
+        return;
+      } 
+      else {
         if (inputPassword === inputRepeatPassword) {
-          //=======================註冊邏輯=========================
-          const singupData = {
-            name: inputAccount,
-            email: inputEmail,
-            password: inputPassword,
-          };
-          try {
-            const response = await axios.post(
-              `http://${locohost}/users/register`,
-              singupData
-            );
-            const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
-            console.log("postData from DB:", DBdata);
-            if (DBdata.role) {
-              alert("註冊成功");
-              this.isChecked = !this.isChecked;
-            }
-          } catch (error) {
-            console.error("Error registering user:", error);
+          if (this.showSendBtn) {
+            alert("請先取得驗證碼");
+            return;
           }
+          //=======================註冊邏輯=========================
+          axios
+            .get(
+              `http://${locohost}/users/register?frontRandomCode=` + this.signupCheckCord,
+              {
+                withCredentials: true,
+              }
+            )
+            .then((response) => {
+              console.log(response);
+              if (response.status == 201) {
+                //   this.$router.push({ name: "loginAfter" });
+                alert("註冊成功");
+                this.isChecked = !this.isChecked;
+              }
+            })
+            .catch((error) => {  // 使用箭頭函數以保持 this 的上下文
+              console.log("error:");
+              console.log(error);
+              if (error.response.status == 400) {
+                alert("驗證失敗,請重新取得驗證碼");
+                this.showSendBtn = true;
+              }
+            });
           //=======================註冊邏輯=========================
         } else {
           alert("輸入密碼不相同");
@@ -99,12 +107,50 @@ export default {
     },
     //送出註冊驗證碼
     sendsignupCheckCord(){
-
+      const inputAccount = this.signupAccount;
+      const inputEmail = this.signupEmail;
+      const inputPassword = this.signupPassword;
+      const inputRepeatPassword = this.repeatPassword;
+      if (inputAccount === "" || inputPassword === "" || inputEmail === "") {
+        alert("帳號、Email及密碼不得為空");
+      } else {
+        if (inputPassword === inputRepeatPassword) {
+      //=======================送出註冊驗證碼邏輯=========================
+      axios
+        .post(
+          `http://${locohost}/sentRandomCodeToEmailForRegister`,
+          {
+            name: inputAccount,
+            email: inputEmail,
+            password: inputPassword,
+          },
+          {
+            withCredentials: true,
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          if (response.status == 200) {
+            alert("送出驗證碼成功");
+            this.showSendBtn=false;
+          }
+        })
+        .catch(function (error) {
+          console.log("error:");
+          console.log(error);
+          if (error.response.status != 200) {
+            alert(error.response.data);
+          }
+        });
+        //=======================送出註冊驗證碼邏輯=========================
+        } else {
+            alert("輸入密碼不相同");
+        }
+      }
     },
     //送出登入驗證碼
-    sendloginCheckCord(){
-
-    },
+    //sendloginCheckCord(){
+    //},
     //選轉時清除輸入
     cleartxt() {
       this.email = "";
@@ -355,6 +401,7 @@ export default {
                       @click="register()"
                       >註冊此帳號</a>
                     <a
+                      v-if="this.showSendBtn"
                       href="#"
                       class="btn2 mt-4"
                       style="margin-top: 0; color: rgb(0, 0, 0)"
