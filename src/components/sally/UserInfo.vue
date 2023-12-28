@@ -142,7 +142,7 @@ export default {
                         <div class="userFnList" :class="{ 'fnListVisible': isFnListVisible }" @mouseleave="showFnList">
                             <!-- 登入顯示 -->
                             <ul v-if="this.isLogIn">
-                                <li @click="goToUserInfoPage">個人資料</li>
+                                <li style="color: #527853; cursor: default;">個人資料</li>
                                 <li @click="goToUserPostPage">個人貼文</li>
                                 <li @click="logout()">登出</li>
                             </ul>
