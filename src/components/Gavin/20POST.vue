@@ -33,6 +33,16 @@ export default {
         // this.getPost();
         this.setInputValue();
         this.logInCheck();
+
+        this.commentInterval = setInterval(() => {
+        if (this.showcomment) {
+            this.showComment(this.postId, this.storeId);
+        }
+        }, 1000);
+    },
+    beforeDestroy() {
+        // Clear the interval when the component is destroyed
+        clearInterval(this.commentInterval);
     },
     methods: {
         getImage(picture) {
