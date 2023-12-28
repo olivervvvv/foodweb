@@ -7,10 +7,12 @@
 </template>
   
 <script>
+import axios from 'axios';
+
 export default {
     data() {
         return {
-            userId: 1, // 這裡應該根據你的需求設定使用者ID
+            userId: 1,
             picture: null,
         };
     },
@@ -24,13 +26,17 @@ export default {
                 formData.append('userId', this.userId);
                 formData.append('picture', this.picture);
 
-                const response = await fetch('http://localhost:8081/users/updateHeadshot', {
-                    withCredentials: true,
-                    method: 'POST',
-                    body: formData,
+                // 使用 axios.post 發送 POST 請求
+                const response = await axios.post(`http://${locohost}/users/updateHeadshot`, formData, {
+                    withCredentials: true, // 如果需要跨域携带 cookie
+                    headers: {
+                        'Content-Type': 'multipart/form-data', // 設定 Content-Type 為 multipart/form-data
+                    },
                 });
 
-                if (response.ok) {
+                console.log(response); // 檢查伺服器回傳的 response
+
+                if (response.status === 200) {
                     console.log('Headshot updated successfully!');
                 } else {
                     console.error('Error updating headshot:', response.statusText);
@@ -42,4 +48,3 @@ export default {
     },
 };
 </script>
-  
