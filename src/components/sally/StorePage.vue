@@ -8,7 +8,8 @@ export default {
             storeName: "",
             locationCity: "",
             storeInfoList: {},
-            isLogIn:false,
+            userInfo: {},
+            isLogIn: false,
         }
     },
     mounted() {
@@ -59,15 +60,17 @@ export default {
             }
         },
         // 檢查是否已登入
-        async logInCheck(){
+        async logInCheck() {
             try {
-                const response = await axios.get(`http://${locohost}/users/getcurrentUser`,{
+                const response = await axios.get(`http://${locohost}/users/getcurrentUser`, {
                     withCredentials: true,
                 });
                 var loginState = response.data;
                 console.log('loginState from DB:', loginState);
-                this.isLogIn=loginState.login;
-                console.log("this.isLogIn : ",this.isLogIn)
+                this.userInfo = loginState.usersEntity;
+                console.log(this.userInfo)
+                this.isLogIn = loginState.login;
+                console.log("this.isLogIn : ", this.isLogIn)
             } catch (error) {
                 console.error('Error fetching comments:', error);
             }
@@ -78,15 +81,15 @@ export default {
             this.$router.push("/login");
         },
         //登出
-        async logout(){
+        async logout() {
             try {
-            const response = await axios.get(`http://${locohost}/users/logout`,{
-                withCredentials: true,
-            });
-            const DBdata = response.data; // 這裡是後端返回的
-            console.log('postData from DB:', DBdata);
-            this.isLogIn=false;
-            console.log("this.isLogIn : ",this.isLogIn)
+                const response = await axios.get(`http://${locohost}/users/logout`, {
+                    withCredentials: true,
+                });
+                const DBdata = response.data; // 這裡是後端返回的
+                console.log('postData from DB:', DBdata);
+                this.isLogIn = false;
+                console.log("this.isLogIn : ", this.isLogIn)
             } catch (error) {
                 console.error('Error fetching Post data:', error);
             }
@@ -149,25 +152,27 @@ export default {
                 </div>
                 <!-- 搜尋列 -->
                 <div class="searchArea">
-                    <input class="searchName" type="text" placeholder="搜尋地區或店名" v-model="this.storeName">
+                    <input class="searchName" type="text" placeholder="搜尋店名" v-model="this.storeName">
                     <button class="searchBtn" type="button" @click="searchStoreName()"><i
                             class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
                 <!-- 會員中心 -->
                 <div class="userCenterArea">
-                    <!-- 預設未登入頭貼 -->
-                    <img class="userBtn" src="../sally/explorer.png" alt="" @mouseenter="showFnList">
-                    <div class="userFnList" :class="{ 'fnListVisible': isFnListVisible }" @mouseleave="showFnList">
-                        <!-- 登入顯示 -->
-                        <ul v-if="this.isLogIn">
-                            <li @click="goToUserInfoPage">個人資料</li>
-                            <li @click="goToUserPostPage">個人貼文</li>
-                            <li @click="logout()">登出</li>
-                        </ul>
-                        <!-- 未登入顯示 -->
-                        <ul v-if="!this.isLogIn">
-                            <li @click="login()" >登入</li>
-                        </ul>
+                    <div class="userPhoto">
+                        <!-- 預設未登入頭貼 -->
+                        <img class="userBtn" src="../sally/explorer.png" alt="" @mouseenter="showFnList">
+                        <div class="userFnList" :class="{ 'fnListVisible': isFnListVisible }" @mouseleave="showFnList">
+                            <!-- 登入顯示 -->
+                            <ul v-if="this.isLogIn">
+                                <li @click="goToUserInfoPage">個人資料</li>
+                                <li @click="goToUserPostPage">個人貼文</li>
+                                <li @click="logout()">登出</li>
+                            </ul>
+                            <!-- 未登入顯示 -->
+                            <ul v-if="!this.isLogIn">
+                                <li @click="login()">登入</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -201,9 +206,11 @@ export default {
         </div>
         <!-- 城市按鈕區域 -->
         <div class="cityArea">
-            <button v-for="cityString in city" class="cityBtn" @click="searchCity(cityString)">
-                {{ cityString }}
-            </button>
+            <div class="btnBorder">
+                <button v-for="cityString in city" class="cityBtn" @click="searchCity(cityString)">
+                    {{ cityString }}
+                </button>
+            </div>
         </div>
     </div>
 </template>
@@ -301,47 +308,61 @@ export default {
                 justify-content: center;
                 align-items: center;
 
-                .userBtn {
-                    border: none;
-                    border-radius: 50%;
-                    width: 55px;
-                    height: 55px;
-                    padding: 0;
-                    cursor: pointer;
-                }
-
-                .userFnList {
-                    /* display: none; */
-                    overflow: hidden;
-                    max-height: 0;
-                    position: fixed;
-                    top: 90px;
-                    transition: max-height 0.3s ease-in;
-                    z-index: 2;
-                    background-color: white;
-                    width: 120px;
-                    border-radius: 10px;
-                    font-size: 1.2em;
-                    font-weight: bolder;
-                    color: #EE7214;
+                .userPhoto {
+                    width: 100%;
+                    height: 100%;
                     display: flex;
-                    justify-content: center;
+                    justify-content: end;
+                    align-items: center;
+                    margin-right: 20px;
 
-                    &.fnListVisible {
-                        max-height: 100px;
-                        transition: max-height .3s ease-in;
+                    .userBtn {
+                        border: none;
+                        border-radius: 50%;
+                        width: 55px;
+                        height: 55px;
+                        padding: 0;
+                        // position: absolute;
+                        // right: 70px;
+                        // right: 0px;
+                        margin-right: 50px;
+                        cursor: pointer;
+                    }
+
+                    .userFnList {
+                        /* display: none; */
+                        overflow: hidden;
+                        max-height: 0;
+                        position: fixed;
+                        top: 90px;
+                        right: 20px;
+                        transition: max-height 0.3s ease-in;
+                        z-index: 2;
+                        background-color: white;
+                        width: 120px;
+                        border-radius: 10px;
+                        font-size: 1.2em;
+                        font-weight: bolder;
+                        color: #EE7214;
                         display: flex;
                         justify-content: center;
-                    }
-                }
 
-                li {
-                    list-style-type: none;
-                    margin: 2px 0;
-                    cursor: pointer;
+                        &.fnListVisible {
+                            max-height: 100px;
+                            transition: max-height .3s ease-in;
+                            display: flex;
+                            justify-content: center;
+                        }
 
-                    &:hover {
-                        color: #527853;
+                        li {
+                            list-style-type: none;
+                            margin: 2px 0;
+                            cursor: pointer;
+
+                            &:hover {
+                                color: #527853;
+                            }
+                        }
                     }
                 }
             }
@@ -379,7 +400,8 @@ export default {
                     width: 100%;
                     height: 100%;
                     border-radius: 5px;
-                    object-fit: cover; /* 圖片填滿整個區域，可能裁切部分內容 */
+                    object-fit: cover;
+                    /* 圖片填滿整個區域，可能裁切部分內容 */
                 }
             }
 
@@ -393,7 +415,7 @@ export default {
 
                 .storeTitle {
                     font-weight: bolder;
-                    font-size: x-large;
+                    font-size: 1.4em;
                     color: #EE7214;
                 }
 
@@ -425,7 +447,7 @@ export default {
                 i {
                     margin: 0 3px;
                     font-weight: bolder;
-                    font-size: medium;
+                    font-size: 1.1em;
                     color: #527853
                 }
             }
@@ -433,38 +455,50 @@ export default {
     }
 
     .cityArea {
-        width: 150px;
-        // background-color: #F7B787;
-        border: 3px solid #EE7214;
-        border-radius: 25px;
+        width: 160px;
+        height: 440px;
+        // width: 13%;
+        // height: 70%;
+        max-width: 100%;
+        background-image: url("../sally/menu.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
+        align-items: center;
         position: fixed;
-        left: 10px;
-        top: 25%;
+        left: 3%;
+        top: 20%;
 
-        .cityBtn {
-            margin: 3px;
-            width: 55px;
-            height: 35px;
-            border: 0px;
-            // background-color: #F7B787;
-            background: none;
-            border-radius: 30px;
-            color: #EE7214;
-            font-size: 1.2em;
-            font-weight: bolder;
-            cursor: pointer;
+        .btnBorder {
+            // overflow-y: auto;
+            width: 70%;
+            max-height: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(55px, 1fr));
+            justify-content: center;
+            place-items: center;
+            margin-top: 20px;
 
-            &:hover {
-                // background-color: rgb(122, 134, 125);
-                color: #527853;
-            }
+            .cityBtn {
+                width: 55px;
+                height: 35px;
+                border: none;
+                background: none;
+                color: #EE7214;
+                font-size: 1.2em;
+                font-weight: bolder;
+                cursor: pointer;
 
-            &:active {
-                // background-color: rgb(249, 216, 105);
-                color: #527853ac;
+                &:hover {
+                    color: #527853;
+                }
+
+                &:active {
+                    color: #527853ac;
+                }
             }
         }
     }
