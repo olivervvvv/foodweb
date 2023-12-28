@@ -33,15 +33,15 @@ export default {
         // this.getPost();
         this.setInputValue();
         this.logInCheck();
-
+        // 第一次执行，并设置一个定时器每秒执行一次
         this.commentInterval = setInterval(() => {
-        if (this.showcomment) {
-            this.showComment(this.postId, this.storeId);
-        }
+            if (this.showcomment) {
+                this.showComment(this.postId, this.storeId);
+            }
         }, 1000);
     },
     beforeDestroy() {
-        // Clear the interval when the component is destroyed
+        // 在组件销毁前清除定时器，避免内存泄漏
         clearInterval(this.commentInterval);
     },
     methods: {
