@@ -107,6 +107,16 @@ const router = createRouter({
       name: 'userPost',
       component: () => import('../components/sally/UserPost.vue')
     },
+    {
+      path: '/test1',
+      name: 'test1',
+      component: () => import('../components/sally/test.vue')
+    },
+    {
+      path: '/HeadshotUpdate',
+      name: 'HeadshotUpdate',
+      component: () => import('../components/oliver/HeadshotUpdate.vue')
+    },
     
   ]
 })

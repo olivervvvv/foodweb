@@ -1,29 +1,13 @@
 <template>
-  <span style="font-family: verdana, geneva, sans-serif">
-    <div class="wrapper">
-      <h1>Register</h1>
-      <br />
-      <form>
-        <h3 style="margin-right: 200px">用戶名:</h3>
-        <input type="text" placeholder="Enter username" v-model="name" />
-        <h3 style="margin-right: 220px">信箱:</h3>
-        <input type="text" placeholder="Enter email" v-model="email" />
-        <h3 style="margin-right: 220px">密碼:</h3>
-        <input
-          type="password"
-          placeholder="Enter Password"
-          v-model="password"
-        />
-        <h3 style="margin-right: 190px">確認密碼:</h3>
-        <input
-          type="password"
-          placeholder="Repeat Password"
-          v-model="repeatPassword"
-        />
-      </form>
-      <button type="button" @click="register()">Register</button>
-    </div>
-  </span>
+<input type="text" placeholder="名稱" v-model="name">
+<input type="text" placeholder="信箱" v-model="email">
+<input type="password" placeholder="密碼" v-model="password">
+<br><br>
+<button type="button" @click="sentRandomCode()">寄出驗證碼</button>
+<br><br>
+<input type="text" placeholder="驗證碼" v-model="randomCode">
+<br>
+<button type="button" @click="register()">註冊</button>
 </template>
 
 <script>
@@ -34,21 +18,37 @@ export default {
       name: "",
       email: "",
       password: "",
-      repeatPassword:""
+      randomCode:""
     };
   },
   methods: {
     register() {
-      
-    if(this.password != this.repeatPassword){
-        alert("兩次密碼不相同");
-        return -1;
-    }
-    
-    
+      axios
+        .get(
+          `http://${locohost}/users/register?frontRandomCode=` + this.randomCode,
+          {
+            withCredentials: true,
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          if (response.status == 201) {
+            //   this.$router.push({ name: "loginAfter" });
+            alert("註冊成功");
+          }
+        })
+        .catch(function (error) {
+          console.log("error:");
+          console.log(error);
+          if (error.response.status == 400) {
+            alert("驗證失敗");
+          }
+        });
+    },
+    sentRandomCode(){
       axios
         .post(
-          "http://localhost:8081/users/register",
+          `http://${locohost}/sentRandomCodeToEmailForRegister`,
           {
             name: this.name,
             email: this.email,
@@ -72,7 +72,7 @@ export default {
             alert(error.response.data);
           }
         });
-    },
+    }
   },
 };
 </script>

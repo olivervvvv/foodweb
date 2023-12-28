@@ -14,7 +14,10 @@ export default {
       signupEmail: "",
       signupPassword: "",
       repeatPassword: "",
+      loginCheckCord:"",
+      signupCheckCord:"",
       isChecked: false,
+      showSendBtn: true,
     };
   },
   computed: {
@@ -60,41 +63,94 @@ export default {
       const inputEmail = this.signupEmail;
       const inputPassword = this.signupPassword;
       const inputRepeatPassword = this.repeatPassword;
-      const users = JSON.parse(localStorage.getItem("users")) || [];
-      const isAccountExists = users.some(
-        (user) => user.Account === inputAccount
-      );
+
 
       if (inputAccount === "" || inputPassword === "" || inputEmail === "") {
         alert("帳號、Email及密碼不得為空");
-      } else {
+        return;
+      } 
+      else {
         if (inputPassword === inputRepeatPassword) {
-          //=======================註冊邏輯=========================
-          const singupData = {
-            name: inputAccount,
-            email: inputEmail,
-            password: inputPassword,
-          };
-          try {
-            const response = await axios.post(
-              `http://${locohost}/users/register`,
-              singupData
-            );
-            const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
-            console.log("postData from DB:", DBdata);
-            if (DBdata.role) {
-              alert("註冊成功");
-              this.isChecked = !this.isChecked;
-            }
-          } catch (error) {
-            console.error("Error registering user:", error);
+          if (this.showSendBtn) {
+            alert("請先取得驗證碼");
+            return;
           }
+          //=======================註冊邏輯=========================
+          axios
+            .get(
+              `http://${locohost}/users/register?frontRandomCode=` + this.signupCheckCord,
+              {
+                withCredentials: true,
+              }
+            )
+            .then((response) => {
+              console.log(response);
+              if (response.status == 201) {
+                //   this.$router.push({ name: "loginAfter" });
+                alert("註冊成功");
+                this.isChecked = !this.isChecked;
+              }
+            })
+            .catch((error) => {  // 使用箭頭函數以保持 this 的上下文
+              console.log("error:");
+              console.log(error);
+              if (error.response.status == 400) {
+                alert("驗證失敗,請重新取得驗證碼");
+                this.showSendBtn = true;
+              }
+            });
           //=======================註冊邏輯=========================
         } else {
           alert("輸入密碼不相同");
         }
       }
     },
+    //送出註冊驗證碼
+    sendsignupCheckCord(){
+      const inputAccount = this.signupAccount;
+      const inputEmail = this.signupEmail;
+      const inputPassword = this.signupPassword;
+      const inputRepeatPassword = this.repeatPassword;
+      if (inputAccount === "" || inputPassword === "" || inputEmail === "") {
+        alert("帳號、Email及密碼不得為空");
+      } else {
+        if (inputPassword === inputRepeatPassword) {
+      //=======================送出註冊驗證碼邏輯=========================
+      axios
+        .post(
+          `http://${locohost}/sentRandomCodeToEmailForRegister`,
+          {
+            name: inputAccount,
+            email: inputEmail,
+            password: inputPassword,
+          },
+          {
+            withCredentials: true,
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          if (response.status == 200) {
+            alert("送出驗證碼成功");
+            this.showSendBtn=false;
+          }
+        })
+        .catch(function (error) {
+          console.log("error:");
+          console.log(error);
+          if (error.response.status != 200) {
+            alert(error.response.data);
+          }
+        });
+        //=======================送出註冊驗證碼邏輯=========================
+        } else {
+            alert("輸入密碼不相同");
+        }
+      }
+    },
+    //送出登入驗證碼
+    //sendloginCheckCord(){
+    //},
     //選轉時清除輸入
     cleartxt() {
       this.email = "";
@@ -223,15 +279,38 @@ export default {
                       @mouseleave="hidePassword"
                     ></i>
                   </div>
+                  <!-- 登入驗證碼 -->
+                  <!-- <div class="form-group mt-2">
+                    <input
+                      type="text"
+                      class="form-style"
+                      placeholder="請輸入驗證碼"
+                      id="loginCheckCord"
+                      v-model="loginCheckCord"
+                      autocomplete="off"
+                    />
+                    <i
+                      style="color: white"
+                      class="input-icon uil uil-envelope-question"
+                    ></i>
+                  </div> -->
                   <!-- 按鈕區-->
-                  <RouterLink
-                    to="#"
-                    class="btn mt-4"
-                    id="add"
-                    @click="this.setEmailAndPassword(), this.login()"
-                    style="color: rgb(0, 0, 0)"
-                    >登陸</RouterLink
-                  >
+                  <div style="display: flex;justify-content: space-around;" >
+                    <a
+                      href="#"
+                      class="btn mt-4"
+                      @click="this.setEmailAndPassword(), this.login()"
+                      style="color: rgb(0, 0, 0)"
+                      >登陸</a
+                    >
+                    <!-- <a
+                        href="#"
+                        class="btn2 mt-4"
+                        style="margin-top: 0; color: rgb(0, 0, 0)"
+                        @click="sendloginCheckCord()"
+                        >發送驗證碼</a> -->
+                    </div>
+
                   <p class="mb-0 mt-4 text-center">
                     <a href="#" class="link" style="color: white">忘記密碼?</a>
                   </p>
@@ -265,7 +344,7 @@ export default {
                       v-model="signupEmail"
                       autocomplete="off"
                     />
-                    <i style="color: white" class="input-icon uil uil-user"></i>
+                    <i style="color: white" class="input-icon uil uil-at"></i>
                   </div>
                   <div class="form-group mt-2">
                     <input
@@ -297,14 +376,38 @@ export default {
                       class="input-icon uil uil-lock-alt"
                     ></i>
                   </div>
-                  <a
-                    href="#"
-                    class="btn mt-4"
-                    id="SignUpBtn"
-                    style="margin-top: 0; color: rgb(0, 0, 0)"
-                    @click="register()"
-                    >註冊</a
-                  >
+                  <!-- 註冊驗證碼 -->
+                  <div class="form-group mt-2">
+                    <input
+                      type="text"
+                      class="form-style"
+                      placeholder="請輸入驗證碼"
+                      id="signupCheckCord"
+                      v-model="signupCheckCord"
+                      autocomplete="off"
+                    />
+                    <i
+                      style="color: white"
+                      class="input-icon uil uil-envelope-question"
+                    ></i>
+                  </div>
+
+                  <div style="display: flex;justify-content: space-around;">
+                    <a
+                      href="#"
+                      class="btn mt-4"
+                      id="SignUpBtn"
+                      style="margin-top: 0; color: rgb(0, 0, 0)"
+                      @click="register()"
+                      >註冊此帳號</a>
+                    <a
+                      v-if="this.showSendBtn"
+                      href="#"
+                      class="btn2 mt-4"
+                      style="margin-top: 0; color: rgb(0, 0, 0)"
+                      @click="sendsignupCheckCord()"
+                      >發送驗證碼</a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -430,9 +533,9 @@ h6 span {
   margin-top: 60px;
 }
 
-.card-3d-wrapper {
+.card-3d-wrapper {//卡面大小
   width: 100%;
-  height: 100%;
+  height: 110%;
   position: absolute;
   top: 0;
   left: 0;
@@ -616,6 +719,50 @@ h6 span {
 
 .btn:hover {
   background-color: #279eff;
+  color: #ffeba7;
+  box-shadow: 0 8px 24px 0 rgba(16, 39, 112, 0.2);
+}
+
+
+
+.btn2{
+  border-radius: 4px;
+  height: 44px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  -webkit-transition: all 200ms linear;
+  transition: all 200ms linear;
+  padding: 0 30px;
+  letter-spacing: 1px;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+  -ms-flex-pack: center;
+  text-align: center;
+  border: none;
+  background-color: #4CAF50;
+  color: #ffeba7;
+  box-shadow: 0 8px 24px 0 rgba(255, 235, 167, 0.2);
+}
+
+.btn2:active,
+.btn2:focus {
+  background-color: #3b8a3e;
+  color: #ffeba7;
+  box-shadow: 0 8px 24px 0 rgba(16, 39, 112, 0.2);
+}
+
+.btn2:hover {
+  background-color: #3b8a3e;
   color: #ffeba7;
   box-shadow: 0 8px 24px 0 rgba(16, 39, 112, 0.2);
 }

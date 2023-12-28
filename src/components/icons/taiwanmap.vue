@@ -3,9 +3,9 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      pathText: "",
-      storeDetail: "",
-      isLogIn:false,
+      pathText: "",//記錄點擊的縣市
+      storeDetail: "",//前四個商店詳細資訊
+      isLogIn:false,//登入狀態
     };
   },
   mounted() {
@@ -19,85 +19,92 @@ export default {
           const response = await axios.get(`http://${locohost}/users/getcurrentUser`,{
               withCredentials: true,
           });
+          //從後端獲取登入狀態
           var loginState = response.data;
           console.log('loginState from DB:', loginState);
+          //將登入狀態存進變數
           this.isLogIn=loginState.login;
           console.log("this.isLogIn : ",this.isLogIn)
       } catch (error) {
           console.error('Error fetching comments:', error);
       }
     },
+    //處理點擊縣市邏輯
     async handlePathClick(event) {
-      // 獲取點擊的 path 元素的 ID
+      // 獲取點擊的縣市元素的 ID
       const pathId = event.target.id;
-      // 在控制檯輸出 path 的 ID
+      // 在控制檯輸出縣市的 ID
       console.log('Clicked Path ID:', pathId);
       this.pathText = event.target.id;
-
+      //呼叫後端api
       try {
         const response = await axios.get(`http://${locohost}/foodMap/getlocationTop4?locationCity=${event.target.id}`);
         const DBdata = response.data; // 這裡假設後端返回的數據包含店家的所有信息
         console.log('postData from DB:', DBdata);
+        //獲取前四個商店詳細資訊
         this.storeDetail = DBdata;
         console.log('this.storeDetail:', this.storeDetail);
       } catch (error) {
         console.error('Error fetching Post data:', error);
       }
     },
+    //處理點擊商店邏輯
     handleMsgBoxClick(store, index) {
       console.log((index + 1) + "號btn, " + `index為${index}` + 'value:' + store.name + 'store ID:' + store.storeId);
       this.$router.push({ name: 'postPage1', params: { storeId: store.storeId } });
     },
+    //跳轉到login畫面
     login() {
       console.log('login');
       this.$router.push("/login");
     },
+    //登出邏輯
     async logout(){
+      //呼叫後端api
       try {
         const response = await axios.get(`http://${locohost}/users/logout`,{
               withCredentials: true,
           });
         const DBdata = response.data; // 這裡是後端返回的
         console.log('postData from DB:', DBdata);
+        //清除前端登入狀態
         this.isLogIn=false;
         console.log("this.isLogIn : ",this.isLogIn)
       } catch (error) {
         console.error('Error fetching Post data:', error);
       }
     },
+    //跳轉到每日貼文
     goTo20Post(){
       this.$router.push("/20POST");
     },
-    singup() {
-      console.log('singup');
-    },
+    //註冊按鈕(未實裝)
+    // singup() {
+    //   console.log('singup');
+    // },
   },
 
 };
 </script>
 <template>
   <div style="display: flex;align-items: center" class="maincon">
-
-
+    <!--未登入顯示-->
     <div class="btn-container" v-if="!this.isLogIn">
       <button class="blue-btn" @click="login()">登陸&註冊</button>
       <button class="blue-btn" @click="goTo20Post()">每日貼文</button>
-      <!-- <button class="blue-btn" @click="singup()">註冊</button> -->
+      <!--      未實裝之註冊按鈕          <button class="blue-btn" @click="singup()">註冊</button> -->
     </div>
+    <!--登入後顯示-->
     <div class="btn-container" v-if="this.isLogIn" >
       <button class="green-btn" @click="logout()">登出</button>
       <button class="green-btn" @click="goTo20Post()">每日貼文</button>
     </div>
-
-
-
-
+<!-- 前四個商店詳細資訊欄位 -->
     <div style="display: flex;">
       <div class="showArea" style="user-select: none;">
         <h1 style="color: white; width: 40px; height: 120px;margin-top: 20%;margin-right: 7%;">{{ pathText }}</h1>
         <div class="btnArea" v-if="pathText">
-          <div class="msgBox" v-for="(store, index) in storeDetail" :key="index" @click="handleMsgBoxClick(store, index)" :style="{ backgroundImage: 'url(' + store.filePath
- + ')' }">
+          <div class="msgBox" v-for="(store, index) in storeDetail" :key="index" @click="handleMsgBoxClick(store, index)" :style="{ backgroundImage: 'url(' + store.filePath+')' }">
         <div class="pText">
           <p style="font-size: 16pt;">{{ store.foodStyle }}</p>
           <p style="display: inline-block;text-align: center;margin-top: 1%;">{{ store.name }}</p>
@@ -110,7 +117,7 @@ export default {
 
 
 
-      <!-- Generator: Adobe Illustrator 24.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!-- 地圖欄位 -->
       <svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
         y="0px" viewBox="500 0 300 1295" style="enable-background:new 0 0 1000 1295;" xml:space="preserve">
         <!-- 	高雄 -->
@@ -155,7 +162,6 @@ export default {
     l13.7-1l4.6,3.1l4,8.7l5,2l4.3,1.2l4.1,2l6.8,2.2l3.6,4.2l-1.1,5.8l3.5,3.7l6.5,2.1l4.2,3.1l3.1,3.1l3.8,0.7l3.9-0.3l3.4,3.5
     l2.6,4.5l4.3,2.2l3.4,2.6l0.4,5l1.6,7.3l-1.9,7.8l-4.6,6.5l0.5,4.3l5.2,3.9l6.2,3.8l5.5,0.9l4,2.9l7.3,4.1L843.1,453.2L843.1,453.2z
     " />
-
         <!-- 宜蘭 -->
         <path id="宜蘭縣" @click="handlePathClick" class="st0" d="M982.4,378.5l2.1,0.5l1.6,2.2l-0.7,2.3l-3.8-0.1l-1.4-0.8l-1.7-2.7l0.9,0.3L982.4,378.5
     L982.4,378.5z M935.4,531.1h-1.1l-11.1-1.7l-18.5-11.1l-3.8,0.9l-2.4,6l-4.9,4.5h-6.5l-8.3-3.2l-15-3.8l-6.5-3.1l-2.5-2.1l-5.9-4.7
@@ -190,7 +196,6 @@ export default {
     l-3.8-3.2l-4.6-2.6l-0.1-5.1l1.6-6.6l-1.6-4.4l-3.9-3.5l-2.5-10l-3.2-6.8l-0.4-3.5l0.5-3.6l-2.1-2.2l-3.8-1.2l-4,2l-2.9,2.5
     l-10.9,6.4l-3.6,4l-2.1,4.6l-1.8,2.4l-1.6,3l3.8,4.2l5.7,5.5l1.2,6.3l-1.5,7.4l3.9,6.7l5.8,4.6l3.8,4.3l3.7,3.3l4.8,1l5.8,0.1
     L897.4,342.8L897.4,342.8z" />
-
         <!-- 臺北	 -->
         <path id="台北市" @click="handlePathClick" class="st0" d="M897.4,342.8l-4.2,1.7l-5.8-0.1l-4.8-1l-3.7-3.3l-3.8-4.3l-5.8-4.6l-3.9-6.7l1.5-7.4l-1.2-6.3
         l-5.7-5.5l-3.8-4.2l1.6-3l1.8-2.4l2.1-4.6l3.6-4l10.9-6.4l2.9-2.5l4-2l3.8,1.2l2.1,2.2l-0.5,3.6l0.4,3.5l3.2,6.8l2.5,10l3.9,3.5
@@ -221,7 +226,6 @@ export default {
     l6.1,0.1l3.9-3.2l1.7-4.9l2.1-3l5.3-0.8l7-5.7l4.4-2.4l3.8-3.8l16.3-9.4l7.2-2l12.6-2.3l6.9-0.4l5.3,4.6l5,5.9l12.6,4.6l3.7-0.5
     l8.3-2.4l4.7,3.4l2.4,3.9l6.3-0.6l11.7-2.4l4-1.3v-3.4l0.3-5L666.5,735.3L666.5,735.3z M573.8,766.1l-3.8,4.1l0.9,5.6l6.1,2.4l7,4.5
     l7.3,1.7l6.8-2.7l4.5-0.6l3-2.2l-2.5-6.8l-2.5-4l-4.1-2.2l-5.6-2.1l-7.8,0.7L573.8,766.1L573.8,766.1z" />
-
         <!-- 嘉義市 -->
         <path id="嘉義市" @click="handlePathClick" class="st0" d="M573.8,766.1l9.3-1.6l7.8-0.7l5.6,2.1l4.1,2.2l2.5,4l2.5,6.8l-3,2.2l-4.5,0.6l-6.8,2.7l-7.3-1.7
     l-7-4.5l-6.1-2.4l-0.9-5.6L573.8,766.1L573.8,766.1z" />
@@ -306,20 +310,7 @@ export default {
         <polygon id="_x31_" class="st0" points="669.9,455.7 669.9,455.7 669.9,455.7 669.9,455.7 " />
         <polygon id="_x32_" class="st0" points="569.7,951 569.7,951 569.7,951 569.7,951 " />
       </svg>
-
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
   </div>
 </template>
 
@@ -336,7 +327,7 @@ export default {
 .btn-container {
   position: fixed;
   right: 3%;
-  top: 4%;
+  top: 7%;
   display: flex;
 }
 
