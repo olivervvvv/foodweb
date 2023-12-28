@@ -27,7 +27,7 @@ export default {
                 formData.append('picture', this.picture);
 
                 // 使用 axios.post 發送 POST 請求
-                const response = await axios.post('http://localhost:8081/users/updateHeadshot', formData, {
+                const response = await axios.post(`http://${locohost}/users/updateHeadshot`, formData, {
                     withCredentials: true, // 如果需要跨域携带 cookie
                     headers: {
                         'Content-Type': 'multipart/form-data', // 設定 Content-Type 為 multipart/form-data
