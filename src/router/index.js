@@ -112,6 +112,11 @@ const router = createRouter({
       name: 'HeadshotUpdate',
       component: () => import('../components/oliver/HeadshotUpdate.vue')
     },
+    {
+      path: '/test2',
+      name: 'test2',
+      component: () => import('../components/yifeng/test2.vue')
+    },
     
   ]
 })
