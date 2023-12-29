@@ -171,6 +171,7 @@ export default {
                     withCredentials: true,
                 });
                 const comments = response.data;
+                
                 return comments.slice(0, 2); // 返回前兩條評論
             } catch (error) {
                 console.error('Error fetching comments:', error);

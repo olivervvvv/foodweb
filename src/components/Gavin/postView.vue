@@ -32,12 +32,12 @@ export default {
     mounted() {
         this.getPost();
         this.logInCheck();
-        // //设置一个定时器每2秒执行一次,讀取最新留言
-        // this.commentInterval = setInterval(() => {
-        //     if (this.showcomment) {
-        //         this.showComment(this.postId, this.storeId);
-        //     }
-        // }, 2000);
+        //设置一个定时器每2秒执行一次,讀取最新留言
+        this.commentInterval = setInterval(() => {
+            if (this.showcomment) {
+                this.showComment(this.postId, this.storeId);
+            }
+        }, 2000);
 
 
         
@@ -111,7 +111,11 @@ export default {
                 this.userName=userData.name;
                 console.log('this.user:', this.userName);
                 //根據userId回傳user的頭像
+                if(userData.picture!=null){
                 return ("data:image/jpeg;base64," + userData.picture);
+                }else{
+                    return "";
+                }
             } catch (error) {
                 console.error('Error getUserPicture:', error);
             }
