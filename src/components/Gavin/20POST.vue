@@ -310,6 +310,7 @@ export default {
                 <img class="userBtn" :src="getImage(loginUserPicture)" alt="" @mouseenter="this.showFnList" v-if="getImage(loginUserPicture)&&this.isLogIn" >
                 <!-- 預設未登入頭貼 -->
                 <img class="userBtn" src="../sally/explorer.png" alt="" @mouseenter="this.showFnList" v-else >
+                <!-- 登入者圖片下拉選單 -->
                 <div class="userFnList" :class="{ 'fnListVisible': isFnListVisible }" @mouseleave="this.showFnList">
                     <!-- 登入顯示 -->
                     <ul v-if="this.isLogIn">
