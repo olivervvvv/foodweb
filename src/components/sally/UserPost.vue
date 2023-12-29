@@ -13,10 +13,12 @@ export default {
             showEditPage: false,
             postObj: {},
             //更新回傳給後端資料
+            updatePostId:0,
             updatePostTitle: "",
             updateDescription: "",
             updatePicture: null,
             updateFilePath: "",
+            
 
         }
     },
@@ -101,6 +103,7 @@ export default {
             this.showEditPage = true
             this.postObj = JSON.parse(JSON.stringify(post)); //將原有貼文資料post給予obj。序列化 深拷貝(可以在不影響原始數據情况下進行修改和操作) 
             console.log(this.postObj)
+            this.updatePostId = this.postObj.postId;
             this.updatePostTitle = this.postObj.postTitle;
             this.updateDescription = this.postObj.description;
             this.updatePicture = this.postObj.picture;
@@ -108,42 +111,30 @@ export default {
             console.log(this.updatePicture);
             console.log(this.updateFilePath)
         },
-        async createPost() {
-
+        async submit() {
             const formData = new FormData();
-            formData.append('storeId', this.storeId);
-            formData.append('postTitle', this.postTitle);
-            formData.append('description', this.description);
-            formData.append('picture', this.picture);
-            formData.append('locationCity', this.storeInfo.locationCity);
+            formData.append('postId', this.updatePostId);
+            formData.append('postTitle', this.updatePostTitle);
+            formData.append('description', this.updateDescription);
+            formData.append('picture', this.updatePicture);
 
-            console.log("this.storeId", this.storeId);
-            console.log("this.postTitle", this.postTitle);
-            console.log("this.description", this.description);
-            console.log("this.picture", this.picture);
-            console.log("this.storeInfo.locationCity", this.storeInfo.locationCity);
+            console.log('postId', this.updatePostId);
+            console.log('postTitle', this.updatePostTitle);
+            console.log('description', this.updateDescription);
+            console.log('picture', this.updatePicture);
             console.log("formData : ", formData);
 
-            axios.post(`http://${locohost}/posts/create`, formData,
+            axios.post(`http://${locohost}/posts/updatePosts`, formData,
                 {
                     withCredentials: true,
                 })
                 .then((response) => {
                     console.log(response);
-                    console.log("发布贴文:", this.postTitle);
-                    // 发布后可以隐藏创建贴文的页面
-                    this.showCreatePost = false;
+                    this.showEditPage = false;
                 })
                 .catch((error) => {
                     console.log(error);
-                    if (error.response.status == 401) {
-                        alert("你尚未登入");
-                    }
                 });
-
-            // console.log("发布贴文:", this.description);
-            // // 发布后可以隐藏创建贴文的页面
-            // this.showCreatePost = false;
         },
         handleFileChange(event) {
             this.updatePicture = event.target.files[0];
@@ -244,15 +235,17 @@ export default {
                 <div class="imgArea">
                     <div ref="wrapper" class="wrapper">
                         <div class="image">
-                            <img ref="img" :src="getImage(updatePicture)"
-                                style="height: 100%; width: 100%;" />
+                            <img ref="img"
+                            style="height: 100%; width: 100%;" />
                         </div>
-                        <!-- <div class="content">
-                            <div class="icon">
+                        <div class="content">
+                            <img  ref="img" :src="getImage(updatePicture)"
+                                style="height: 100%; width: 100%;" />
+                            <!-- <div class="icon">
                                 <i class="fas fa-cloud-upload-alt"></i>
                             </div>
-                            <div class="text">尚未選取圖片</div>
-                        </div> -->
+                            <div class="text">尚未選取圖片</div> -->
+                        </div>
                         <div ref="fileName" class="fileName"></div>
                     </div>
                     <input ref="fileInput" type="file" @change="handleFileChange" accept="image/*" hidden />
@@ -262,7 +255,7 @@ export default {
                 <div class="btnArea">
                     <button>刪除此篇貼文</button>
                     <button class="btn" @click="showEditPage = false">取消更新</button>
-                    <button class="btn" @click="">更新</button>
+                    <button class="btn" @click="submit()">更新</button>
                 </div>
             </div>
         </div>
