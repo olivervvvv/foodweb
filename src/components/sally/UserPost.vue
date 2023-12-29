@@ -161,7 +161,7 @@ export default {
                     //adding active class to wrapper
                     wrapper.classList.add("active");
                 }
-                reader.readAsDataURL(this.picture)
+                reader.readAsDataURL(this.updatePicture)
             }
             //display file name
             let regExp = /[^\\]*$/;
@@ -181,7 +181,7 @@ export default {
                 return "";
             }
             // 直接返回 Base64 Data URL
-            console.log("hi")
+            console.log("data:image/jpeg;base64," + picture)
             return "data:image/jpeg;base64," + picture;
         },
     }
@@ -213,8 +213,8 @@ export default {
                         <div class="userFnList" :class="{ 'fnListVisible': isFnListVisible }" @mouseleave="showFnList">
                             <!-- 登入顯示 -->
                             <ul v-if="this.isLogIn">
-                                <li style="color: #527853; cursor: default;">個人資料</li>
-                                <li @click="goToUserPostPage">個人貼文</li>
+                                <li @click="goToUserInfoPage">個人資料</li>
+                                <li style="color: #527853; cursor: default;">個人貼文</li>
                                 <li @click="logout()">登出</li>
                             </ul>
                             <!-- 未登入顯示 -->
@@ -232,7 +232,6 @@ export default {
             <div class="post" @click="updatePost(post)" v-for="(post, index) in this.postInfoList">
                 <p class="postTitle">{{ post.postTitle }}</p>
                 <p class="postTitle">{{ post.postUpdateTime }}</p>
-                <!-- <button class="btn" @click=""><i class="fa-solid fa-ellipsis"></i></button> -->
             </div>
         </div>
 
@@ -245,15 +244,15 @@ export default {
                 <div class="imgArea">
                     <div ref="wrapper" class="wrapper">
                         <div class="image">
-                            <img ref="img" :src="updatePicture ? getImage(updatePicture) : updateFilePath"
+                            <img ref="img" :src="getImage(updatePicture)"
                                 style="height: 100%; width: 100%;" />
                         </div>
-                        <div class="content">
+                        <!-- <div class="content">
                             <div class="icon">
                                 <i class="fas fa-cloud-upload-alt"></i>
                             </div>
                             <div class="text">尚未選取圖片</div>
-                        </div>
+                        </div> -->
                         <div ref="fileName" class="fileName"></div>
                     </div>
                     <input ref="fileInput" type="file" @change="handleFileChange" accept="image/*" hidden />
