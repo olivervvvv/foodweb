@@ -23,6 +23,8 @@ export default {
             imgB64:"",
             userPicture:"",
             userCommentPicture:"",
+            user:{},
+            userName:"",
         }
     },
     components: {
@@ -30,7 +32,7 @@ export default {
     mounted() {
         this.getPost();
         this.logInCheck();
-        // 设置一个定时器每2秒执行一次,讀取最新留言
+        // //设置一个定时器每2秒执行一次,讀取最新留言
         // this.commentInterval = setInterval(() => {
         //     if (this.showcomment) {
         //         this.showComment(this.postId, this.storeId);
@@ -77,6 +79,7 @@ export default {
                     //顯示發文者頭像
                     this.userPicture = await this.getUserPicture(this.postData.postInfo.userId);
                     // console.log('this.userPicture:', this.userPicture);
+
                 } catch (error) {
                     console.error('Error getPostInfo() : ', error);
                 }
@@ -94,7 +97,7 @@ export default {
                 return [];
             }
         },
-        //用userId獲取使用者頭像
+        //用userId獲取使用者頭像和名子
         async getUserPicture(userId) {
             try {
                 const response =await axios.get(`http://${locohost}/public/users/${userId}`, {
@@ -102,6 +105,12 @@ export default {
                 });
                 const userData = response.data;
                 console.log('userData :',userData);
+
+                //根據userId回傳user的名子
+                this.user=userData;
+                this.userName=userData.name;
+                console.log('this.user:', this.userName);
+                //根據userId回傳user的頭像
                 return ("data:image/jpeg;base64," + userData.picture);
             } catch (error) {
                 console.error('Error getUserPicture:', error);
@@ -142,30 +151,26 @@ export default {
                 console.log('Comment from DB:', Comment);
                 this.commentData = getComment.data;
                 console.log('this.commentData from DB:', this.commentData);
-
-                
             } catch (error) {
                 console.error('Error in the second request:', error);
             }
-
-            
         },
-        //顯示留言者頭像
-        async getUserCommentPicture(userId) {
-            const response =await  axios.get(`http://${locohost}/public/users/${userId}`, {
-                    withCredentials: true,
-                });
-                const userData = response.data;
-                console.log('userData:', userData);
+        // //顯示留言者頭像
+        // async getUserCommentPicture(userId) {
+        //     const response =await  axios.get(`http://${locohost}/public/users/${userId}`, {
+        //             withCredentials: true,
+        //         });
+        //         const userData = response.data;
+        //         console.log('userData:', userData);
 
-                // 确保 this.getImage 返回一个 Promise，否则无法使用 await
-                const imageData =  this.getImage(userData.picture);
-                // console.log('Image Data:', imageData);
+        //         // 确保 this.getImage 返回一个 Promise，否则无法使用 await
+        //         const imageData =  this.getImage(userData.picture);
+        //         // console.log('Image Data:', imageData);
 
-                this.userCommentPicture = imageData;
-                // console.log('this.userCommentPicture:', this.userCommentPicture);
-                return imageData;
-        },
+        //         this.userCommentPicture = imageData;
+        //         // console.log('this.userCommentPicture:', this.userCommentPicture);
+        //         return imageData;
+        // },
 //===================================================================================================================================
         //處理點讚邏輯
         async clickLike(post) {
@@ -240,7 +245,9 @@ export default {
                 <!-- 預設發文者圖片 -->
                 <img src="../../main/resources/static/images/explorer.png" style="height: auto;width: 100%;border-radius: 99px;" v-else>
             </figure> 
-            <span class="username">username</span>
+            <!-- 讀取發文者名子 -->
+            <span class="username" v-if="this.user && this.userName != null">{{this.userName}}</span>
+            <span class="username" v-else>UserName</span>
         </div>
         <!-- 貼文內容 -->
         <div>
@@ -252,7 +259,7 @@ export default {
                     <!-- 預設貼文圖片 -->
                     <img src="../../main/resources/static/images/error 404.png" style="height: 100%; width: 100%;" v-if="imgB64===null&&imgurl===''">
                 </figure> 
-                <span class="username">username</span>
+                <!-- <span class="username">username</span> -->
                 <p>{{this.description}}</p>
             </div>
         </div>
@@ -267,7 +274,7 @@ export default {
         <!-- 預覽前兩筆留言 -->
         <div class="comment-preview">
             <div v-for="(comment, cIndex) in this.comments" :key="cIndex">
-            <span style="font-weight: bold;">{{comment.name}}</span> <p>{{comment.comment}}</p>
+            <span style="font-weight: bold;">{{comment.postComment.name}}</span> <p>{{comment.postComment.comment}}</p>
             </div>
             <!-- 顯示完整評論btn -->
             <button class="blue-city-btn" @click="showComment(this.postId,this.storeId)">顯示完整評論</button>
@@ -285,13 +292,13 @@ export default {
                         <!-- 留言者頭像 -->
                         <figure style="height:32px;width: 32px;" >
                             <!-- 留言者圖片有效，顯示圖片；否則顯示默認圖片 -->
-                            <img :src="this.userCommentPicture" style="height: auto;width: 100%;border-radius: 99px;" v-if="comment.userId">
+                            <img :src="getImage(comment.userPicture)" style="height: auto;width: 100%;border-radius: 99px;" v-if="getImage(comment.userPicture)">
                             <!-- 預設留言者圖片 -->
                             <img src="../../main/resources/static/images/explorer.png" style="height: auto;width: 100%;border-radius: 99px;" v-else>
                         </figure> 
-                        <span style="font-weight: bold;margin: 2%;">{{comment.name}}</span> 
+                        <span style="font-weight: bold;margin: 2%;">{{comment.postComment.name}}</span> 
                     </div>
-                    <p style="padding-left: 5%;">{{comment.comment}}</p>
+                    <p style="padding-left: 5%;">{{comment.postComment.comment}}</p>
                 </div>
                 <!-- 無評論顯示 -->
                 <div  v-else class="no-content">

@@ -12,7 +12,7 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            userId: 3,
+            userId: 4,
             picture: null,
         };
     },
