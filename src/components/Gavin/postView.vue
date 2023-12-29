@@ -32,12 +32,12 @@ export default {
     mounted() {
         this.getPost();
         this.logInCheck();
-        // //设置一个定时器每2秒执行一次,讀取最新留言
-        // this.commentInterval = setInterval(() => {
-        //     if (this.showcomment) {
-        //         this.showComment(this.postId, this.storeId);
-        //     }
-        // }, 2000);
+        //设置一个定时器每2秒执行一次,讀取最新留言
+        this.commentInterval = setInterval(() => {
+            if (this.showcomment) {
+                this.showComment(this.postId, this.storeId);
+            }
+        }, 2000);
 
 
         
