@@ -113,7 +113,7 @@ export default {
             console.log("this.storeId : ", this.storeId);
             try {
                 const response = await axios.get(`http://${locohost}/foodMap/searchStoreId?storeId=${this.storeId}`);
-                const storeData = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
+                const storeData = response.data;
                 console.log('storeData from DB:', storeData);
                 this.storeInfo = storeData.storeInfo;
                 console.log('this.storeInfoList :', this.storeInfo);
@@ -126,7 +126,7 @@ export default {
             console.log("this.storeId : ", this.storeId);
             try {
                 const response = await axios.get(`http://${locohost}/posts/getPostList?storeId=${this.storeId}`);
-                const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
+                const DBdata = response.data;
                 console.log('postData from DB:', DBdata);
                 this.postInfoList = DBdata.postInfoList
                 console.log('this.postInfoList:', this.postInfoList);

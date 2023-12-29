@@ -90,11 +90,11 @@ export default {
         <div class="userInfo">
             <p>
                 <i class="fa-solid fa-user"></i>
-                會員姓名：{{ loginState.usersEntity.name }}
+                會員姓名：{{ loginState.usersEntity }}
             </p>
             <p>
                 <i class="fa-solid fa-envelope"></i>
-                會員信箱：{{ loginState.usersEntity.email }}
+                會員信箱：{{ loginState.usersEntity }}
             </p>
             <p>
                 <i class="fa-solid fa-lock"></i>

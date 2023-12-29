@@ -315,7 +315,7 @@ export default {
                     justify-content: end;
                     align-items: center;
                     margin-right: 20px;
-
+                    
                     .userBtn {
                         border: none;
                         border-radius: 50%;
