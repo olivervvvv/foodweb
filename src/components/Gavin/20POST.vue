@@ -33,12 +33,12 @@ export default {
         // this.getPost();
         this.setInputValue();
         this.logInCheck();
-        // 第一次执行，并设置一个定时器每秒执行一次
+        // 设置一个定时器每2秒执行一次,讀取最新留言
         this.commentInterval = setInterval(() => {
             if (this.showcomment) {
                 this.showComment(this.postId, this.storeId);
             }
-        }, 1000);
+        }, 2000);
     },
     beforeDestroy() {
         // 在组件销毁前清除定时器，避免内存泄漏
@@ -327,7 +327,8 @@ export default {
         <!-- 發文者頭像及名子 -->
         <div class="header">
             <figure style="height:32px;width: 32px;margin-right: 2%;">
-                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1211695/me2.png" style="height: auto;width: 100%;border-radius: 99px;">
+                <!-- 預設發文者圖片 -->
+                <img src="../../main/resources/static/images/explorer.png" style="height: auto;width: 100%;border-radius: 99px;">
             </figure> 
             <span class="username">username</span>
         </div>
@@ -374,7 +375,8 @@ export default {
                     <div style="display: flex;align-items: center">
                         <!-- 留言者頭像 -->
                         <figure style="height:32px;width: 32px;">
-                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1211695/me2.png" style="height: auto;width: 100%;border-radius: 99px;">
+                            <!-- 預設留言者圖片 -->
+                            <img src="../../main/resources/static/images/explorer.png" style="height: auto;width: 100%;border-radius: 99px;">
                         </figure> 
                         <span style="font-weight: bold;margin: 2%;">{{comment.name}}</span> 
                     </div>

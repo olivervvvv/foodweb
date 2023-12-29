@@ -171,9 +171,12 @@ export default {
                 })
                 .then((response) => {
                     console.log(response);
-                    console.log("发布贴文:", this.postTitle);
+                    console.log("發布贴文:", this.postTitle);
+                    alert("成功發布贴文:");
                     // 发布后可以隐藏创建贴文的页面
                     this.showCreatePost = false;
+                    // 刷新页面
+                    location.reload();
                 })
                 .catch((error) => {
                     console.log(error);

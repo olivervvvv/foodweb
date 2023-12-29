@@ -21,6 +21,8 @@ export default {
             InputValue:"",
             isLogIn:false,
             imgB64:"",
+            userPicture:"",
+            userCommentPicture:"",
         }
     },
     components: {
@@ -28,18 +30,22 @@ export default {
     mounted() {
         this.getPost();
         this.logInCheck();
-        // 第一次执行，并设置一个定时器每秒执行一次
-        this.commentInterval = setInterval(() => {
-            if (this.showcomment) {
-                this.showComment(this.postId, this.storeId);
-            }
-        }, 1000);
+        // 设置一个定时器每2秒执行一次,讀取最新留言
+        // this.commentInterval = setInterval(() => {
+        //     if (this.showcomment) {
+        //         this.showComment(this.postId, this.storeId);
+        //     }
+        // }, 2000);
+
+
+        
     },
     beforeDestroy() {
         // 在组件销毁前清除定时器，避免内存泄漏
         clearInterval(this.commentInterval);
     },
     methods: {
+        //轉換圖片
         getImage(picture) {
             // 如果 picture 為 undefined，返回一個空字符串
             if (!picture) {
@@ -68,6 +74,9 @@ export default {
                     //顯示前兩筆留言
                     this.comments = await this.getTopTwoComments(DBdata.postInfo.postId);
                     console.log('this.comments :', this.comments);
+                    //顯示發文者頭像
+                    this.userPicture = await this.getUserPicture(this.postData.postInfo.userId);
+                    // console.log('this.userPicture:', this.userPicture);
                 } catch (error) {
                     console.error('Error getPostInfo() : ', error);
                 }
@@ -83,6 +92,19 @@ export default {
             } catch (error) {
                 console.error('Error fetching comments:', error);
                 return [];
+            }
+        },
+        //用userId獲取使用者頭像
+        async getUserPicture(userId) {
+            try {
+                const response =await axios.get(`http://${locohost}/public/users/${userId}`, {
+                withCredentials: true,
+                });
+                const userData = response.data;
+                console.log('userData :',userData);
+                return ("data:image/jpeg;base64," + userData.picture);
+            } catch (error) {
+                console.error('Error getUserPicture:', error);
             }
         },
         // 檢查是否已登入
@@ -108,8 +130,6 @@ export default {
                 alert('請先登入');
                 return;
             }
-            
-
             //顯示留言邏輯
             this.showcomment = true;
             this.postId = postId;
@@ -122,9 +142,29 @@ export default {
                 console.log('Comment from DB:', Comment);
                 this.commentData = getComment.data;
                 console.log('this.commentData from DB:', this.commentData);
+
+                
             } catch (error) {
                 console.error('Error in the second request:', error);
             }
+
+            
+        },
+        //顯示留言者頭像
+        async getUserCommentPicture(userId) {
+            const response =await  axios.get(`http://${locohost}/public/users/${userId}`, {
+                    withCredentials: true,
+                });
+                const userData = response.data;
+                console.log('userData:', userData);
+
+                // 确保 this.getImage 返回一个 Promise，否则无法使用 await
+                const imageData =  this.getImage(userData.picture);
+                // console.log('Image Data:', imageData);
+
+                this.userCommentPicture = imageData;
+                // console.log('this.userCommentPicture:', this.userCommentPicture);
+                return imageData;
         },
 //===================================================================================================================================
         //處理點讚邏輯
@@ -171,7 +211,6 @@ export default {
 
             this.commentInput = "";
             await this.showComment(postId, storeId); // 等待 showComment 完成
-            // 不再需要使用 $nextTick
             this.updateComments();
         },
         // 在每次評論數據更新時將滑桿固定到底部
@@ -196,7 +235,10 @@ export default {
         <!-- 發文者頭像及名子 -->
         <div class="header">
             <figure style="height:32px;width: 32px;margin-right: 2%;">
-                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1211695/me2.png" style="height: auto;width: 100%;border-radius: 99px;">
+                <!-- 發文者圖片有效，顯示圖片；否則顯示默認圖片 -->
+                <img :src="this.userPicture" style="height: auto;width: 100%;border-radius: 99px;" v-if="this.userPicture">
+                <!-- 預設發文者圖片 -->
+                <img src="../../main/resources/static/images/explorer.png" style="height: auto;width: 100%;border-radius: 99px;" v-else>
             </figure> 
             <span class="username">username</span>
         </div>
@@ -241,8 +283,11 @@ export default {
                 <div class="content"  v-for="(comment, index) in commentData" v-if="commentData.length > 0"> 
                     <div style="display: flex;align-items: center">
                         <!-- 留言者頭像 -->
-                        <figure style="height:32px;width: 32px;">
-                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1211695/me2.png" style="height: auto;width: 100%;border-radius: 99px;">
+                        <figure style="height:32px;width: 32px;" >
+                            <!-- 留言者圖片有效，顯示圖片；否則顯示默認圖片 -->
+                            <img :src="this.userCommentPicture" style="height: auto;width: 100%;border-radius: 99px;" v-if="comment.userId">
+                            <!-- 預設留言者圖片 -->
+                            <img src="../../main/resources/static/images/explorer.png" style="height: auto;width: 100%;border-radius: 99px;" v-else>
                         </figure> 
                         <span style="font-weight: bold;margin: 2%;">{{comment.name}}</span> 
                     </div>
