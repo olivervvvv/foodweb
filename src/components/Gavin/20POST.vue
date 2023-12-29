@@ -594,7 +594,7 @@ i{
     background-color: #ffffff;
     border-radius: 20px;
     position: fixed;
-    top: 10%; /* 距離頂部的距離，根據需要調整 */
+    top: 20%; /* 距離頂部的距離，根據需要調整 */
     overflow: auto;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.559); /* 添加陰影 */
 }
