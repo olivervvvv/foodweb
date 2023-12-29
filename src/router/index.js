@@ -117,6 +117,11 @@ const router = createRouter({
       name: 'test2',
       component: () => import('../components/yifeng/test2.vue')
     },
+    {
+      path: '/ooInfo',
+      name: 'ooInfo',
+      component: () => import('../components/oliver/UserInfos.vue')
+    },
     
   ]
 })
