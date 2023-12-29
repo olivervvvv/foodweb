@@ -111,7 +111,11 @@ export default {
                 this.userName=userData.name;
                 console.log('this.user:', this.userName);
                 //根據userId回傳user的頭像
+                if(userData.picture!=null){
                 return ("data:image/jpeg;base64," + userData.picture);
+                }else{
+                    return "";
+                }
             } catch (error) {
                 console.error('Error getUserPicture:', error);
             }
