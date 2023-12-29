@@ -115,6 +115,8 @@ export default {
             } catch (error) {
                 console.error('Error getUserPicture:', error);
             }
+            this.user=null;
+            this.userName=null;
         },
         // 檢查是否已登入
         async logInCheck(){
@@ -162,11 +164,9 @@ export default {
         //         });
         //         const userData = response.data;
         //         console.log('userData:', userData);
-
         //         // 确保 this.getImage 返回一个 Promise，否则无法使用 await
         //         const imageData =  this.getImage(userData.picture);
         //         // console.log('Image Data:', imageData);
-
         //         this.userCommentPicture = imageData;
         //         // console.log('this.userCommentPicture:', this.userCommentPicture);
         //         return imageData;
