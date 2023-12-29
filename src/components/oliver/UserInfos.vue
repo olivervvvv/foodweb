@@ -110,8 +110,6 @@ export default {
 
                 if (response.status === 200) {
                     console.log('Headshot updated successfully!');
-                    this.updateImgPage=false;
-                    location.reload();
                 } else {
                     console.error('Error updating headshot:', response.statusText);
                 }
