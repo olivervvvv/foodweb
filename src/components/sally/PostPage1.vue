@@ -23,6 +23,7 @@ export default {
             picture: null,
             inputValue:"",//搜尋欄輸入值
             isLogIn:false,//登入狀態
+            loginUserPicture:"",
         };
     },
     components: {
@@ -34,6 +35,14 @@ export default {
         this.logInCheck();
     },
     methods: {
+        getImage(picture) {
+            // 如果 picture 為 undefined，返回一個空字符串
+            if (!picture) {
+                return "";
+            }
+            // 直接返回 Base64 Data URL
+            return "data:image/jpeg;base64," + picture;
+        },
         //點擊logo回首頁
         goToHomePage() {
             this.$router.push("/");
@@ -62,20 +71,6 @@ export default {
         goToPostPage(storeId) {
             this.$router.push({ name: 'postPage1', params: { storeId } });
         },
-                // 檢查是否已登入
-                async logInCheck(){
-            try {
-                const response = await axios.get(`http://${locohost}/users/getcurrentUser`,{
-                    withCredentials: true,
-                });
-                var loginState = response.data;
-                console.log('loginState from DB:', loginState);
-                this.isLogIn=loginState.login;
-                console.log("this.isLogIn : ",this.isLogIn)
-            } catch (error) {
-                console.error('Error fetching comments:', error);
-            }
-        },
         // 檢查是否已登入
         async logInCheck(){
             try {
@@ -84,8 +79,12 @@ export default {
                 });
                 var loginState = response.data;
                 console.log('loginState from DB:', loginState);
+                //儲存登入狀態
                 this.isLogIn=loginState.login;
-                console.log("this.isLogIn : ",this.isLogIn)
+                console.log("this.isLogIn : ",this.isLogIn);
+                //儲存登入者圖片
+                this.loginUserPicture=loginState.usersEntity.picture;
+                // console.log("loginUserPicture : ",this.loginUserPicture);
             } catch (error) {
                 console.error('Error fetching comments:', error);
             }
@@ -171,9 +170,12 @@ export default {
                 })
                 .then((response) => {
                     console.log(response);
-                    console.log("发布贴文:", this.postTitle);
+                    console.log("發布贴文:", this.postTitle);
+                    alert("成功發布贴文:");
                     // 发布后可以隐藏创建贴文的页面
                     this.showCreatePost = false;
+                    // 刷新页面
+                    location.reload();
                 })
                 .catch((error) => {
                     console.log(error);
@@ -241,8 +243,11 @@ export default {
                 </div>
                 <!-- 會員中心 -->
                 <div class="userCenterArea">
+                    <!-- 登入者圖片有效，顯示圖片；否則顯示默認圖片 -->
+                    <img class="userBtn" :src="getImage(loginUserPicture)" alt="" @mouseenter="this.showFnList" v-if="getImage(loginUserPicture)&&this.isLogIn" >
                     <!-- 預設未登入頭貼 -->
-                    <img class="userBtn" src="../sally/explorer.png" alt="" @mouseenter="showFnList">
+                    <img class="userBtn" src="../sally/explorer.png" alt="" @mouseenter="this.showFnList" v-else >
+                    <!-- 登入者圖片下拉選單 -->
                     <div class="userFnList" :class="{ 'fnListVisible': isFnListVisible }" @mouseleave="showFnList">
                         <!-- 登入顯示 -->
                         <ul v-if="this.isLogIn">
