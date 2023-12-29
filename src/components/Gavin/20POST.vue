@@ -23,6 +23,7 @@ export default {
             items: [], // Array to store loaded content
             loading: false,
             page: 0,
+            loginUserPicture:"",
         }
     },
     components: {
@@ -33,12 +34,12 @@ export default {
         // this.getPost();
         this.setInputValue();
         this.logInCheck();
-        // 第一次执行，并设置一个定时器每秒执行一次
+        // 设置一个定时器每2秒执行一次,讀取最新留言
         this.commentInterval = setInterval(() => {
             if (this.showcomment) {
                 this.showComment(this.postId, this.storeId);
             }
-        }, 1000);
+        }, 2000);
     },
     beforeDestroy() {
         // 在组件销毁前清除定时器，避免内存泄漏
@@ -184,8 +185,12 @@ export default {
                 });
                 var loginState = response.data;
                 console.log('loginState from DB:', loginState);
+                //儲存登入狀態
                 this.isLogIn=loginState.login;
-                console.log("this.isLogIn : ",this.isLogIn)
+                console.log("this.isLogIn : ",this.isLogIn);
+                //儲存登入者圖片
+                this.loginUserPicture=loginState.usersEntity.picture;
+                // console.log("loginUserPicture : ",this.loginUserPicture);
             } catch (error) {
                 console.error('Error fetching comments:', error);
             }
@@ -301,8 +306,10 @@ export default {
             </div>
             <!-- 會員中心 -->
             <div class="userCenterArea">
+                <!-- 登入者圖片有效，顯示圖片；否則顯示默認圖片 -->
+                <img class="userBtn" :src="getImage(loginUserPicture)" alt="" @mouseenter="this.showFnList" v-if="getImage(loginUserPicture)&&this.isLogIn" >
                 <!-- 預設未登入頭貼 -->
-                <img class="userBtn" src="../sally/explorer.png" alt="" @mouseenter="this.showFnList">
+                <img class="userBtn" src="../sally/explorer.png" alt="" @mouseenter="this.showFnList" v-else >
                 <div class="userFnList" :class="{ 'fnListVisible': isFnListVisible }" @mouseleave="this.showFnList">
                     <!-- 登入顯示 -->
                     <ul v-if="this.isLogIn">
@@ -327,9 +334,15 @@ export default {
         <!-- 發文者頭像及名子 -->
         <div class="header">
             <figure style="height:32px;width: 32px;margin-right: 2%;">
-                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1211695/me2.png" style="height: auto;width: 100%;border-radius: 99px;">
+                <!-- 發文者圖片有效，顯示圖片；否則顯示默認圖片 -->
+                <img :src="getImage(post.user.picture)" style="height: auto;width: 100%;border-radius: 99px;" v-if="getImage(post.postInfo.picture)">
+                <!-- 預設發文者圖片 -->
+                <img src="../../main/resources/static/images/explorer.png" style="height: auto;width: 100%;border-radius: 99px;" v-else>
             </figure> 
-            <span class="username">username</span>
+            <!-- 讀取發文者名子 -->
+            <span class="username" v-if="post.user && post.user.name != null">{{post.user.name}}</span>
+            <span class="username" v-else>UserName</span>
+
         </div>
         <!-- 貼文內容 -->
         <div>
@@ -342,7 +355,7 @@ export default {
                     <!-- 預設貼文圖片 -->
                     <img src="../../main/resources/static/images/error 404.png" style="height: 100%; width: 100%;" v-if="post.postInfo.picture===null&&post.postInfo.filePath===''">
                 </figure> 
-                <span class="username">username</span>
+                <!-- <span class="username">username</span> -->
                 <p>{{post.postInfo.description}}</p>
             </div>
         </div>
@@ -357,7 +370,7 @@ export default {
         <!-- 預覽前兩筆留言 -->
         <div class="comment-preview">
             <div v-for="(comment, cIndex) in post.comments" :key="cIndex">
-            <span style="font-weight: bold;">{{comment.name}}</span> <p>{{comment.comment}}</p>
+            <span style="font-weight: bold;">{{comment.postComment.name}}</span> <p>{{comment.postComment.comment}}</p>
             </div>
             <!-- 顯示完整評論btn -->
             <button class="blue-city-btn" @click="showComment(post.postInfo.postId,post.postInfo.storeId)">顯示完整評論</button>
@@ -374,11 +387,14 @@ export default {
                     <div style="display: flex;align-items: center">
                         <!-- 留言者頭像 -->
                         <figure style="height:32px;width: 32px;">
-                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1211695/me2.png" style="height: auto;width: 100%;border-radius: 99px;">
+                            <!-- 留言者圖片有效，顯示圖片；否則顯示默認圖片 -->
+                            <img :src="getImage(comment.userPicture)" style="height: auto;width: 100%;border-radius: 99px;" v-if="getImage(comment.userPicture)">
+                            <!-- 預設留言者圖片 -->
+                            <img src="../../main/resources/static/images/explorer.png" style="height: auto;width: 100%;border-radius: 99px;" v-else>
                         </figure> 
-                        <span style="font-weight: bold;margin: 2%;">{{comment.name}}</span> 
+                        <span style="font-weight: bold;margin: 2%;">{{comment.postComment.name}}</span> 
                     </div>
-                    <p style="padding-left: 5%;">{{comment.comment}}</p>
+                    <p style="padding-left: 5%;">{{comment.postComment.comment}}</p>
                 </div>
                 <!-- 無評論顯示 -->
                 <div  v-else class="no-content">
@@ -552,6 +568,10 @@ export default {
 }
 i{
     cursor: pointer;
+}
+.header{
+    display: flex;
+    margin: 2%;
 }
 .blue-city-btn{
     width: 100px;
