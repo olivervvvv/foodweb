@@ -13,6 +13,14 @@ export default {
       this.logInCheck();
     },
   methods: {
+    getImage(picture) {
+            // 如果 picture 為 undefined，返回一個空字符串
+            if (!picture) {
+                return "";
+            }
+            // 直接返回 Base64 Data URL
+            return "data:image/jpeg;base64," + picture;
+        },
     // 檢查是否已登入
     async logInCheck(){
       try {
@@ -104,11 +112,18 @@ export default {
       <div class="showArea" style="user-select: none;">
         <h1 style="color: white; width: 40px; height: 120px;margin-top: 20%;margin-right: 7%;">{{ pathText }}</h1>
         <div class="btnArea" v-if="pathText">
+          <!-- BASE64商店圖片未完成-->
+            <!-- <div class="msgBox" v-for="(store, index) in storeDetail" :key="index" @click="handleMsgBoxClick(store, index)" :style="{ backgroundImage: 'url(' + this.getImage(store.picture)+')' }">
+              <div class="pText">
+                <p style="font-size: 16pt;">{{ store.foodStyle }}</p>
+                <p style="display: inline-block;text-align: center;margin-top: 1%;">{{ store.name }}</p>
+              </div>
+            </div> -->
           <div class="msgBox" v-for="(store, index) in storeDetail" :key="index" @click="handleMsgBoxClick(store, index)" :style="{ backgroundImage: 'url(' + store.filePath+')' }">
-        <div class="pText">
-          <p style="font-size: 16pt;">{{ store.foodStyle }}</p>
-          <p style="display: inline-block;text-align: center;margin-top: 1%;">{{ store.name }}</p>
-        </div>
+            <div class="pText">
+              <p style="font-size: 16pt;">{{ store.foodStyle }}</p>
+              <p style="display: inline-block;text-align: center;margin-top: 1%;">{{ store.name }}</p>
+            </div>
           </div>
         </div>
       </div>
