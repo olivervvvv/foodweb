@@ -10,8 +10,8 @@ export default {
             postInfoList: {},
             storeInfoList: {},
 
-            storeInfo:{},
-            goToPostpostId:0,
+            storeInfo: {},
+            goToPostpostId: 0,
 
 
             storeInfo: {},
@@ -21,9 +21,9 @@ export default {
             description: "", // 存储新贴文的内容
             postTitle: "",
             picture: null,
-            inputValue:"",//搜尋欄輸入值
-            isLogIn:false,//登入狀態
-            loginUserPicture:"",
+            inputValue: "",//搜尋欄輸入值
+            isLogIn: false,//登入狀態
+            loginUserPicture: "",
         };
     },
     components: {
@@ -48,8 +48,8 @@ export default {
             this.$router.push("/");
         },
         //搜尋
-        searchStoreName(){
-            console.log("search inputtext : ",this.inputValue);
+        searchStoreName() {
+            console.log("search inputtext : ", this.inputValue);
             // 使用 $router.push 实现页面跳转，并传递参数
             this.$router.push({
                 name: "storePage",
@@ -72,18 +72,18 @@ export default {
             this.$router.push({ name: 'postPage1', params: { storeId } });
         },
         // 檢查是否已登入
-        async logInCheck(){
+        async logInCheck() {
             try {
-                const response = await axios.get(`http://${locohost}/users/getcurrentUser`,{
+                const response = await axios.get(`http://${locohost}/users/getcurrentUser`, {
                     withCredentials: true,
                 });
                 var loginState = response.data;
                 console.log('loginState from DB:', loginState);
                 //儲存登入狀態
-                this.isLogIn=loginState.login;
-                console.log("this.isLogIn : ",this.isLogIn);
+                this.isLogIn = loginState.login;
+                console.log("this.isLogIn : ", this.isLogIn);
                 //儲存登入者圖片
-                this.loginUserPicture=loginState.usersEntity.picture;
+                this.loginUserPicture = loginState.usersEntity.picture;
                 // console.log("loginUserPicture : ",this.loginUserPicture);
             } catch (error) {
                 console.error('Error fetching comments:', error);
@@ -95,15 +95,15 @@ export default {
             this.$router.push("/login");
         },
         //登出
-        async logout(){
+        async logout() {
             try {
-            const response = await axios.get(`http://${locohost}/users/logout`,{
-                withCredentials: true,
-            });
-            const DBdata = response.data; // 這裡是後端返回的
-            console.log('postData from DB:', DBdata);
-            this.isLogIn=false;
-            console.log("this.isLogIn : ",this.isLogIn)
+                const response = await axios.get(`http://${locohost}/users/logout`, {
+                    withCredentials: true,
+                });
+                const DBdata = response.data; // 這裡是後端返回的
+                console.log('postData from DB:', DBdata);
+                this.isLogIn = false;
+                console.log("this.isLogIn : ", this.isLogIn)
             } catch (error) {
                 console.error('Error fetching Post data:', error);
             }
@@ -244,9 +244,10 @@ export default {
                 <!-- 會員中心 -->
                 <div class="userCenterArea">
                     <!-- 登入者圖片有效，顯示圖片；否則顯示默認圖片 -->
-                    <img class="userBtn" :src="getImage(loginUserPicture)" alt="" @mouseenter="this.showFnList" v-if="getImage(loginUserPicture)&&this.isLogIn" >
+                    <img class="userBtn" :src="getImage(loginUserPicture)" alt="" @mouseenter="this.showFnList"
+                        v-if="getImage(loginUserPicture) && this.isLogIn">
                     <!-- 預設未登入頭貼 -->
-                    <img class="userBtn" src="../sally/explorer.png" alt="" @mouseenter="this.showFnList" v-else >
+                    <img class="userBtn" src="../sally/explorer.png" alt="" @mouseenter="this.showFnList" v-else>
                     <!-- 登入者圖片下拉選單 -->
                     <div class="userFnList" :class="{ 'fnListVisible': isFnListVisible }" @mouseleave="showFnList">
                         <!-- 登入顯示 -->
@@ -257,7 +258,7 @@ export default {
                         </ul>
                         <!-- 未登入顯示 -->
                         <ul v-if="!this.isLogIn">
-                            <li @click="login()" >登入</li>
+                            <li @click="login()">登入</li>
                         </ul>
                     </div>
                 </div>
@@ -315,8 +316,8 @@ export default {
                 </div>
 
                 <div class="btnArea">
-                    <button class="btn" @click="showCreatePost = false, resetPost()">取消</button>
-                    <button class="btn" @click="createPost()">建立</button>
+                    <button class="cancel btn" @click="showCreatePost = false, resetPost()">取消</button>
+                    <button class="create btn" @click="createPost()">建立</button>
                 </div>
             </div>
         </div>
@@ -338,134 +339,135 @@ export default {
     box-sizing: border-box;
     // font-family: "Poppins", sans-serif;
 }
+
 .headerArea {
+    width: 100vw;
+    height: 80px;
+
+    .fixed {
         width: 100vw;
         height: 80px;
+        background-color: #EE7214;
+        box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 2;
 
-        .fixed {
-            width: 100vw;
-            height: 80px;
-            background-color: #EE7214;
-            box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+        .logoArea {
+            width: 20%;
+            height: 100%;
             display: flex;
+            justify-content: center;
             align-items: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 2;
 
-            .logoArea {
-                width: 20%;
-                height: 100%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
+            .logoBtn {
+                border: none;
+                background: none;
+                padding: 0;
+                cursor: pointer;
 
-                .logoBtn {
-                    border: none;
-                    background: none;
-                    padding: 0;
-                    cursor: pointer;
-
-                    img {
-                        height: 80px;
-                        margin-top: 10px;
-                    }
+                img {
+                    height: 80px;
+                    margin-top: 10px;
                 }
             }
+        }
 
-            .searchArea {
-                width: 60vw;
-                height: 100%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
+        .searchArea {
+            width: 60vw;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
 
-                .searchName {
-                    width: 90%;
-                    height: 55%;
-                    background-color: white;
-                    border: none;
-                    outline: none;
-                    border-top-left-radius: 100px;
-                    border-bottom-left-radius: 100px;
-                    font-size: 1.2em;
-                    text-indent: 20px;
-                }
-
-                .searchBtn {
-                    width: 10%;
-                    height: 55%;
-                    background-color: white;
-                    border: none;
-                    outline: none;
-                    border-top-right-radius: 100px;
-                    border-bottom-right-radius: 100px;
-                    color: #EE7214;
-                    font-size: 1.5em;
-                    font-weight: bolder;
-                    cursor: pointer;
-
-                    &:hover {
-                        color: #ee7214b2;
-                        text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
-                    }
-                }
+            .searchName {
+                width: 90%;
+                height: 55%;
+                background-color: white;
+                border: none;
+                outline: none;
+                border-top-left-radius: 100px;
+                border-bottom-left-radius: 100px;
+                font-size: 1.2em;
+                text-indent: 20px;
             }
 
-            .userCenterArea {
-                width: 20%;
-                height: 100%;
+            .searchBtn {
+                width: 10%;
+                height: 55%;
+                background-color: white;
+                border: none;
+                outline: none;
+                border-top-right-radius: 100px;
+                border-bottom-right-radius: 100px;
+                color: #EE7214;
+                font-size: 1.5em;
+                font-weight: bolder;
+                cursor: pointer;
+
+                &:hover {
+                    color: #ee7214b2;
+                    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+                }
+            }
+        }
+
+        .userCenterArea {
+            width: 20%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .userBtn {
+                border: none;
+                border-radius: 50%;
+                width: 55px;
+                height: 55px;
+                padding: 0;
+                cursor: pointer;
+            }
+
+            .userFnList {
+                /* display: none; */
+                overflow: hidden;
+                max-height: 0;
+                position: fixed;
+                top: 90px;
+                transition: max-height 0.3s ease-in;
+                z-index: 1;
+                background-color: white;
+                width: 120px;
+                border-radius: 10px;
+                font-size: 1.2em;
+                font-weight: bolder;
+                color: #EE7214;
                 display: flex;
                 justify-content: center;
-                align-items: center;
 
-                .userBtn {
-                    border: none;
-                    border-radius: 50%;
-                    width: 55px;
-                    height: 55px;
-                    padding: 0;
-                    cursor: pointer;
-                }
-
-                .userFnList {
-                    /* display: none; */
-                    overflow: hidden;
-                    max-height: 0;
-                    position: fixed;
-                    top: 90px;
-                    transition: max-height 0.3s ease-in;
-                    z-index: 1;
-                    background-color: white;
-                    width: 120px;
-                    border-radius: 10px;
-                    font-size: 1.2em;
-                    font-weight: bolder;
-                    color: #EE7214;
+                &.fnListVisible {
+                    max-height: 100px;
+                    transition: max-height .3s ease-in;
                     display: flex;
                     justify-content: center;
-
-                    &.fnListVisible {
-                        max-height: 100px;
-                        transition: max-height .3s ease-in;
-                        display: flex;
-                        justify-content: center;
-                    }
                 }
+            }
 
-                li {
-                    list-style-type: none;
-                    margin: 2px 0;
-                    cursor: pointer;
+            li {
+                list-style-type: none;
+                margin: 2px 0;
+                cursor: pointer;
 
-                    &:hover {
-                        color: #527853;
-                    }
+                &:hover {
+                    color: #527853;
                 }
             }
         }
     }
+}
 
 .bgArea {
     // padding: 10% 5% 0;
@@ -513,7 +515,7 @@ export default {
 
             .storeTitle {
                 font-weight: bolder;
-                font-size: x-large;
+                font-size: 1.4em;
                 color: #EE7214;
             }
 
@@ -545,7 +547,7 @@ export default {
             i {
                 margin: 0 3px;
                 font-weight: bolder;
-                font-size: medium;
+                font-size: 1.1em;
                 color: #527853;
             }
         }
@@ -734,20 +736,32 @@ export default {
             }
 
             .btnArea {
-                .btn {
-                    margin: 0 10px;
+                .cancel {
+                    background-color: #c0c0c0;
+
+                    &:hover {
+                        background-color: #c0c0c0a7;
+                    }
+                }
+
+                .create {
                     background-color: #EE7214;
-                    border: none;
-                    border-radius: 10px;
-                    color: white;
-                    font-size: large;
-                    width: 80px;
-                    height: 40px;
-                    font-weight: bolder;
+                    margin-left: 20px;
 
                     &:hover {
                         background-color: #ea8436c0;
                     }
+                }
+
+                .btn {
+                    border: none;
+                    border-radius: 10px;
+                    color: white;
+                    font-size: 1.2em;
+                    width: 80px;
+                    height: 40px;
+                    font-weight: bolder;
+                    cursor: pointer;
                 }
             }
         }
