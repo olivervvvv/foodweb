@@ -352,7 +352,7 @@ export default {
             position: fixed;
             top: 0;
             left: 0;
-            z-index: 99;
+            z-index: 2;
 
             .logoArea {
                 width: 20%;
@@ -436,7 +436,7 @@ export default {
                     position: fixed;
                     top: 90px;
                     transition: max-height 0.3s ease-in;
-                    z-index: 2;
+                    z-index: 1;
                     background-color: white;
                     width: 120px;
                     border-radius: 10px;
@@ -466,9 +466,6 @@ export default {
             }
         }
     }
-// body {
-//     background: #F9E8D9;
-// }
 
 .bgArea {
     // padding: 10% 5% 0;
@@ -605,7 +602,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        z-index: 2;
+        z-index: 3;
 
         .overlay {
             width: 60%;
