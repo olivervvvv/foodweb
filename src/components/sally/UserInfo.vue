@@ -90,6 +90,7 @@ export default {
             } catch (error) {
                 console.error('Error fetching Post data:', error);
             }
+            this.$router.push("/");
         },
         //變更頭貼
         async updateImage() {

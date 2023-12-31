@@ -88,6 +88,7 @@ export default {
             } catch (error) {
                 console.error('Error fetching Post data:', error);
             }
+            this.$router.push("/");
         },
         //獲取該會員貼文
         async getUserPost() {
@@ -100,6 +101,7 @@ export default {
                 console.error('Error getUserPost : ', error);
             }
         },
+//------點擊該篇貼文進行編輯---------------------------------------------------------------------------
         updatePost(post) { //編輯貼文 post從v-for="(post, index) in this.postInfoList"來的
             this.showEditPage = true
             this.postObj = JSON.parse(JSON.stringify(post)); //將原有貼文資料post給予obj。序列化 深拷貝(可以在不影響原始數據情况下進行修改和操作) 
@@ -112,6 +114,7 @@ export default {
             console.log(this.updatePicture);
             console.log(this.updateFilePath)
         },
+//------提交更新---------------------------------------------------------------------------
         async submit() {
             const formData = new FormData();
             formData.append('postId', this.updatePostId);
@@ -131,12 +134,14 @@ export default {
                 })
                 .then((response) => {
                     console.log(response);
+                    alert("更新成功");
                     this.showEditPage = false;
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         },
+//------更新圖片用---------------------------------------------------------------------------
         handleFileChange(event) {
             this.updatePicture = event.target.files[0];
             let wrapper = this.$refs.wrapper;
@@ -176,6 +181,10 @@ export default {
             console.log("data:image/jpeg;base64," + picture)
             return "data:image/jpeg;base64," + picture;
         },
+//------刪除貼文-----------------------------------------------------------------------------
+        deleteSubmit(){
+
+        }
     }
 }
 </script>
@@ -268,7 +277,7 @@ export default {
                 <p>確定刪除？</p>
                 <div class="btnArea">
                     <button class="cancel btn" @click="checkDelete = false">取消</button>
-                    <button type="button" class="update btn" @click="delSubmit()">確定</button>
+                    <button type="button" class="update btn" @click="deleteSubmit()">確定</button>
                 </div>
             </div>
         </div>
@@ -463,20 +472,10 @@ export default {
             align-items: center;
             margin: 5px 0;
             padding: 0 10px;
+            cursor: pointer;
 
             .postTitle {
                 font-weight: bolder;
-            }
-
-            .btn {
-                width: 60px;
-                height: 25px;
-                background-color: #EE7214;
-                border: none;
-                border-radius: 5px;
-                color: white;
-                font-weight: bolder;
-                cursor: pointer;
             }
         }
     }

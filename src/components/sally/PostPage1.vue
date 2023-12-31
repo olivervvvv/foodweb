@@ -13,10 +13,6 @@ export default {
             storeInfo: {},
             goToPostpostId: 0,
 
-
-            storeInfo: {},
-            goToPostpostId: 0,
-
             showCreatePost: false, // 控制是否显示创建贴文的页面
             description: "", // 存储新贴文的内容
             postTitle: "",
@@ -25,8 +21,6 @@ export default {
             isLogIn: false,//登入狀態
             loginUserPicture: "",
         };
-    },
-    components: {
     },
     mounted() {
         this.getPostInfo();
