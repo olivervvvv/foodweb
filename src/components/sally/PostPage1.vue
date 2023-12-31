@@ -210,6 +210,10 @@ export default {
         },
         simulateFileInputClick() {
             this.$refs.fileInput.click(); // 触发文件输入框的点击事件
+        },
+        //返回上一頁
+        goBack() {
+            this.$router.back();
         }
     },
     computed: {

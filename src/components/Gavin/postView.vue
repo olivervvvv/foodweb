@@ -235,8 +235,8 @@ export default {
         },
         //返回上一頁
         goBack() {
-        this.$router.back();
-    }
+            this.$router.back();
+        }
     },
 }
 
@@ -335,7 +335,8 @@ export default {
         </div>
         <!-- 返回上頁按鈕 -->
         <div class="goBackArea">
-            <button class="goBackBtn" aria-label="返回上頁" data-balloon-pos="left" @click="goBack()"><i class="fa-solid fa-reply"></i></button>
+            <button class="goBackBtn" aria-label="返回上頁" data-balloon-pos="left" @click="goBack()"><i
+                    class="fa-solid fa-reply"></i></button>
         </div>
     </div>
 </template>
@@ -642,7 +643,8 @@ export default {
             }
         }
     }
-   //返回上頁按鈕
+
+    //返回上頁按鈕
     .goBackArea {
         position: fixed;
         bottom: 70px;
