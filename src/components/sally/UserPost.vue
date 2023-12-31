@@ -13,12 +13,13 @@ export default {
             showEditPage: false,
             postObj: {},
             //更新回傳給後端資料
-            updatePostId:0,
+            updatePostId: 0,
             updatePostTitle: "",
             updateDescription: "",
             updatePicture: null,
             updateFilePath: "",
-            
+            checkDelete: false, //確認刪除彈框
+
 
         }
     },
@@ -235,12 +236,10 @@ export default {
                 <div class="imgArea">
                     <div ref="wrapper" class="wrapper">
                         <div class="image">
-                            <img ref="img"
-                            style="height: 100%; width: 100%;" />
+                            <img ref="img" style="height: 100%; width: 100%;" />
                         </div>
                         <div class="content">
-                            <img  ref="img" :src="getImage(updatePicture)"
-                                style="height: 100%; width: 100%;" />
+                            <img ref="img" :src="getImage(updatePicture)" style="height: 100%; width: 100%;" />
                             <!-- <div class="icon">
                                 <i class="fas fa-cloud-upload-alt"></i>
                             </div>
@@ -253,9 +252,23 @@ export default {
                 </div>
 
                 <div class="btnArea">
-                    <button>刪除此篇貼文</button>
-                    <button class="btn" @click="showEditPage = false">取消更新</button>
-                    <button class="btn" @click="submit()">更新</button>
+                    <div class="leftRegion">
+                        <button class="delBtn" @click="checkDelete = true">刪除此篇貼文</button>
+                    </div>
+                    <div class="rightRegion">
+                        <button class="cancel btn" @click="showEditPage = false">取消</button>
+                        <button class="update btn" @click="submit()">更新</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 確認刪除彈框 -->
+        <div class="checkDeleteArea" v-if="checkDelete">
+            <div class="overlay">
+                <p>確定刪除？</p>
+                <div class="btnArea">
+                    <button class="cancel btn" @click="checkDelete = false">取消</button>
+                    <button type="button" class="update btn" @click="delSubmit()">確定</button>
                 </div>
             </div>
         </div>
@@ -526,7 +539,7 @@ export default {
                     width: 100%;
                     height: 250px;
                     position: relative;
-                    border: 2px dashed gray;
+                    border: 2px solid gray;
                     border-radius: 10px;
                     display: flex;
                     justify-content: center;
@@ -605,28 +618,102 @@ export default {
                     border-radius: 10px;
                     color: white;
                     font-weight: bolder;
-                    background: linear-gradient(135deg, #EE7214 0%, #F7B787 100%);
+                    background: linear-gradient(135deg, #527853 0%, #679f6a 100%);
                 }
             }
 
             .btnArea {
-                .btn {
-                    margin: 0 10px;
-                    background-color: #EE7214;
-                    border: none;
-                    border-radius: 10px;
-                    color: white;
-                    font-size: large;
-                    width: 80px;
-                    height: 40px;
-                    font-weight: bolder;
+                width: 90%;
+                display: flex;
 
-                    &:hover {
-                        background-color: #ea8436c0;
+                .leftRegion {
+                    width: 50%;
+
+                    .delBtn {
+                        background-color: #ee1414;
+                        border: none;
+                        border-radius: 10px;
+                        color: white;
+                        font-size: large;
+                        width: 150px;
+                        height: 40px;
+                        font-weight: bolder;
+                        cursor: pointer;
+
+                        &:hover {
+                            background-color: #ea3636c0;
+                        }
                     }
+                }
+
+                .rightRegion {
+                    width: 50%;
+                    display: flex;
+                    justify-content: end;
                 }
             }
         }
+    }
+
+    .checkDeleteArea {
+        width: 100%;
+        height: 100vh;
+        background-color: rgb(0, 0, 0, 0.7);
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+
+        .overlay {
+            width: 25%;
+            height: 25%;
+            background-color: white;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 25px;
+            overflow-y: visible;
+
+            p{
+                font-size: 1.2em;
+                font-weight: bolder;
+                color: #527853;
+                margin-bottom: 20px;
+            }
+        }
+    }
+
+    .cancel {
+        background-color: #c0c0c0;
+
+        &:hover {
+            background-color: #c0c0c0a7;
+        }
+    }
+
+    .update {
+        background-color: #527853;
+        margin-left: 20px;
+
+        &:hover {
+            background-color: #527853c4;
+        }
+    }
+
+    .btn {
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: large;
+        width: 80px;
+        height: 40px;
+        font-weight: bolder;
+        cursor: pointer;
     }
 }
 </style>
