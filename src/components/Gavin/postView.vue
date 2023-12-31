@@ -233,6 +233,10 @@ export default {
             // lastComment.scrollIntoView({ behavior: 'smooth', block: 'end' });
             // }
         },
+        //返回上一頁
+        goBack() {
+        this.$router.back();
+    }
     },
 }
 
@@ -284,7 +288,6 @@ export default {
                 <button class="showCommentBtn" @click="showComment(this.postId, this.storeId)">查看更多評論</button>
             </div>
         </div>
-
         <!-- 跳出完整評論頁面 -->
         <div v-if="showcomment" class="blur-background">
             <div class="comment-container">
@@ -329,6 +332,10 @@ export default {
                     </div> -->
                 </div>
             </div>
+        </div>
+        <!-- 返回上頁按鈕 -->
+        <div class="goBackArea">
+            <button class="goBackBtn" aria-label="返回上頁" data-balloon-pos="left" @click="goBack()"><i class="fa-solid fa-reply"></i></button>
         </div>
     </div>
 </template>
@@ -432,6 +439,7 @@ export default {
         }
     }
 
+    //跳出完整評論頁面
     .blur-background {
         border: 1px solid red;
         backdrop-filter: blur(5px);
@@ -634,4 +642,44 @@ export default {
             }
         }
     }
-}</style>
+   //返回上頁按鈕
+    .goBackArea {
+        position: fixed;
+        bottom: 70px;
+        right: 70px;
+
+        .goBackBtn {
+            background: #fff;
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            margin: 0 10px;
+            position: relative;
+            display: inline-flex;
+            transition: all 0.3s;
+            box-shadow: -3px -3px 7px #f6f6f6, 0 0 7px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+
+            &:hover {
+                transform: scale(1.1);
+            }
+        }
+
+        i {
+            position: relative;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            font-size: 23px;
+            line-height: 50px;
+            color: #EE7214;
+            font-weight: bolder;
+
+            &:hover {
+                transform: scale(1.1);
+            }
+        }
+    }
+}
+</style>
