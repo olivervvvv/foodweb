@@ -110,7 +110,7 @@ export default {
 
                 if (response.status === 200) {
                     console.log('Headshot updated successfully!');
-                    this.updateImgPage=false;
+                    this.updateImgPage = false;
                     location.reload();
                 } else {
                     console.error('Error updating headshot:', response.statusText);
@@ -250,8 +250,8 @@ export default {
                     </div>
 
                     <div class="btnArea">
-                        <button class="btn" @click="updateImgPage = false">取消</button>
-                        <button class="btn" @click="updateImage">確定</button>
+                        <button class="cancel btn" @click="updateImgPage = false">取消</button>
+                        <button class="update btn" @click="updateImage">確定</button>
                     </div>
                 </div>
             </div>
@@ -271,8 +271,8 @@ export default {
                         <button class="btn">獲取驗證碼</button>
                     </div>
                     <div class="btnArea">
-                        <button class="btn" @click="updatePwdPage = false">取消</button>
-                        <button class="btn" @click="updatePwd">送出</button>
+                        <button class="cancel btn" @click="updatePwdPage = false">取消</button>
+                        <button class="update btn" @click="updatePwd">送出</button>
                     </div>
                 </div>
             </div>
@@ -642,9 +642,26 @@ export default {
         }
 
         .btnArea {
+            .cancel {
+                background-color: #c0c0c0;
+
+                &:hover {
+                    background-color: #c0c0c0a7;
+                }
+            }
+
+            .update {
+                background-color: #527853;
+                margin-left: 20px;
+
+                &:hover {
+                    background-color: #527853c4;
+                }
+            }
+
+
             .btn {
                 margin: 30px 10px 0 10px;
-                background-color: #527853;
                 border: none;
                 border-radius: 10px;
                 color: white;
@@ -652,10 +669,7 @@ export default {
                 width: 80px;
                 height: 40px;
                 font-weight: bolder;
-
-                &:hover {
-                    background-color: #527853c4;
-                }
+                cursor: pointer;
             }
         }
 
@@ -714,19 +728,6 @@ export default {
                 }
             }
         }
-
-    }
-
-    .btnHomeAndLogOut {
-        border: 1px solid red;
-        position: absolute;
-        display: flex;
-        justify-content: center;
-        justify-content: space-between;
-        width: 10%;
-        top: 5%;
-        right: 5%;
-        // z-index: 99;
     }
 }
 </style>
