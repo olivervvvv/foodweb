@@ -5,25 +5,25 @@ export default {
     data() {
         return {
             isFnListVisible: false,//header需要
-            postData:{},
-            commentData:{},
-            postId:0,
-            storeId:0,
-            imgurl:"",
-            likeNumber:0,
-            description:"",
-            postTitle:"",
-            storeId:0,
-            userId:0,
-            showcomment:false,
-            commentInput:"",
-            inputValue:"",//搜尋欄輸入值
-            isLogIn:false,//登入狀態
+            postData: {},
+            commentData: {},
+            postId: 0,
+            storeId: 0,
+            imgurl: "",
+            likeNumber: 0,
+            description: "",
+            postTitle: "",
+            storeId: 0,
+            userId: 0,
+            showcomment: false,
+            commentInput: "",
+            inputValue: "",//搜尋欄輸入值
+            isLogIn: false,//登入狀態
 
             items: [], // Array to store loaded content
             loading: false,
             page: 0,
-            loginUserPicture:"",
+            loginUserPicture: "",
         }
     },
     components: {
@@ -62,12 +62,12 @@ export default {
                 console.log(response.data);
                 this.postData = response.data.commVoList; // 更新組件的數據
                 console.log('this.postData from DB:', this.postData);
-                if (this.postData .length > 0) {
+                if (this.postData.length > 0) {
                     // Append the new items to the existing items array
-                    this.items = [...this.items, ...this.postData ];
+                    this.items = [...this.items, ...this.postData];
                     // Increment the page number
                     this.page++;
-                    console.log('this.page:',this.page);
+                    console.log('this.page:', this.page);
                 }
 
                 // 遍歷每個帖子，獲取前兩條評論
@@ -96,8 +96,8 @@ export default {
             this.$router.push("/");
         },
         //搜尋
-        searchStoreName(){
-            console.log("search inputtext : ",this.inputValue);
+        searchStoreName() {
+            console.log("search inputtext : ", this.inputValue);
             // 使用 $router.push 实现页面跳转，并传递参数
             this.$router.push({
                 name: "storePage",
@@ -117,8 +117,8 @@ export default {
         goToUserPostPage() {
             this.$router.push("/userPost");
         },
-        setInputValue(){
-            console.log("傳入之資料: ",this.$route.query.value);
+        setInputValue() {
+            console.log("傳入之資料: ", this.$route.query.value);
         },
         //登入
         login() {
@@ -126,22 +126,23 @@ export default {
             this.$router.push("/login");
         },
         //登出
-        async logout(){
+        async logout() {
             try {
-            const response = await axios.get(`http://${locohost}/users/logout`,{
-                withCredentials: true,
-            });
-            const DBdata = response.data; // 這裡是後端返回的
-            console.log('postData from DB:', DBdata);
-            this.isLogIn=false;
-            console.log("this.isLogIn : ",this.isLogIn)
+                const response = await axios.get(`http://${locohost}/users/logout`, {
+                    withCredentials: true,
+                });
+                const DBdata = response.data; // 這裡是後端返回的
+                console.log('postData from DB:', DBdata);
+                this.isLogIn = false;
+                console.log("this.isLogIn : ", this.isLogIn)
             } catch (error) {
                 console.error('Error fetching Post data:', error);
             }
+            this.$router.push("/");
         },
         async getPost() {
             try {
-                const response = await axios.get(`http://${locohost}/posts/random-top-twenty`,{
+                const response = await axios.get(`http://${locohost}/posts/random-top-twenty`, {
                     withCredentials: true,
                 });
                 const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
@@ -167,11 +168,11 @@ export default {
         },
         async getTopTwoComments(postId) {
             try {
-                const response = await axios.get(`http://${locohost}/posts/${postId}/comments`,{
+                const response = await axios.get(`http://${locohost}/posts/${postId}/comments`, {
                     withCredentials: true,
                 });
                 const comments = response.data;
-                
+
                 return comments.slice(0, 2); // 返回前兩條評論
             } catch (error) {
                 console.error('Error fetching comments:', error);
@@ -179,18 +180,18 @@ export default {
             }
         },
         // 檢查是否已登入
-        async logInCheck(){
+        async logInCheck() {
             try {
-                const response = await axios.get(`http://${locohost}/users/getcurrentUser`,{
+                const response = await axios.get(`http://${locohost}/users/getcurrentUser`, {
                     withCredentials: true,
                 });
                 var loginState = response.data;
                 console.log('loginState from DB:', loginState);
                 //儲存登入狀態
-                this.isLogIn=loginState.login;
-                console.log("this.isLogIn : ",this.isLogIn);
+                this.isLogIn = loginState.login;
+                console.log("this.isLogIn : ", this.isLogIn);
                 //儲存登入者圖片
-                this.loginUserPicture=loginState.usersEntity.picture;
+                this.loginUserPicture = loginState.usersEntity.picture;
                 // console.log("loginUserPicture : ",this.loginUserPicture);
             } catch (error) {
                 console.error('Error fetching comments:', error);
@@ -200,7 +201,7 @@ export default {
         async showComment(postId, storeId) {
             //判斷是否登入
             await this.logInCheck();
-            console.log("logInCheck : ",this.isLogIn)
+            console.log("logInCheck : ", this.isLogIn)
             if (!this.isLogIn) {
                 alert('請先登入');
                 return;
@@ -222,7 +223,7 @@ export default {
                 console.error('Error in the second request:', error);
             }
         },
-//=========================================================================================================================
+        //=========================================================================================================================
 
         //處理點讚
         async clickLike(post) {
@@ -233,9 +234,9 @@ export default {
             // 更新顏色屬性
             post.previousColor = post.isLiked ? '#ff0000' : '#000000';
             // 如果從 #ff0000 變為 #000000，則輸出 1；如果從 #000000 變為 #ff0000，則輸出 -1
-            const output =  (previousColor === '#000000' && post.previousColor === '#ff0000')? 1 :
+            const output = (previousColor === '#000000' && post.previousColor === '#ff0000') ? 1 :
                 (previousColor === '#ff0000' && post.previousColor === '#000000') ? -1 : 0;
-            console.log('output:',output);
+            console.log('output:', output);
 
             try {
                 const response = await axios.post(`http://${locohost}/posts/getPostLike?postId=${post.postInfo.postId}&addNumber=${output}`);
@@ -289,372 +290,539 @@ export default {
 </script>
 
 <template>
-<div class="post-container" style="user-select: none;">
+    <div class="post-container" style="user-select: none;">
         <!-- Header區域 -->
         <div class="headerArea">
-        <div class="fixed">
-            <!-- logo -->
-            <div class="logoArea">
-                <button class="logoBtn" aria-label="回首頁" data-balloon-pos="down" @click="goToHomePage">
-                    <img src="../sally/logo 2.png" alt="">
-                </button>
-            </div>
-            <!-- 搜尋列 -->
-            <div class="searchArea">
-                <input class="searchName" type="text" placeholder="搜尋地區或店名" v-model="this.inputValue">
-                <button class="searchBtn" type="button" @click="searchStoreName()"><i
-                        class="fa-solid fa-magnifying-glass"></i></button>
-            </div>
-            <!-- 會員中心 -->
-            <div class="userCenterArea">
-                <!-- 登入者圖片有效，顯示圖片；否則顯示默認圖片 -->
-                <img class="userBtn" :src="getImage(loginUserPicture)" alt="" @mouseenter="this.showFnList" v-if="getImage(loginUserPicture)&&this.isLogIn" >
-                <!-- 預設未登入頭貼 -->
-                <img class="userBtn" src="../sally/explorer.png" alt="" @mouseenter="this.showFnList" v-else >
-                <!-- 登入者圖片下拉選單 -->
-                <div class="userFnList" :class="{ 'fnListVisible': isFnListVisible }" @mouseleave="this.showFnList">
-                    <!-- 登入顯示 -->
-                    <ul v-if="this.isLogIn">
-                        <li @click="goToUserInfoPage">個人資料</li>
-                        <li @click="goToUserPostPage">個人貼文</li>
-                        <li @click="logout()">登出</li>
-                    </ul>
-                    <!-- 未登入顯示 -->
-                    <ul v-if="!this.isLogIn">
-                        <li @click="login()" >登入</li>
-                    </ul>
+            <div class="fixed">
+                <!-- logo -->
+                <div class="logoArea">
+                    <button class="logoBtn" aria-label="回首頁" data-balloon-pos="down" @click="goToHomePage">
+                        <img src="../sally/logo 2.png" alt="">
+                    </button>
+                </div>
+                <!-- 搜尋列 -->
+                <div class="searchArea">
+                    <input class="searchName" type="text" placeholder="搜尋地區或店名" v-model="this.inputValue">
+                    <button class="searchBtn" type="button" @click="searchStoreName()"><i
+                            class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+                <!-- 會員中心 -->
+                <div class="userCenterArea">
+                    <!-- 登入者圖片有效，顯示圖片；否則顯示默認圖片 -->
+                    <img class="userBtn" :src="getImage(loginUserPicture)" alt="" @mouseenter="this.showFnList"
+                        v-if="getImage(loginUserPicture) && this.isLogIn">
+                    <!-- 預設未登入頭貼 -->
+                    <img class="userBtn" src="../sally/explorer.png" alt="" @mouseenter="this.showFnList" v-else>
+                    <!-- 登入者圖片下拉選單 -->
+                    <div class="userFnList" :class="{ 'fnListVisible': isFnListVisible }" @mouseleave="this.showFnList">
+                        <!-- 登入顯示 -->
+                        <ul v-if="this.isLogIn">
+                            <li @click="goToUserInfoPage">個人資料</li>
+                            <li @click="goToUserPostPage">個人貼文</li>
+                            <li @click="logout()">登出</li>
+                        </ul>
+                        <!-- 未登入顯示 -->
+                        <ul v-if="!this.isLogIn">
+                            <li @click="login()">登入</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
-
-
-
-
-    <div class="instagram-post" v-for="(post, index) in items" :key="index">
-        <!-- 發文者頭像及名子 -->
-        <div class="header">
-            <figure style="height:32px;width: 32px;margin-right: 2%;">
-                <!-- 發文者圖片有效，顯示圖片；否則顯示默認圖片 -->
-                <img :src="getImage(post.user.picture)" style="height: auto;width: 100%;border-radius: 99px;" v-if="getImage(post.postInfo.picture)">
-                <!-- 預設發文者圖片 -->
-                <img src="../../main/resources/static/images/explorer.png" style="height: auto;width: 100%;border-radius: 99px;" v-else>
-            </figure> 
-            <!-- 讀取發文者名子 -->
-            <span class="username" v-if="post.user && post.user.name != null">{{post.user.name}}</span>
-            <span class="username" v-else>UserName</span>
-
-        </div>
-        <!-- 貼文內容 -->
-        <div>
-            <div>
+        <!-- 貼文區域 -->
+        <div class="instagram-post" v-for="(post, index) in items" :key="index">
+            <!-- 發文者頭像及名子 -->
+            <div class="header">
+                <figure>
+                    <!-- 發文者圖片有效，顯示圖片；否則顯示默認圖片 -->
+                    <img :src="getImage(post.user.picture)" v-if="getImage(post.postInfo.picture)">
+                    <!-- 預設發文者圖片 -->
+                    <img src="../../main/resources/static/images/explorer.png" v-else>
+                </figure>
+                <!-- 讀取發文者名字 -->
+                <span class="username" v-if="post.user && post.user.name != null">{{ post.user.name }}</span>
+                <span class="username" v-else>UserName</span>
+            </div>
+            <!-- 貼文內容 -->
+            <div class="content">
                 <figure>
                     <!-- 如果圖片有效，顯示圖片；否則顯示默認圖片 -->
-                    <img :src="getImage(post.postInfo.picture)" style="height: 100%; width: 100%;" v-if="post.postInfo.picture">
+                    <img :src="getImage(post.postInfo.picture)" v-if="post.postInfo.picture">
                     <!-- 如果base64為空,則檢查路徑 -->
-                    <img :src="post.postInfo.filePath" style="height: 100%; width: 100%;" v-if="post.postInfo.picture===null">
+                    <img :src="post.postInfo.filePath" v-if="post.postInfo.picture === null">
                     <!-- 預設貼文圖片 -->
-                    <img src="../../main/resources/static/images/error 404.png" style="height: 100%; width: 100%;" v-if="post.postInfo.picture===null&&post.postInfo.filePath===''">
-                </figure> 
+                    <img src="../../main/resources/static/images/error 404.png"
+                        v-if="post.postInfo.picture === null && post.postInfo.filePath === ''">
+                </figure>
                 <!-- <span class="username">username</span> -->
-                <p>{{post.postInfo.description}}</p>
+                <p>{{ post.postInfo.description }}</p>
             </div>
-        </div>
-        <!-- Like按鈕 -->
-        <div class="content">
+            <!-- Like按鈕 -->
             <div class="heart">
-                <i v-if="!post.isLiked" class="fa-regular fa-heart fa-lg" style="color: #000000;" @click="clickLike(post)"></i>
+                <i v-if="!post.isLiked" class="fa-regular fa-heart fa-lg" style="color: #000000;"
+                    @click="clickLike(post)"></i>
                 <i v-if="post.isLiked" class="fa-solid fa-heart fa-lg" style="color: #ff0000;" @click="clickLike(post)"></i>
-                <span class="likes">{{post.postInfo.postLikeNumber}}like</span>
-            </div> 
-        </div>
-        <!-- 預覽前兩筆留言 -->
-        <div class="comment-preview">
-            <div v-for="(comment, cIndex) in post.comments" :key="cIndex">
-            <span style="font-weight: bold;">{{comment.postComment.name}}</span> <p>{{comment.postComment.comment}}</p>
+                <span class="likes">{{ post.postInfo.postLikeNumber }}</span>
             </div>
-            <!-- 顯示完整評論btn -->
-            <button class="blue-city-btn" @click="showComment(post.postInfo.postId,post.postInfo.storeId)">顯示完整評論</button>
+            <!-- 預覽前兩筆留言 -->
+            <div class="comment-preview">
+                <div class="comment" v-for="(comment, cIndex) in post.comments" :key="cIndex">
+                    <span class="userName">{{ comment.postComment.name }}</span>
+                    <p>{{ comment.postComment.comment }}</p>
+                </div>
+                <!-- 顯示完整評論btn -->
+                <button class="showCommentBtn"
+                    @click="showComment(post.postInfo.postId, post.postInfo.storeId)">查看更多評論</button>
+            </div>
         </div>
-    </div>
 
-    <!-- 跳出完整評論頁面 -->
-    <div v-if="showcomment" class="blur-background">
-        <div class="comment-container">
-            <!-- 顯示評論區域 -->
-            <div ref="commentContainer" class="comment-text-container">
-                <!-- 有評論顯示 -->
-                <div class="content"  v-for="(comment, index) in commentData" v-if="commentData.length > 0"> 
-                    <div style="display: flex;align-items: center">
-                        <!-- 留言者頭像 -->
-                        <figure style="height:32px;width: 32px;">
-                            <!-- 留言者圖片有效，顯示圖片；否則顯示默認圖片 -->
-                            <img :src="getImage(comment.userPicture)" style="height: auto;width: 100%;border-radius: 99px;" v-if="getImage(comment.userPicture)">
-                            <!-- 預設留言者圖片 -->
-                            <img src="../../main/resources/static/images/explorer.png" style="height: auto;width: 100%;border-radius: 99px;" v-else>
-                        </figure> 
-                        <span style="font-weight: bold;margin: 2%;">{{comment.postComment.name}}</span> 
+        <!-- 跳出完整評論頁面 -->
+        <div v-if="showcomment" class="blur-background">
+            <div class="comment-container">
+                <!-- 關閉視窗 -->
+                <div class="closeComment">
+                    <button class="closeBtn" @click="showcomment = false"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <!-- 顯示評論區域 -->
+                <div ref="commentContainer" class="comment-text-container">
+                    <!-- 有評論顯示 -->
+                    <div class="content" v-for="(comment, index) in commentData" v-if="commentData.length > 0">
+                        <div class="userComment">
+                            <!-- 留言者頭像 -->
+                            <figure>
+                                <!-- 留言者圖片有效，顯示圖片；否則顯示默認圖片 -->
+                                <img :src="getImage(comment.userPicture)" v-if="getImage(comment.userPicture)">
+                                <!-- 預設留言者圖片 -->
+                                <img src="../../main/resources/static/images/explorer.png" v-else>
+                            </figure>
+                            <span>{{ comment.postComment.name }}</span>
+                        </div>
+                        <p>{{ comment.postComment.comment }}</p>
                     </div>
-                    <p style="padding-left: 5%;">{{comment.postComment.comment}}</p>
+                    <!-- 無評論顯示 -->
+                    <div v-else class="no-content">
+                        <span>目前暫無評論</span>
+                    </div>
                 </div>
-                <!-- 無評論顯示 -->
-                <div  v-else class="no-content">
-                    <span style="font-weight: bold;font-size: 40pt;">目前沒有評論</span>
+                <!--  留言評論區域 -->
+                <div class="leaveComments">
+                    <!-- 輸入區域 -->
+                    <div class="inputArea">
+                        <textarea name="commentInput" placeholder="發表評論..." v-model="commentInput"></textarea>
+                        <button class="btn" :class="{ 'activeBtn': commentInput }"
+                            @click="sendComment(this.postId, this.storeId)" :disabled="!commentInput"><i
+                                class="fa-solid fa-paper-plane"></i></button>
+                    </div>
+                    <!-- 按鈕區域 -->
+                    <!-- <div class="btnArea">
+                        <button class="cancel btn" @click="showcomment = false">取消</button>
+                        <button class="submit btn" @click="sendComment(this.postId, this.storeId)">送出</button>
+                    </div> -->
                 </div>
-            </div>
-            <!-- 輸入區域 -->
-            <div class="btn-container2">
-                <textarea name="commentInput" rows="4" style="width: 80%;" v-model="commentInput"></textarea>
-            </div>
-            <!-- 按鈕區域 -->
-            <div class="btn-container2">
-                <button class="green-btn" @click="sendComment(this.postId,this.storeId)">送出</button>
-                <button class="red-btn" @click="showcomment=false">取消</button>
             </div>
         </div>
     </div>
-
-
-
-</div>
-
 </template>
 <style lang="scss" scoped>
-
-
-.post-container{
+.post-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
     margin: 10px;
     width: 99vw;
-    .headerArea {
-    width: 100vw;
-    height: 80px;
 
-    .fixed {
+    //Header區域
+    .headerArea {
         width: 100vw;
         height: 80px;
-        background-color: #EE7214;
-        box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
-        display: flex;
-        align-items: center;
+
+        .fixed {
+            width: 100vw;
+            height: 80px;
+            background-color: #EE7214;
+            box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 99;
+
+            .logoArea {
+                width: 20%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .logoBtn {
+                    border: none;
+                    background: none;
+                    padding: 0;
+                    cursor: pointer;
+
+                    img {
+                        height: 80px;
+                        margin-top: 10px;
+                    }
+                }
+            }
+
+            .searchArea {
+                width: 60vw;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .searchName {
+                    width: 90%;
+                    height: 55%;
+                    background-color: white;
+                    border: none;
+                    outline: none;
+                    border-top-left-radius: 100px;
+                    border-bottom-left-radius: 100px;
+                    font-size: 1.2em;
+                    text-indent: 20px;
+                }
+
+                .searchBtn {
+                    width: 10%;
+                    height: 55%;
+                    background-color: white;
+                    border: none;
+                    outline: none;
+                    border-top-right-radius: 100px;
+                    border-bottom-right-radius: 100px;
+                    color: #EE7214;
+                    font-size: 1.5em;
+                    font-weight: bolder;
+                    cursor: pointer;
+
+                    &:hover {
+                        color: #ee7214b2;
+                        text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+                    }
+                }
+            }
+
+            .userCenterArea {
+                width: 20%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .userBtn {
+                    border: none;
+                    border-radius: 50%;
+                    width: 55px;
+                    height: 55px;
+                    padding: 0;
+                    cursor: pointer;
+                }
+
+                .userFnList {
+                    /* display: none; */
+                    overflow: hidden;
+                    max-height: 0;
+                    position: fixed;
+                    top: 90px;
+                    transition: max-height 0.3s ease-in;
+                    z-index: 2;
+                    background-color: white;
+                    width: 120px;
+                    border-radius: 10px;
+                    font-size: 1.2em;
+                    font-weight: bolder;
+                    color: #EE7214;
+                    display: flex;
+                    justify-content: center;
+
+                    &.fnListVisible {
+                        max-height: 100px;
+                        transition: max-height .3s ease-in;
+                        display: flex;
+                        justify-content: center;
+                    }
+                }
+
+                ul {
+                    padding: 0%;
+                }
+
+                li {
+                    list-style-type: none;
+                    margin: 2px 0;
+                    cursor: pointer;
+
+                    &:hover {
+                        color: #527853;
+                    }
+                }
+            }
+        }
+    }
+
+    //貼文區域
+    .instagram-post {
+        width: 50%;
+        padding: 2%;
+        margin: 10px 0;
+        background-color: white;
+        border-radius: 10px;
+
+        //發文者頭像及名字
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+
+            figure {
+                height: 40px;
+                width: 40px;
+
+                img {
+                    height: auto;
+                    width: 100%;
+                    border-radius: 50%;
+                }
+            }
+
+            span {
+                margin-left: 10px;
+                font-size: 1.1em;
+                font-weight: bolder;
+            }
+        }
+
+        //貼文內容
+        .content {
+            margin-bottom: 10px;
+
+            img {
+                height: 100%;
+                width: 100%;
+                border-radius: 10px;
+            }
+
+            p {
+                font-size: 1.1em;
+            }
+        }
+
+        //Like按鈕
+        .heart {
+            display: flex;
+            align-items: center;
+            padding: 5px 0;
+            border-top: 1px solid rgb(200, 200, 200);
+            border-bottom: 1px solid rgb(200, 200, 200);
+
+            i {
+                cursor: pointer;
+            }
+
+            .likes {
+                margin-left: 10px;
+                font-size: 1.1em;
+            }
+        }
+
+        //預覽前兩筆留言
+        .comment-preview {
+            margin-top: 10px;
+
+            .comment {
+                margin: 10px 0;
+
+                .userName {
+                    font-weight: bolder;
+                }
+            }
+
+            .showCommentBtn {
+                width: 100%;
+                padding: 10px;
+                background: none;
+                font-size: 1em;
+                color: gray;
+                border: none;
+                cursor: pointer;
+
+                &:hover {
+                    text-decoration: underline;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+
+    //跳出完整評論頁面
+    .blur-background {
+        backdrop-filter: blur(5px);
+        /* 調整像素值以增加或減少模糊效果 */
+        background-color: rgba(255, 255, 255, 0.5);
+        /* 調整顏色和透明度 */
         position: fixed;
         top: 0;
         left: 0;
-        z-index: 99;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        /* 確保在其他元素之上 */
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-        .logoArea {
-            width: 20%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .comment-container {
+            width: 50%;
+            height: 70%;
+            z-index: 99;
+            background-color: #ffffff;
+            border-radius: 10px;
+            position: fixed;
+            top: 20%;
+            // /* 距離頂部的距離，根據需要調整 */
+            // overflow: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            /* 添加陰影 */
 
-            .logoBtn {
-                border: none;
-                background: none;
-                padding: 0;
-                cursor: pointer;
+            .closeComment {
+                width: 100%;
+                height: 10%;
+                display: flex;
+                justify-content: end;
+                align-items: center;
 
-                img {
-                    height: 80px;
-                    margin-top: 10px;
+                .closeBtn {
+                    background-color: rgb(0, 0, 0, 0);
+                    border: none;
+                    font-size: 25pt;
+                    color: #EE7214;
+                    margin-right: 10px;
+
+                    &:hover {
+                        color: #ee7214b2;
+                        text-shadow: 1px 1px lightgray;
+                    }
                 }
             }
-        }
 
-        .searchArea {
-            width: 60vw;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            .comment-text-container {
+                width: 100%;
+                height: 70%;
+                padding: 0 5% 5% 5%;
+                overflow: auto;
+                box-shadow: 0px -5px 5px -5px rgba(0, 0, 0, 0.5);
 
-            .searchName {
-                width: 90%;
-                height: 55%;
-                background-color: white;
-                border: none;
-                outline: none;
-                border-top-left-radius: 100px;
-                border-bottom-left-radius: 100px;
-                font-size: 1.2em;
-                text-indent: 20px;
-            }
+                .content {
+                    margin: 2% 0;
 
-            .searchBtn {
-                width: 10%;
-                height: 55%;
-                background-color: white;
-                border: none;
-                outline: none;
-                border-top-right-radius: 100px;
-                border-bottom-right-radius: 100px;
-                color: #EE7214;
-                font-size: 1.5em;
-                font-weight: bolder;
-                cursor: pointer;
+                    .userComment {
+                        display: flex;
+                        align-items: center;
 
-                &:hover {
-                    color: #ee7214b2;
-                    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+                        figure {
+                            height: 32px;
+                            width: 32px;
+
+                            img {
+                                height: auto;
+                                width: 100%;
+                                border-radius: 50%;
+                            }
+                        }
+
+                        span {
+                            font-weight: bold;
+                            margin: 1% 2%;
+                        }
+                    }
+
+                    p {
+                        margin-left: calc(2% + 32px);
+                    }
+                }
+
+                .no-content {
+                    height: 100%;
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    span {
+                        font-weight: bold;
+                        font-size: 20pt;
+                        color: gray;
+                    }
                 }
             }
-        }
 
-        .userCenterArea {
-            width: 20%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            .userBtn {
-                border: none;
-                border-radius: 50%;
-                width: 55px;
-                height: 55px;
-                padding: 0;
-                cursor: pointer;
-            }
-
-            .userFnList {
-                /* display: none; */
-                overflow: hidden;
-                max-height: 0;
-                position: fixed;
-                top: 90px;
-                transition: max-height 0.3s ease-in;
-                z-index: 2;
-                background-color: white;
-                width: 120px;
-                border-radius: 10px;
-                font-size: 1.2em;
-                font-weight: bolder;
-                color: #EE7214;
+            .leaveComments {
+                padding: 10px 0;
+                box-shadow: 0px -5px 5px -5px rgba(0, 0, 0, 0.5);
+                width: 100%;
+                height: 20%;
                 display: flex;
                 justify-content: center;
+                align-items: center;
 
-                &.fnListVisible {
-                    max-height: 100px;
-                    transition: max-height .3s ease-in;
+                .inputArea {
+                    width: 90%;
+                    height: 80%;
+                    border-radius: 10px;
                     display: flex;
+                    align-items: center;
                     justify-content: center;
-                }
-            }
-            ul{
-                padding: 0%;
-            }
-            li {
-                list-style-type: none;
-                margin: 2px 0;
-                cursor: pointer;
+                    background-color: #F0F2F5;
 
-                &:hover {
-                    color: #527853;
+                    textarea {
+                        resize: none;
+                        width: 90%;
+                        height: 100%;
+                        outline-style: none;
+                        padding: 5px 10px;
+                        font-size: 1em;
+                        font-weight: bolder;
+                        color: #EE7214;
+                        background: none;
+                        border: none;
+                        // overflow: hidden;
+
+                        &::placeholder {
+                            color: gray;
+                        }
+
+                        // &:hover {
+                        //     border-color: #EE7214;
+                        //     outline: 0;
+                        //     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+                        //         0 0 8px #ee7214b2;
+                        //     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #ee7214b2;
+                        // }
+                    }
+
+                    //無評論時
+                    .btn {
+                        color: gray;
+                        font-size: 1.5em;
+                        background: none;
+                        border: none;
+                        margin-right: 10px;
+                    }
+
+                    //有輸入評論時
+                    .activeBtn {
+                        color: #EE7214;
+                        cursor: pointer;
+                    }
                 }
             }
         }
     }
 }
-}
-.instagram-post {
-    width: 40%;
-    padding: 5px 0;
-    background-color: white;
-    margin: 5px;
-    padding: 2%;
-    border-radius: 5%;
-}
-i{
-    cursor: pointer;
-}
-.header{
-    display: flex;
-    margin: 2%;
-}
-.blue-city-btn{
-    width: 100px;
-    padding: 10px;
-    /* margin: 5px; */
-    background-color: #0800ff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.blue-city-btn:hover {
-    background-color: #050093;
-}
-.comment-container{
-    width: 70%;
-    height: 60%;
-    z-index: 99;
-    background-color: #ffffff;
-    border-radius: 20px;
-    position: fixed;
-    top: 20%; /* 距離頂部的距離，根據需要調整 */
-    overflow: auto;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.559); /* 添加陰影 */
-}
-.blur-background {
-    backdrop-filter: blur(5px); /* 調整像素值以增加或減少模糊效果 */
-    background-color: rgba(255, 255, 255, 0.5); /* 調整顏色和透明度 */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 10; /* 確保在其他元素之上 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.comment-text-container{
-    width: 100%;
-    height: 60%;
-    padding: 5%;
-    overflow: auto;
-}
-.no-content{
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.green-btn{
-    width: 100px;
-    padding: 10px;
-    margin: 5px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.green-btn:hover {
-    background-color: #3b8a3e;
-}
-.red-btn{
-    width: 100px;
-    padding: 10px;
-    margin: 5px;
-    background-color: #ff0000;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.red-btn:hover {
-    background-color: #b40000;
-}
-.btn-container2{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 </style>

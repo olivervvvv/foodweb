@@ -442,7 +442,6 @@ export default {
 
     //跳出完整評論頁面
     .blur-background {
-        border: 1px solid red;
         backdrop-filter: blur(5px);
         /* 調整像素值以增加或減少模糊效果 */
         background-color: rgba(255, 255, 255, 0.5);
@@ -566,7 +565,7 @@ export default {
                         width: 90%;
                         height: 100%;
                         outline-style: none;
-                        padding: 20px 10px;
+                        padding: 5px 10px;
                         font-size: 1em;
                         font-weight: bolder;
                         color: #EE7214;
