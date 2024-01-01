@@ -112,7 +112,7 @@ export default {
       <div class="showArea" style="user-select: none;">
         <h1 style="color: white; width: 40px; height: 120px;margin-top: 20%;margin-right: 7%;">{{ pathText }}</h1>
         <div class="btnArea" v-if="pathText">
-          <!-- BASE64商店圖片未完成-->
+          <!-- BASE64商店圖片未實裝-->
             <!-- <div class="msgBox" v-for="(store, index) in storeDetail" :key="index" @click="handleMsgBoxClick(store, index)" :style="{ backgroundImage: 'url(' + this.getImage(store.picture)+')' }">
               <div class="pText">
                 <p style="font-size: 16pt;">{{ store.foodStyle }}</p>
