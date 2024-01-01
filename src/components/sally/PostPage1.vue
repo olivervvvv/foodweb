@@ -62,6 +62,9 @@ export default {
         goToUserPostPage() {
             this.$router.push("/userPost");
         },
+        goToCreateStorePage() {
+            this.$router.push("/AddStore");
+        },
         goToPostPage(storeId) {
             this.$router.push({ name: 'postPage1', params: { storeId } });
         },
@@ -241,23 +244,26 @@ export default {
                 </div>
                 <!-- 會員中心 -->
                 <div class="userCenterArea">
-                    <!-- 登入者圖片有效，顯示圖片；否則顯示默認圖片 -->
-                    <img class="userBtn" :src="getImage(loginUserPicture)" alt="" @mouseenter="this.showFnList"
-                        v-if="getImage(loginUserPicture) && this.isLogIn">
-                    <!-- 預設未登入頭貼 -->
-                    <img class="userBtn" src="../sally/explorer.png" alt="" @mouseenter="this.showFnList" v-else>
-                    <!-- 登入者圖片下拉選單 -->
-                    <div class="userFnList" :class="{ 'fnListVisible': isFnListVisible }" @mouseleave="showFnList">
-                        <!-- 登入顯示 -->
-                        <ul v-if="this.isLogIn">
-                            <li @click="goToUserInfoPage">個人資料</li>
-                            <li @click="goToUserPostPage">個人貼文</li>
-                            <li @click="logout()">登出</li>
-                        </ul>
-                        <!-- 未登入顯示 -->
-                        <ul v-if="!this.isLogIn">
-                            <li @click="login()">登入</li>
-                        </ul>
+                    <div class="userPhoto">
+                        <!-- 登入者圖片有效，顯示圖片；否則顯示默認圖片 -->
+                        <img class="userBtn" :src="getImage(loginUserPicture)" alt="" @mouseenter="this.showFnList"
+                            v-if="getImage(loginUserPicture) && this.isLogIn">
+                        <!-- 預設未登入頭貼 -->
+                        <img class="userBtn" src="../sally/explorer.png" alt="" @mouseenter="this.showFnList" v-else>
+                        <!-- 登入者圖片下拉選單 -->
+                        <div class="userFnList" :class="{ 'fnListVisible': isFnListVisible }" @mouseleave="showFnList">
+                            <!-- 登入顯示 -->
+                            <ul v-if="this.isLogIn">
+                                <li @click="goToUserInfoPage">個人資料</li>
+                                <li @click="goToUserPostPage">個人貼文</li>
+                                <li @click="goToCreateStorePage">創建店家</li>
+                                <li @click="logout()">登出</li>
+                            </ul>
+                            <!-- 未登入顯示 -->
+                            <ul v-if="!this.isLogIn">
+                                <li @click="login()">登入</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -340,141 +346,154 @@ export default {
     // font-family: "Poppins", sans-serif;
 }
 
-.headerArea {
+.bgArea {
     width: 100vw;
-    height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-    .fixed {
+    .headerArea {
         width: 100vw;
         height: 80px;
-        background-color: #EE7214;
-        box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
-        display: flex;
-        align-items: center;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 2;
 
-        .logoArea {
-            width: 20%;
-            height: 100%;
+        .fixed {
+            width: 100vw;
+            height: 80px;
+            background-color: #EE7214;
+            box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
             display: flex;
-            justify-content: center;
             align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 2;
 
-            .logoBtn {
-                border: none;
-                background: none;
-                padding: 0;
-                cursor: pointer;
-
-                img {
-                    height: 80px;
-                    margin-top: 10px;
-                }
-            }
-        }
-
-        .searchArea {
-            width: 60vw;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            .searchName {
-                width: 90%;
-                height: 55%;
-                background-color: white;
-                border: none;
-                outline: none;
-                border-top-left-radius: 100px;
-                border-bottom-left-radius: 100px;
-                font-size: 1.2em;
-                text-indent: 20px;
-            }
-
-            .searchBtn {
-                width: 10%;
-                height: 55%;
-                background-color: white;
-                border: none;
-                outline: none;
-                border-top-right-radius: 100px;
-                border-bottom-right-radius: 100px;
-                color: #EE7214;
-                font-size: 1.5em;
-                font-weight: bolder;
-                cursor: pointer;
-
-                &:hover {
-                    color: #ee7214b2;
-                    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
-                }
-            }
-        }
-
-        .userCenterArea {
-            width: 20%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            .userBtn {
-                border: none;
-                border-radius: 50%;
-                width: 55px;
-                height: 55px;
-                padding: 0;
-                cursor: pointer;
-            }
-
-            .userFnList {
-                /* display: none; */
-                overflow: hidden;
-                max-height: 0;
-                position: fixed;
-                top: 90px;
-                transition: max-height 0.3s ease-in;
-                z-index: 1;
-                background-color: white;
-                width: 120px;
-                border-radius: 10px;
-                font-size: 1.2em;
-                font-weight: bolder;
-                color: #EE7214;
+            .logoArea {
+                width: 20%;
+                height: 100%;
                 display: flex;
                 justify-content: center;
+                align-items: center;
 
-                &.fnListVisible {
-                    max-height: 100px;
-                    transition: max-height .3s ease-in;
-                    display: flex;
-                    justify-content: center;
+                .logoBtn {
+                    border: none;
+                    background: none;
+                    padding: 0;
+                    cursor: pointer;
+
+                    img {
+                        height: 80px;
+                        margin-top: 10px;
+                    }
                 }
             }
 
-            li {
-                list-style-type: none;
-                margin: 2px 0;
-                cursor: pointer;
+            .searchArea {
+                width: 60vw;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
 
-                &:hover {
-                    color: #527853;
+                .searchName {
+                    width: 90%;
+                    height: 55%;
+                    background-color: white;
+                    border: none;
+                    outline: none;
+                    border-top-left-radius: 100px;
+                    border-bottom-left-radius: 100px;
+                    font-size: 1.2em;
+                    text-indent: 20px;
+                }
+
+                .searchBtn {
+                    width: 10%;
+                    height: 55%;
+                    background-color: white;
+                    border: none;
+                    outline: none;
+                    border-top-right-radius: 100px;
+                    border-bottom-right-radius: 100px;
+                    color: #EE7214;
+                    font-size: 1.5em;
+                    font-weight: bolder;
+                    cursor: pointer;
+
+                    &:hover {
+                        color: #ee7214b2;
+                        text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+                    }
+                }
+            }
+
+            .userCenterArea {
+                width: 20%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .userPhoto {
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    justify-content: end;
+                    align-items: center;
+                    margin-right: 20px;
+                    
+                    .userBtn {
+                        border: none;
+                        border-radius: 50%;
+                        width: 55px;
+                        height: 55px;
+                        padding: 0;
+                        // position: absolute;
+                        // right: 70px;
+                        // right: 0px;
+                        margin-right: 50px;
+                        cursor: pointer;
+                    }
+
+                    .userFnList {
+                        /* display: none; */
+                        overflow: hidden;
+                        max-height: 0;
+                        position: fixed;
+                        top: 90px;
+                        right: 20px;
+                        transition: max-height 0.3s ease-in;
+                        z-index: 2;
+                        background-color: white;
+                        width: 120px;
+                        border-radius: 10px;
+                        font-size: 1.2em;
+                        font-weight: bolder;
+                        color: #EE7214;
+                        display: flex;
+                        justify-content: center;
+
+                        &.fnListVisible {
+                            max-height: 125px;
+                            transition: max-height .3s ease-in;
+                            display: flex;
+                            justify-content: center;
+                        }
+
+                        li {
+                            list-style-type: none;
+                            margin: 2px 0;
+                            cursor: pointer;
+
+                            &:hover {
+                                color: #527853;
+                            }
+                        }
+                    }
                 }
             }
         }
     }
-}
-
-.bgArea {
-    // padding: 10% 5% 0;
-    width: 100VW;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 
     .storeCard1,
     .postArea {

@@ -164,7 +164,7 @@ export default {
                 </div>
                 <!-- 搜尋列 -->
                 <div class="searchArea">
-                    <input class="searchName" type="text" placeholder="搜尋店名" v-model="this.storeName">
+                    <input class="searchName" type="text" placeholder="搜尋地區或店名" v-model="this.storeName">
                     <button class="searchBtn" type="button" @click="searchStoreName()"><i
                             class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
