@@ -19,7 +19,7 @@ export default {
             updatePicture: null,
             updateFilePath: "",
             checkDelete: false, //確認刪除彈框
-
+            loginUserPicture: "",
 
         }
     },
@@ -61,10 +61,14 @@ export default {
                 });
                 this.loginState = response.data;
                 console.log('loginState from DB:', this.loginState);
+
                 this.usersEntity = response.data.usersEntity
+                //儲存登入狀態
                 this.isLogIn = this.loginState.login;
                 this.userId = response.data.usersEntity.userId
                 console.log("this.isLogIn : ", this.isLogIn)
+                //儲存登入者圖片
+                this.loginUserPicture = this.loginState.usersEntity.picture;
             } catch (error) {
                 console.error('Error fetching comments:', error);
             }
@@ -136,6 +140,8 @@ export default {
                     console.log(response);
                     alert("更新成功");
                     this.showEditPage = false;
+                    //更新後獲取貼文資料
+                    this.getUserPost();
                 })
                 .catch((error) => {
                     console.log(error);
@@ -209,8 +215,12 @@ export default {
                 <!-- 會員中心 -->
                 <div class="userCenterArea">
                     <div class="userPhoto">
-                        <!-- 預設未登入頭貼 -->
-                        <img class="userBtn" src="../sally/explorer.png" alt="" @mouseenter="showFnList">
+                    <!-- 登入者圖片有效，顯示圖片；否則顯示默認圖片 -->
+                    <img class="userBtn" :src="getImage(loginUserPicture)" alt="" @mouseenter="this.showFnList"
+                        v-if="getImage(loginUserPicture) && this.isLogIn">
+                    <!-- 預設未登入頭貼 -->
+                    <img class="userBtn" src="../sally/explorer.png" alt="" @mouseenter="this.showFnList" v-else>
+                    <!-- 登入者圖片下拉選單 -->
                         <div class="userFnList" :class="{ 'fnListVisible': isFnListVisible }" @mouseleave="showFnList">
                             <!-- 登入顯示 -->
                             <ul v-if="this.isLogIn">
