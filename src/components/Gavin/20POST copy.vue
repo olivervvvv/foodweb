@@ -58,7 +58,7 @@ export default {
             this.loading = true;
             try {
                 // Make an API request using Axios
-                const response = await axios.get(`http://localhost:8081/posts/getNewPosts?page=${this.page}`);
+                const response = await axios.get(`http://${locohost}/posts/getNewPosts?page=${this.page}`);
                 console.log(response.data);
                 this.postData = response.data.commVoList; // 更新組件的數據
                 console.log('this.postData from DB:', this.postData);
