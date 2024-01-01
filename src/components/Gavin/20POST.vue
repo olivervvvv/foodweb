@@ -117,6 +117,9 @@ export default {
         goToUserPostPage() {
             this.$router.push("/userPost");
         },
+        goToCreateStorePage() {
+            this.$router.push("/AddStore");
+        },
         setInputValue() {
             console.log("傳入之資料: ", this.$route.query.value);
         },
@@ -319,6 +322,7 @@ export default {
                         <ul v-if="this.isLogIn">
                             <li @click="goToUserInfoPage">個人資料</li>
                             <li @click="goToUserPostPage">個人貼文</li>
+                            <li @click="goToCreateStorePage">創建店家</li>
                             <li @click="logout()">登出</li>
                         </ul>
                         <!-- 未登入顯示 -->
@@ -542,7 +546,7 @@ export default {
                     justify-content: center;
 
                     &.fnListVisible {
-                        max-height: 100px;
+                        max-height: 125px;
                         transition: max-height .3s ease-in;
                         display: flex;
                         justify-content: center;

@@ -53,6 +53,9 @@ export default {
         goToUserPostPage() {
             this.$router.push("/userPost");
         },
+        goToCreateStorePage() {
+            this.$router.push("/AddStore");
+        },
         // 檢查是否已登入，獲取會員資料
         async logInCheck() {
             try {
@@ -226,6 +229,7 @@ export default {
                             <ul v-if="this.isLogIn">
                                 <li @click="goToUserInfoPage">個人資料</li>
                                 <li style="color: #527853; cursor: default;">個人貼文</li>
+                                <li @click="goToCreateStorePage">創建店家</li>
                                 <li @click="logout()">登出</li>
                             </ul>
                             <!-- 未登入顯示 -->
@@ -431,7 +435,7 @@ export default {
                         justify-content: center;
 
                         &.fnListVisible {
-                            max-height: 100px;
+                            max-height: 125px;
                             transition: max-height .3s ease-in;
                             display: flex;
                             justify-content: center;
