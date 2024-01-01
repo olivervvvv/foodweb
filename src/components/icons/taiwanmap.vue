@@ -107,6 +107,7 @@ export default {
       <button class="green-btn" @click="logout()">登出</button>
       <button class="green-btn" @click="goTo20Post()">每日貼文</button>
     </div>
+    <div class="backImg"></div>
 <!-- 前四個商店詳細資訊欄位 -->
     <div style="display: flex;">
       <div class="showArea" style="user-select: none;">
@@ -472,5 +473,15 @@ path {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     font-weight: 700;
   }
+}
+.backImg{
+  position: fixed;
+  bottom: 10%;
+  left: 50%;
+  background-size: contain; 
+  height: 200px;
+  max-height: 145px;
+  width: 100px;
+  background-image: url('../../../public/exploreMan.png');
 }
 </style>

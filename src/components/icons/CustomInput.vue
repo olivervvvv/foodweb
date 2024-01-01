@@ -57,7 +57,7 @@ export default {
 }
 .icontext {
   position: absolute;
-  top: 30%;
+  top: 23%;
   left: 2%;
   z-index: 1;
 }
