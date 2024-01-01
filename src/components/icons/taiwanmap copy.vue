@@ -98,7 +98,7 @@ export default {
   <div style="display: flex;align-items: center" class="maincon">
     <!--未登入顯示-->
     <div class="btn-container" v-if="!this.isLogIn">
-      <button class="blue-btn" @click="login()">登陸 / 註冊</button>
+      <button class="blue-btn" @click="login()">登陸&註冊</button>
       <button class="blue-btn" @click="goTo20Post()">每日貼文</button>
       <!--      未實裝之註冊按鈕          <button class="blue-btn" @click="singup()">註冊</button> -->
     </div>
@@ -110,9 +110,9 @@ export default {
 <!-- 前四個商店詳細資訊欄位 -->
     <div style="display: flex;">
       <div class="showArea" style="user-select: none;">
-        <h1 style="color: #EE7214; width: 40px; height: 120px;margin-top: 20%;margin-right: 7%;">{{ pathText }}</h1>
+        <h1 style="color: white; width: 40px; height: 120px;margin-top: 20%;margin-right: 7%;">{{ pathText }}</h1>
         <div class="btnArea" v-if="pathText">
-          <!-- BASE64商店圖片未完成-->
+          <!-- BASE64商店圖片未實裝-->
             <!-- <div class="msgBox" v-for="(store, index) in storeDetail" :key="index" @click="handleMsgBoxClick(store, index)" :style="{ backgroundImage: 'url(' + this.getImage(store.picture)+')' }">
               <div class="pText">
                 <p style="font-size: 16pt;">{{ store.foodStyle }}</p>
@@ -341,41 +341,33 @@ export default {
 
 .btn-container {
   position: fixed;
-  // right: 3%;
-  // top: 7%;
+  right: 3%;
+  top: 7%;
   display: flex;
-  right: 10%;
-  top: 5%;
 }
 
 .blue-btn {
   width: 100px;
-  // padding: 10px;
+  padding: 10px;
   margin: 5px;
-  background-color: #EE7214;
-  color: white;
-  font-size: 1em;
+  background-color: #3b64e1;;
+  color: rgb(0, 0, 0);
+  font-size: 12pt;
   font-weight: 800;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 40px;
 }
 
 .blue-btn:hover {
-  // background-color: #d6d5e9;
-  background-color: #ee7214b2;
+  background-color: #d6d5e9;
 }
 
 .green-btn {
   width: 100px;
   padding: 10px;
   margin: 5px;
-  // background-color: #28ba00;
-  background-color: #527853;
+  background-color: #28ba00;
   font-size: 12pt;
   font-weight: 800;
   color: rgb(226, 224, 255);
@@ -385,7 +377,7 @@ export default {
 }
 
 .green-btn:hover {
-  background-color: #527853c4;
+  background-color: #1d8700;
   color: black;
 }
 
