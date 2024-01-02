@@ -197,14 +197,7 @@ export default {
         </div>
     </span> -->
 
-  <link
-    rel="stylesheet"
-    href="https://unicons.iconscout.com/release/v2.1.9/css/unicons.css"
-  />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css"
-  />
+
   <div class="coollogin">
     <div class="content">
       <div class="section pb-5 pt-5 pt-sm-2 text-center" >
