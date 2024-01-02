@@ -113,15 +113,8 @@ export default {
       <div class="showArea" style="user-select: none;">
         <h1 style="color: #EE7214; width: 40px; height: 120px;margin-top: 20%;margin-right: 7%;">{{ pathText }}</h1>
         <div class="btnArea" v-if="pathText">
-          <!-- BASE64商店圖片-->
-          <div class="msgBox" v-for="(store, index) in storeDetail" :key="index" @click="handleMsgBoxClick(store, index)" :style="{ backgroundImage: 'url(' + this.getImage(store.picture)+')' }" v-if="this.storeDetail.picture">
-            <div class="pText">
-              <p style="font-size: 16pt;">{{ store.foodStyle }}</p>
-              <p style="display: inline-block;text-align: center;margin-top: 1%;">{{ store.name }}</p>
-            </div>
-          </div>
-        <!-- 路徑商店圖片-->
-          <div class="msgBox" v-for="(store, index) in storeDetail" @click="handleMsgBoxClick(store, index)" :style="{ backgroundImage: 'url(' + store.filePath+')' }" v-else >
+          <!-- BASE64商店圖片 或 路徑商店圖片 -->
+          <div class="msgBox" v-for="(store, index) in storeDetail" :key="index" @click="handleMsgBoxClick(store, index)" :style="{ backgroundImage: store.picture ? 'url(' + this.getImage(store.picture) + ')' : 'url(' + store.filePath + ')' }">
             <div class="pText">
               <p style="font-size: 16pt;">{{ store.foodStyle }}</p>
               <p style="display: inline-block;text-align: center;margin-top: 1%;">{{ store.name }}</p>
