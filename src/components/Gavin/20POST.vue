@@ -370,8 +370,7 @@ export default {
             </div>
             <!-- Like按鈕 -->
             <div class="heart">
-                <i v-if="!post.isLiked" class="fa-regular fa-heart fa-lg" style="color: #000000;"
-                    @click="clickLike(post)"></i>
+                <i v-if="!post.isLiked" class="fa-regular fa-heart fa-lg" style="color: #000000;" @click="clickLike(post)"></i>
                 <i v-if="post.isLiked" class="fa-solid fa-heart fa-lg" style="color: #ff0000;" @click="clickLike(post)"></i>
                 <span class="likes">{{ post.postInfo.postLikeNumber }}</span>
             </div>
@@ -382,8 +381,7 @@ export default {
                     <p>{{ comment.postComment.comment }}</p>
                 </div>
                 <!-- 顯示完整評論btn -->
-                <button class="showCommentBtn"
-                    @click="showComment(post.postInfo.postId, post.postInfo.storeId)">查看更多評論</button>
+                <button class="showCommentBtn" @click="showComment(post.postInfo.postId, post.postInfo.storeId)">查看更多評論</button>
             </div>
         </div>
 
