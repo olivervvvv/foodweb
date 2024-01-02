@@ -191,8 +191,7 @@ export default {
             return "data:image/jpeg;base64," + picture;
         },
 //------刪除貼文-----------------------------------------------------------------------------
-        deleteSubmit(postId){
-            
+        deleteSubmit(){
 
         }
     }
