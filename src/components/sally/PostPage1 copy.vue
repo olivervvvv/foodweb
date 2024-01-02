@@ -1,4 +1,3 @@
-//PostPage1.vue
 <script>
 import { mapState } from "pinia";
 import indexState from "../../stores/indexState";
@@ -21,6 +20,7 @@ export default {
             inputValue: "",//搜尋欄輸入值
             isLogIn: false,//登入狀態
             loginUserPicture: "",
+            isPostFnVisible: false,//建立貼文、返回功能
         };
     },
     mounted() {
@@ -62,9 +62,6 @@ export default {
         //功能導覽列:至個人貼文頁面
         goToUserPostPage() {
             this.$router.push("/userPost");
-        },
-        goToCreateStorePage() {
-            this.$router.push("/AddStore");
         },
         goToPostPage(storeId) {
             this.$router.push({ name: 'postPage1', params: { storeId } });
@@ -146,52 +143,45 @@ export default {
             this.picture = null;
             this.showCreatePost = false;
         },
-        showCreatePostAndCheckLog(){
-            if (!this.isLogIn) {
-                alert('請先登入');
-                return;
-            }
-            this.showCreatePost = true;
-        },
         async createPost() {
-                 //判斷是否登入
-                if (!this.isLogIn) {
-                    alert('請先登入');
-                    return;
-                }
-                try {
-                    const formData = new FormData();
-                    formData.append('storeId', this.storeId);
-                    formData.append('postTitle', this.postTitle);
-                    formData.append('description', this.description);
-                    formData.append('picture', this.picture);
-                    formData.append('locationCity', this.storeInfo.locationCity);
 
-                    console.log("this.storeId", this.storeId);
-                    console.log("this.postTitle", this.postTitle);
-                    console.log("this.description", this.description);
-                    console.log("this.picture", this.picture);
-                    console.log("this.storeInfo.locationCity", this.storeInfo.locationCity);
-                    console.log("formData : ", formData);
+            const formData = new FormData();
+            formData.append('storeId', this.storeId);
+            formData.append('postTitle', this.postTitle);
+            formData.append('description', this.description);
+            formData.append('picture', this.picture);
+            formData.append('locationCity', this.storeInfo.locationCity);
 
-                    // 使用 await 等待 axios.post 完成
-                    const response = await axios.post(`http://${locohost}/posts/create`, formData, {
-                        withCredentials: true,
-                    });
+            console.log("this.storeId", this.storeId);
+            console.log("this.postTitle", this.postTitle);
+            console.log("this.description", this.description);
+            console.log("this.picture", this.picture);
+            console.log("this.storeInfo.locationCity", this.storeInfo.locationCity);
+            console.log("formData : ", formData);
 
+            axios.post(`http://${locohost}/posts/create`, formData,
+                {
+                    withCredentials: true,
+                })
+                .then((response) => {
                     console.log(response);
                     console.log("發布贴文:", this.postTitle);
                     alert("成功發布贴文:");
-                    // 發布后可以隱藏創建貼文的頁面
+                    // 发布后可以隐藏创建贴文的页面
                     this.showCreatePost = false;
-                    // 刷新頁面
+                    // 刷新页面
                     location.reload();
-                } catch (error) {
+                })
+                .catch((error) => {
                     console.log(error);
-                    if (error.response && error.response.status === 401) {
+                    if (error.response.status == 401) {
                         alert("你尚未登入");
                     }
-                }
+                });
+
+            // console.log("发布贴文:", this.description);
+            // // 发布后可以隐藏创建贴文的页面
+            // this.showCreatePost = false;
         },
         handleFileChange(event) {
             this.picture = event.target.files[0];
@@ -222,10 +212,10 @@ export default {
         simulateFileInputClick() {
             this.$refs.fileInput.click(); // 触发文件输入框的点击事件
         },
-        //返回上一頁
-        goBack() {
-            this.$router.back();
-        }
+        //顯示建立貼文、返回上頁功能
+        showPostFn() {
+            this.isPostFnVisible = !this.isPostFnVisible;
+        },
     },
     computed: {
         // ...mapState(indexState, ["piniaStoreInfo"]),
@@ -252,26 +242,23 @@ export default {
                 </div>
                 <!-- 會員中心 -->
                 <div class="userCenterArea">
-                    <div class="userPhoto">
-                        <!-- 登入者圖片有效，顯示圖片；否則顯示默認圖片 -->
-                        <img class="userBtn" :src="getImage(loginUserPicture)" alt="" @mouseenter="this.showFnList"
-                            v-if="getImage(loginUserPicture) && this.isLogIn">
-                        <!-- 預設未登入頭貼 -->
-                        <img class="userBtn" src="../sally/explorer.png" alt="" @mouseenter="this.showFnList" v-else>
-                        <!-- 登入者圖片下拉選單 -->
-                        <div class="userFnList" :class="{ 'fnListVisible': isFnListVisible }" @mouseleave="showFnList">
-                            <!-- 登入顯示 -->
-                            <ul v-if="this.isLogIn">
-                                <li @click="goToUserInfoPage">個人資料</li>
-                                <li @click="goToUserPostPage">個人貼文</li>
-                                <li @click="goToCreateStorePage">創建店家</li>
-                                <li @click="logout()">登出</li>
-                            </ul>
-                            <!-- 未登入顯示 -->
-                            <ul v-if="!this.isLogIn">
-                                <li @click="login()">登入</li>
-                            </ul>
-                        </div>
+                    <!-- 登入者圖片有效，顯示圖片；否則顯示默認圖片 -->
+                    <img class="userBtn" :src="getImage(loginUserPicture)" alt="" @mouseenter="this.showFnList"
+                        v-if="getImage(loginUserPicture) && this.isLogIn">
+                    <!-- 預設未登入頭貼 -->
+                    <img class="userBtn" src="../sally/explorer.png" alt="" @mouseenter="this.showFnList" v-else>
+                    <!-- 登入者圖片下拉選單 -->
+                    <div class="userFnList" :class="{ 'fnListVisible': isFnListVisible }" @mouseleave="showFnList">
+                        <!-- 登入顯示 -->
+                        <ul v-if="this.isLogIn">
+                            <li @click="goToUserInfoPage">個人資料</li>
+                            <li @click="goToUserPostPage">個人貼文</li>
+                            <li @click="logout()">登出</li>
+                        </ul>
+                        <!-- 未登入顯示 -->
+                        <ul v-if="!this.isLogIn">
+                            <li @click="login()">登入</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -301,10 +288,12 @@ export default {
         </div>
         <!-- 創建貼文按鈕 -->
         <div class="createBtnArea">
-            <button class="createBtn" aria-label="建立貼文" data-balloon-pos="left" @click="showCreatePostAndCheckLog()"><i
-                    class="fa-solid fa-plus"></i></button>
-            <button class="createBtn" aria-label="返回上頁" data-balloon-pos="left" @click="goBack()"><i
-                    class="fa-solid fa-reply"></i></button>
+            <div class="fnBtn" @mouseenter="this.showPostFn"></div>
+            <div class="postFnList" :class="{ 'postFnVisible': isPostFnVisible }" @mouseleave="showPostFn">
+                <button class="createBtn" aria-label="建立貼文" data-balloon-pos="up" @click="showCreatePost = true"><i
+                        class="fa-solid fa-plus"></i></button>
+                <button>返回</button>
+            </div>
         </div>
         <!-- 創建貼文 -->
         <div class="createPost" v-if="showCreatePost">
@@ -354,8 +343,11 @@ export default {
     // font-family: "Poppins", sans-serif;
 }
 
+
+
 .bgArea {
-    width: 100vw;
+    // padding: 10% 5% 0;
+    width: 100VW;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -442,61 +434,47 @@ export default {
                 justify-content: center;
                 align-items: center;
 
-                .userPhoto {
-                    width: 100%;
-                    height: 100%;
-                    display: flex;
-                    justify-content: end;
-                    align-items: center;
-                    margin-right: 20px;
-                    
-                    .userBtn {
-                        border: none;
-                        border-radius: 50%;
-                        width: 55px;
-                        height: 55px;
-                        padding: 0;
-                        // position: absolute;
-                        // right: 70px;
-                        // right: 0px;
-                        margin-right: 50px;
-                        cursor: pointer;
-                    }
+                .userBtn {
+                    border: none;
+                    border-radius: 50%;
+                    width: 55px;
+                    height: 55px;
+                    padding: 0;
+                    cursor: pointer;
+                }
 
-                    .userFnList {
-                        /* display: none; */
-                        overflow: hidden;
-                        max-height: 0;
-                        position: fixed;
-                        top: 90px;
-                        right: 20px;
-                        transition: max-height 0.3s ease-in;
-                        z-index: 2;
-                        background-color: white;
-                        width: 120px;
-                        border-radius: 10px;
-                        font-size: 1.2em;
-                        font-weight: bolder;
-                        color: #EE7214;
+                .userFnList {
+                    /* display: none; */
+                    overflow: hidden;
+                    max-height: 0;
+                    position: fixed;
+                    top: 90px;
+                    transition: max-height 0.3s ease-in;
+                    z-index: 1;
+                    background-color: white;
+                    width: 120px;
+                    border-radius: 10px;
+                    font-size: 1.2em;
+                    font-weight: bolder;
+                    color: #EE7214;
+                    display: flex;
+                    justify-content: center;
+
+                    &.fnListVisible {
+                        max-height: 100px;
+                        transition: max-height .3s ease-in;
                         display: flex;
                         justify-content: center;
+                    }
+                }
 
-                        &.fnListVisible {
-                            max-height: 125px;
-                            transition: max-height .3s ease-in;
-                            display: flex;
-                            justify-content: center;
-                        }
+                li {
+                    list-style-type: none;
+                    margin: 2px 0;
+                    cursor: pointer;
 
-                        li {
-                            list-style-type: none;
-                            margin: 2px 0;
-                            cursor: pointer;
-
-                            &:hover {
-                                color: #527853;
-                            }
-                        }
+                    &:hover {
+                        color: #527853;
                     }
                 }
             }
@@ -585,8 +563,40 @@ export default {
         position: fixed;
         bottom: 70px;
         right: 70px;
-        display: flex;
-        flex-direction: column;
+        border: 1px solid red;
+
+        .fnBtn {
+            width: 70px;
+            height: 70px;
+            background-color: pink;
+        }
+
+        .postFnList {
+            /* display: none; */
+            overflow: hidden;
+            max-height: 0;
+            position: fixed;
+            top: 90px;
+            transition: max-height 0.3s ease-in;
+            z-index: 1;
+            background-color: white;
+            width: 120px;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: bolder;
+            color: #EE7214;
+            display: flex;
+            justify-content: center;
+
+            &.postFnVisible {
+                max-height: 100px;
+                transition: max-height .3s ease-in;
+                display: flex;
+                justify-content: center;
+            }
+
+        }
+
 
         .createBtn {
             background: #fff;
@@ -594,7 +604,7 @@ export default {
             height: 50px;
             border: none;
             border-radius: 50%;
-            margin: 10px 10px 0;
+            margin: 0 10px;
             position: relative;
             display: inline-flex;
             transition: all 0.3s;
