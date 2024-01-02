@@ -145,45 +145,52 @@ export default {
             this.picture = null;
             this.showCreatePost = false;
         },
+        showCreatePostAndCheckLog(){
+            if (!this.isLogIn) {
+                alert('請先登入');
+                return;
+            }
+            this.showCreatePost = true;
+        },
         async createPost() {
+                 //判斷是否登入
+                if (!this.isLogIn) {
+                    alert('請先登入');
+                    return;
+                }
+                try {
+                    const formData = new FormData();
+                    formData.append('storeId', this.storeId);
+                    formData.append('postTitle', this.postTitle);
+                    formData.append('description', this.description);
+                    formData.append('picture', this.picture);
+                    formData.append('locationCity', this.storeInfo.locationCity);
 
-            const formData = new FormData();
-            formData.append('storeId', this.storeId);
-            formData.append('postTitle', this.postTitle);
-            formData.append('description', this.description);
-            formData.append('picture', this.picture);
-            formData.append('locationCity', this.storeInfo.locationCity);
+                    console.log("this.storeId", this.storeId);
+                    console.log("this.postTitle", this.postTitle);
+                    console.log("this.description", this.description);
+                    console.log("this.picture", this.picture);
+                    console.log("this.storeInfo.locationCity", this.storeInfo.locationCity);
+                    console.log("formData : ", formData);
 
-            console.log("this.storeId", this.storeId);
-            console.log("this.postTitle", this.postTitle);
-            console.log("this.description", this.description);
-            console.log("this.picture", this.picture);
-            console.log("this.storeInfo.locationCity", this.storeInfo.locationCity);
-            console.log("formData : ", formData);
+                    // 使用 await 等待 axios.post 完成
+                    const response = await axios.post(`http://${locohost}/posts/create`, formData, {
+                        withCredentials: true,
+                    });
 
-            axios.post(`http://${locohost}/posts/create`, formData,
-                {
-                    withCredentials: true,
-                })
-                .then((response) => {
                     console.log(response);
                     console.log("發布贴文:", this.postTitle);
                     alert("成功發布贴文:");
-                    // 发布后可以隐藏创建贴文的页面
+                    // 發布后可以隱藏創建貼文的頁面
                     this.showCreatePost = false;
-                    // 刷新页面
+                    // 刷新頁面
                     location.reload();
-                })
-                .catch((error) => {
+                } catch (error) {
                     console.log(error);
-                    if (error.response.status == 401) {
+                    if (error.response && error.response.status === 401) {
                         alert("你尚未登入");
                     }
-                });
-
-            // console.log("发布贴文:", this.description);
-            // // 发布后可以隐藏创建贴文的页面
-            // this.showCreatePost = false;
+                }
         },
         handleFileChange(event) {
             this.picture = event.target.files[0];
@@ -268,9 +275,6 @@ export default {
                 </div>
             </div>
         </div>
-
-
-        
         <!-- 店家資訊 -->
         <div class="storeCard1">
             <div class="storePhoto">
@@ -296,7 +300,7 @@ export default {
         </div>
         <!-- 創建貼文按鈕 -->
         <div class="createBtnArea">
-            <button class="createBtn" aria-label="建立貼文" data-balloon-pos="left" @click="showCreatePost = true"><i
+            <button class="createBtn" aria-label="建立貼文" data-balloon-pos="left" @click="showCreatePostAndCheckLog()"><i
                     class="fa-solid fa-plus"></i></button>
             <button class="createBtn" aria-label="返回上頁" data-balloon-pos="left" @click="goBack()"><i
                     class="fa-solid fa-reply"></i></button>
@@ -334,9 +338,7 @@ export default {
         <div class="postArea">
             <span class="line">關於<span>{{ storeInfo.name }}</span>的貼文</span>
             <div class="post" v-for="(post, index) in this.postInfoList">
-                <!-- 如果貼文有Title則顯示,否則顯示描述 -->
-                <p class="postTitle" v-if="post.postTitle" >{{ post.postTitle }}</p>
-                <p class="postTitle" v-else>{{ post.description }}</p>
+                <p class="postTitle">{{ post.description }}</p>
                 <button class="moreBtn" @click="goToPostView(post.postId)">More...</button>
             </div>
         </div>
