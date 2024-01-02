@@ -4,6 +4,7 @@ import search from '../components/icons/CustomInput.vue'
 </script>
 
 <template>
+  <div class="Logo"></div>
       <div class="search">
         <search></search>
       </div>
@@ -16,6 +17,15 @@ import search from '../components/icons/CustomInput.vue'
 body{
 
   background-color: #F9E8D9;
+}
+.Logo{
+  position: fixed;
+  width: 50px;
+  height: 150px;
+  background-size: contain; 
+  top: 2%;
+  left: 3%;
+  background-image: url("../../public/exploreMan.png");
 }
 /* #app {
   display: flex;
