@@ -333,6 +333,11 @@ export default {
                 </div>
             </div>
         </div>
+
+
+
+
+
         <!-- 貼文區域 -->
         <div class="instagram-post" v-for="(post, index) in items" :key="index">
             <!-- 發文者頭像及名子 -->
@@ -347,6 +352,8 @@ export default {
                 <span class="username" v-if="post.user && post.user.name != null">{{ post.user.name }}</span>
                 <span class="username" v-else>UserName</span>
             </div>
+                <!-- 貼文Title -->
+                <p class="postTitle" v-if="post.postInfo.postTitle" >{{ post.postInfo.postTitle }}</p>
             <!-- 貼文內容 -->
             <div class="content">
                 <figure>

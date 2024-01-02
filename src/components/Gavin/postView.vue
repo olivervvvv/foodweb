@@ -10,6 +10,7 @@ export default {
             storeId: 0,
             imgurl: "",
             likeNumber: 0,
+            postTitle:"",
             description: "",
             postTitle: "",
             storeId: 0,
@@ -65,6 +66,7 @@ export default {
                 this.postData = DBdata; // 更新組件的數據
                 console.log('this.postData from DB:', this.postData);
                 //設定貼文內容
+                this.postTitle = this.postData.postInfo.postTitle
                 this.description = this.postData.postInfo.description;
                 this.imgurl = this.postData.postInfo.filePath;
                 this.imgB64 = this.postData.postInfo.picture;
@@ -258,6 +260,9 @@ export default {
                 <span class="username" v-if="this.user && this.userName != null">{{ this.userName }}</span>
                 <span class="username" v-else>UserName</span>
             </div>
+                <!-- 貼文Title -->
+                <p class="postTitle" v-if="this.postTitle" >{{this.postTitle }}</p>
+
             <!-- 貼文內容 -->
             <div class="content">
                 <figure>
