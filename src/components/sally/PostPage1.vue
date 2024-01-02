@@ -279,9 +279,12 @@ export default {
         <!-- 店家資訊 -->
         <div class="storeCard1">
             <div class="storePhoto">
-                <img :src="(`../../../${storeInfo.filePath}`)" v-if="storeInfo.filePath">
-                <!-- 預設店家圖片 -->
-                <img src="../../main/resources/static/images/project_noPicture.png" alt="" v-else>
+                    <!-- BASE64店家圖片 -->
+                    <img :src="getImage(storeInfo.picture)" v-if="storeInfo.picture">
+                    <!-- 路徑店家圖片 -->
+                    <img :src="`../../../${storeInfo.filePath}`" v-else-if="storeInfo.filePath">
+                    <!-- 預設店家圖片 -->
+                    <img src="../../main/resources/static/images/project_noPicture.png" alt="" v-else>
             </div>
             <div class="storeInfoArea">
                 <span class="storeTitle">{{ this.storeInfo.name }}</span>
