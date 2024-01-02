@@ -1,3 +1,4 @@
+//PostPage1.vue
 <script>
 import { mapState } from "pinia";
 import indexState from "../../stores/indexState";
@@ -268,6 +269,9 @@ export default {
                 </div>
             </div>
         </div>
+
+
+        
         <!-- 店家資訊 -->
         <div class="storeCard1">
             <div class="storePhoto">
@@ -331,7 +335,9 @@ export default {
         <div class="postArea">
             <span class="line">關於<span>{{ storeInfo.name }}</span>的貼文</span>
             <div class="post" v-for="(post, index) in this.postInfoList">
-                <p class="postTitle">{{ post.description }}</p>
+                <!-- 如果貼文有Title則顯示,否則顯示描述 -->
+                <p class="postTitle" v-if="post.postTitle" >{{ post.postTitle }}</p>
+                <p class="postTitle" v-else>{{ post.description }}</p>
                 <button class="moreBtn" @click="goToPostView(post.postId)">More...</button>
             </div>
         </div>
