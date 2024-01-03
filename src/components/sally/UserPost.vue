@@ -198,8 +198,10 @@ export default {
 
             try {
                 const response = await axios.post(
-                    `http://${locohost}/posts/normal/users/${userId}/posts/${postId}`
-                );
+                    `http://${locohost}/posts/normal/users/${userId}/posts/${postId}`,
+                    {
+                    withCredentials: true,
+                });
 
                 console.log(response.data); // Assuming the server returns a plain text response
                 alert('刪除成功');
