@@ -305,7 +305,10 @@ export default {
                 <div class="score">
                     <i class="fa-regular fa-star"></i>
                     <!-- 使用 v-if 檢查 storeInfo.userLike 是否存在 -->
-                    <span v-if="storeInfo.userLike">{{ storeInfo.userLike.toFixed(2) }}</span>
+                    <span v-if="storeInfo.userLike===0">{{ storeInfo.userLike }}</span>
+                    <div v-if="storeInfo.userLike">
+                        <span v-if="storeInfo.userLike!==0">{{ storeInfo.userLike.toFixed(2) }}</span>
+                    </div>
                 </div>
             </div>
         </div>
