@@ -637,12 +637,12 @@ export default {
 
         .overlay {
             width: 60%;
-            // height: 70vh;
+            height: 80%;
             background-color: white;
             border-radius: 10px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-evenly;
             align-items: center;
             padding: 10px 25px;
             overflow-y: visible;
@@ -667,7 +667,7 @@ export default {
             }
 
             .description {
-                height: 80px;
+                height: 30%;
             }
 
             .imgArea {

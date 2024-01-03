@@ -578,6 +578,8 @@ export default {
 
                 .image {
                     display: block;
+                    height: 100%;
+                    width: auto;
                 }
 
                 &:hover {
