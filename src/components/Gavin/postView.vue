@@ -57,6 +57,27 @@
                 // 直接返回 Base64 Data URL
                 return "data:image/jpeg;base64," + picture;
             },
+            // 計算日期時間
+            formatCommentUpTime(dateTimeString) {
+                const currentDate = new Date();
+                const commentDate = new Date(dateTimeString);
+                // 計算時間差（毫秒）
+                const timeDifference = currentDate - commentDate;
+                // 計算相對時間
+                const seconds = Math.floor(timeDifference / 1000);
+                const minutes = Math.floor(seconds / 60);
+                const hours = Math.floor(minutes / 60);
+                const days = Math.floor(hours / 24);
+                if (days > 0) {
+                return `${days} 天前`;
+                } else if (hours > 0) {
+                return `${hours} 小時前`;
+                } else if (minutes > 0) {
+                return `${minutes} 分鐘前`;
+                } else {
+                return `${seconds} 秒前`;
+                }
+            },
             async getPost() {
                 console.log("傳入之資料: ", this.$route.query.value);
                 try {
@@ -319,7 +340,14 @@
                                 </figure>
                                 <span>{{ comment.postComment.name }}</span>
                             </div>
-                            <p>{{ comment.postComment.comment }}</p>
+                            <div style="display: flex;">
+                                <div style="width: 80%;">
+                                    <p>{{ comment.postComment.comment }}</p>
+                                </div>
+                                <div style="width: 30%;">
+                                    <p>{{this.formatCommentUpTime(comment.postComment.postCommentUpTime)}}</p>
+                                </div>
+                            </div>
                         </div>
                         <!-- 無評論顯示 -->
                         <div v-else class="no-content">
