@@ -341,9 +341,11 @@
                                 <span>{{ comment.postComment.name }}</span>
                             </div>
                             <div style="display: flex;">
+                                <!-- 留言 -->
                                 <div style="width: 80%;">
                                     <p>{{ comment.postComment.comment }}</p>
                                 </div>
+                                <!-- 留言時間 -->
                                 <div style="width: 30%;">
                                     <p>{{this.formatCommentUpTime(comment.postComment.postCommentUpTime)}}</p>
                                 </div>
