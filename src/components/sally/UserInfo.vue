@@ -180,6 +180,7 @@ export default {
                 <!-- 會員中心 -->
                 <div class="userCenterArea">
                     <div class="userPhoto">
+                        <div style="width: 100px; height: auto; font-size:larger; color: white;"><span>您好! {{ loginUserName }}</span></div>
                         <!-- 登入者圖片有效，顯示圖片；否則顯示默認圖片 -->
                         <img class="userBtn" :src="getImage(loginUserPicture)" alt="" @mouseenter="this.showFnList"
                             v-if="getImage(loginUserPicture) && this.isLogIn">

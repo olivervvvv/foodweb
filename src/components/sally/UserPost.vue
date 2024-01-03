@@ -68,7 +68,8 @@ export default {
                 this.usersEntity = response.data.usersEntity
                 //儲存登入狀態
                 this.isLogIn = this.loginState.login;
-                this.userId = response.data.usersEntity.userId
+                this.userId = response.data.usersEntity.userId;
+                this.userName = response.data.usersEntity.name;
                 console.log("this.isLogIn : ", this.isLogIn)
                 //儲存登入者圖片
                 this.loginUserPicture = this.loginState.usersEntity.picture;
@@ -218,6 +219,7 @@ export default {
                 <!-- 會員中心 -->
                 <div class="userCenterArea">
                     <div class="userPhoto">
+                        <div style="width: 100px; height: auto; font-size:larger; color: white;"><span>您好! {{ userName }}</span></div>
                     <!-- 登入者圖片有效，顯示圖片；否則顯示默認圖片 -->
                     <img class="userBtn" :src="getImage(loginUserPicture)" alt="" @mouseenter="this.showFnList"
                         v-if="getImage(loginUserPicture) && this.isLogIn">

@@ -14,8 +14,8 @@ export default {
             storeInfo: {},
             goToPostpostId: 0,
 
-            showCreatePost: false, // 控制是否显示创建贴文的页面
-            description: "", // 存储新贴文的内容
+            showCreatePost: false, // 控制是否顯示創建貼文的頁面
+            description: "", // 存儲新貼文的內容
             postTitle: "",
             picture: null,
             inputValue: "",//搜尋欄輸入值
@@ -45,7 +45,7 @@ export default {
         //搜尋
         searchStoreName() {
             console.log("search inputtext : ", this.inputValue);
-            // 使用 $router.push 实现页面跳转，并传递参数
+            // 使用 $router.push 實現頁面跳轉，並傳遞參數
             this.$router.push({
                 name: "storePage",
                 query: { value: this.inputValue }
@@ -80,6 +80,8 @@ export default {
                 //儲存登入狀態
                 this.isLogIn = loginState.login;
                 console.log("this.isLogIn : ", this.isLogIn);
+                this.userName = loginState.usersEntity.name;
+                console.log("name",userName);
                 //儲存登入者圖片
                 this.loginUserPicture = loginState.usersEntity.picture;
                 // console.log("loginUserPicture : ",this.loginUserPicture);
@@ -180,9 +182,9 @@ export default {
                     });
 
                     console.log(response);
-                    console.log("發布贴文:", this.postTitle);
-                    alert("成功發布贴文:");
-                    // 發布后可以隱藏創建貼文的頁面
+                    console.log("發布貼文:", this.postTitle);
+                    alert("成功發布貼文:");
+                    // 發布後可以隱藏創建貼文的頁面
                     this.showCreatePost = false;
                     // 刷新頁面
                     location.reload();
@@ -220,7 +222,7 @@ export default {
             }
         },
         simulateFileInputClick() {
-            this.$refs.fileInput.click(); // 触发文件输入框的点击事件
+            this.$refs.fileInput.click(); // 觸發文件輸入框的點擊事件
         },
         //返回上一頁
         goBack() {
@@ -253,6 +255,7 @@ export default {
                 <!-- 會員中心 -->
                 <div class="userCenterArea">
                     <div class="userPhoto">
+                        <div style="width: 100px; height: auto; font-size:larger; color: white;"><span>您好! {{ userName }}</span></div>
                         <!-- 登入者圖片有效，顯示圖片；否則顯示默認圖片 -->
                         <img class="userBtn" :src="getImage(loginUserPicture)" alt="" @mouseenter="this.showFnList"
                             v-if="getImage(loginUserPicture) && this.isLogIn">
@@ -698,7 +701,7 @@ export default {
                         display: none;
 
                         img {
-                            width: 100%;
+                            width: auto;
                             height: 100%;
                             object-fit: cover;
                         }
