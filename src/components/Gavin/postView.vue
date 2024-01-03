@@ -219,7 +219,9 @@
                     (previousColor === '#ff0000' && post.previousColor === '#000000') ? -1 : 0;
                 console.log('output:', output);
                 try {
-                    const response = await axios.post(`http://${locohost}/posts/getPostLike?postId=${post.postInfo.postId}&addNumber=${output}`);
+                    const response = await axios.post(`http://${locohost}/posts/getPostLike?postId=${post.postInfo.postId}&addNumber=${output}`, {}, {
+                    withCredentials: true,
+                });
                     const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
                     console.log('postData from DB:', DBdata);
                     //更改Like值
