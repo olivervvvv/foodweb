@@ -268,7 +268,9 @@ export default {
             console.log('output:', output);
 
             try {
-                const response = await axios.post(`http://${locohost}/posts/getPostLike?postId=${post.postInfo.postId}&addNumber=${output}`);
+                const response = await axios.post(`http://${locohost}/posts/getPostLike?postId=${post.postInfo.postId}&addNumber=${output}`, {}, {
+                    withCredentials: true,
+                });
                 const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
                 console.log('postData from DB:', DBdata);
                 post.postInfo.postLikeNumber = response.data.postInfo.postLikeNumber;
@@ -370,7 +372,7 @@ export default {
             <div class="header">
                 <figure>
                     <!-- 發文者圖片有效，顯示圖片；否則顯示默認圖片 -->
-                    <img :src="getImage(post.user.picture)" v-if="getImage(post.postInfo.picture)">
+                    <img :src="getImage(post.user.picture)" v-if="post.user!==null">
                     <!-- 預設發文者圖片 -->
                     <img src="../../main/resources/static/images/explorer.png" v-else>
                 </figure>
