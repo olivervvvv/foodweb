@@ -21,6 +21,7 @@ export default {
             inputValue: "",//搜尋欄輸入值
             isLogIn: false,//登入狀態
             loginUserPicture: "",
+            userName: "",
         };
     },
     mounted() {
@@ -81,7 +82,7 @@ export default {
                 this.isLogIn = loginState.login;
                 console.log("this.isLogIn : ", this.isLogIn);
                 this.userName = loginState.usersEntity.name;
-                console.log("name",userName);
+                console.log("name",this.userName);
                 //儲存登入者圖片
                 this.loginUserPicture = loginState.usersEntity.picture;
                 // console.log("loginUserPicture : ",this.loginUserPicture);
