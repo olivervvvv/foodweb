@@ -421,7 +421,7 @@ export default {
 <style lang="scss" scoped>
 .content {
   height: 100vh;
-  background-image: url(../sally/login-bg-small.png);
+  background-image: url(../sally/login-bg.png);
   background-size: cover; /* 或者使用 contain，根据需求选择 */
   background-position: center center;
   background-repeat: no-repeat;
