@@ -109,7 +109,7 @@ export default {
                 console.error('Error getUserPost : ', error);
             }
         },
-//------點擊該篇貼文進行編輯---------------------------------------------------------------------------
+        //------點擊該篇貼文進行編輯---------------------------------------------------------------------------
         updatePost(post) { //編輯貼文 post從v-for="(post, index) in this.postInfoList"來的
             this.showEditPage = true
             this.postObj = JSON.parse(JSON.stringify(post)); //將原有貼文資料post給予obj。序列化 深拷貝(可以在不影響原始數據情况下進行修改和操作) 
@@ -122,7 +122,7 @@ export default {
             console.log(this.updatePicture);
             console.log(this.updateFilePath)
         },
-//------提交更新---------------------------------------------------------------------------
+        //------提交更新---------------------------------------------------------------------------
         async submit() {
             const formData = new FormData();
             formData.append('postId', this.updatePostId);
@@ -151,7 +151,7 @@ export default {
                     console.log(error);
                 });
         },
-//------更新圖片用---------------------------------------------------------------------------
+        //------更新圖片用---------------------------------------------------------------------------
         handleFileChange(event) {
             this.updatePicture = event.target.files[0];
             let wrapper = this.$refs.wrapper;
@@ -191,9 +191,30 @@ export default {
             console.log("data:image/jpeg;base64," + picture)
             return "data:image/jpeg;base64," + picture;
         },
-//------刪除貼文-----------------------------------------------------------------------------
-        deleteSubmit(){
+        //------刪除貼文-----------------------------------------------------------------------------
+        async deleteSubmit() {
+            const userId = 4; // Replace with the actual user ID
+            const postId = 43; // Replace with the actual post ID
 
+            try {
+                const response = await axios.post(
+                    `http://${locohost}/posts/normal/users/${userId}/posts/${postId}`,
+                    {
+                    withCredentials: true,
+                });
+
+                console.log(response.data); // Assuming the server returns a plain text response
+                alert('刪除成功');
+                // You can perform any additional actions here after successful deletion
+            } catch (error) {
+                console.error(error);
+                // Handle errors here
+                if (error.response && error.response.status === 403) {
+                    alert('無權刪除');
+                } else {
+                    alert('刪除失敗');
+                }
+            }
         }
     }
 }
@@ -219,13 +240,14 @@ export default {
                 <!-- 會員中心 -->
                 <div class="userCenterArea">
                     <div class="userPhoto">
-                        <div style="width: 100px; height: auto; font-size:larger; color: white;"><span>您好! {{ userName }}</span></div>
-                    <!-- 登入者圖片有效，顯示圖片；否則顯示默認圖片 -->
-                    <img class="userBtn" :src="getImage(loginUserPicture)" alt="" @mouseenter="this.showFnList"
-                        v-if="getImage(loginUserPicture) && this.isLogIn">
-                    <!-- 預設未登入頭貼 -->
-                    <img class="userBtn" src="../sally/explorer.png" alt="" @mouseenter="this.showFnList" v-else>
-                    <!-- 登入者圖片下拉選單 -->
+                        <div style="width: 100px; height: auto; font-size:larger; color: white;"><span>您好! {{ userName
+                        }}</span></div>
+                        <!-- 登入者圖片有效，顯示圖片；否則顯示默認圖片 -->
+                        <img class="userBtn" :src="getImage(loginUserPicture)" alt="" @mouseenter="this.showFnList"
+                            v-if="getImage(loginUserPicture) && this.isLogIn">
+                        <!-- 預設未登入頭貼 -->
+                        <img class="userBtn" src="../sally/explorer.png" alt="" @mouseenter="this.showFnList" v-else>
+                        <!-- 登入者圖片下拉選單 -->
                         <div class="userFnList" :class="{ 'fnListVisible': isFnListVisible }" @mouseleave="showFnList">
                             <!-- 登入顯示 -->
                             <ul v-if="this.isLogIn">
@@ -245,7 +267,7 @@ export default {
             </div>
         </div>
         <div class="postArea">
-            <span class="line">{{ usersEntity.name }}的所有貼文</span>
+            <span class="line">{{ userName }}的所有貼文</span>
             <div class="post" @click="updatePost(post)" v-for="(post, index) in this.postInfoList">
                 <p class="postTitle">{{ post.postTitle }}</p>
                 <p class="postTitle">{{ post.postUpdateTime }}</p>
@@ -694,7 +716,7 @@ export default {
             padding: 10px 25px;
             overflow-y: visible;
 
-            p{
+            p {
                 font-size: 1.2em;
                 font-weight: bolder;
                 color: #527853;
