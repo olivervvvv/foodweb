@@ -59,6 +59,8 @@ export default {
                     params: {
                         "inputString": this.$route.query.value,
                     },
+                },{
+                    withCredentials: true,
                 });
                 console.log(response);
                 this.storeInfoList = response.data.storeInfoList
@@ -140,6 +142,8 @@ export default {
                     params: {
                         "inputString": this.storeName,
                     },
+                },{
+                    withCredentials: true,
                 });
                 console.log(response);
                 this.storeInfoList = response.data.storeInfoList
