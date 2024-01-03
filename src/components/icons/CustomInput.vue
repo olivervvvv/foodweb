@@ -1,4 +1,5 @@
 <template>
+  <img src="../sally/logo-home.png" alt="" class="logo">
   <label class="text-input-with-icon" style="display: flex;">
     <input type="search" class="form-control" @focus="hideIcon" @blur="showIcon" placeholder="搜尋地區或是店家"
       v-model="inputValue" />
@@ -39,6 +40,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.logo{
+  width: 100px;
+  height: 66px;
+  transform: translate(-50px, -5px);
+  
+  
+}
 .search-btn {
   width: 100px;
   border-radius: 5px;
