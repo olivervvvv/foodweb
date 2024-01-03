@@ -26,6 +26,7 @@
                 userCommentPicture: "",
                 user: {},
                 userName: "",
+                postUpdateTime:"",
             }
         },
         components: {
@@ -96,6 +97,7 @@
                     this.postTitle = this.postData.postInfo.postTitle;
                     this.storeId = this.postData.postInfo.storeId;
                     this.userId = this.postData.postInfo.userId;
+                    this.postUpdateTime = this.formatCommentUpTime(this.postData.postInfo.postUpdateTime);
                     //顯示前兩筆留言
                     this.comments = await this.getTopTwoComments(DBdata.postInfo.postId);
                     console.log('this.comments :', this.comments);
@@ -303,11 +305,18 @@
                 </div>
                 <!-- Like按鈕 -->
                 <div class="heart">
-                    <i v-if="!this.postData.isLiked" class="fa-regular fa-heart fa-lg" style="color: #000000;"
-                        @click="clickLike(postData)"></i>
-                    <i v-if="this.postData.isLiked" class="fa-solid fa-heart fa-lg" style="color: #ff0000;"
-                        @click="clickLike(postData)"></i>
-                    <span class="likes">{{ this.likeNumber }}</span>
+                    <!-- Like -->
+                    <div style="width: 85%;">
+                        <i v-if="!this.postData.isLiked" class="fa-regular fa-heart fa-lg" style="color: #000000;"
+                            @click="clickLike(postData)"></i>
+                        <i v-if="this.postData.isLiked" class="fa-solid fa-heart fa-lg" style="color: #ff0000;"
+                            @click="clickLike(postData)"></i>
+                        <span class="likes">{{ this.likeNumber }}</span>
+                    </div>
+                    <!-- 貼文更新時間 -->
+                    <div>
+                        <p>{{this.postUpdateTime}}更新</p>
+                    </div>
                 </div>
                 <!-- 預覽前兩筆留言 -->
                 <div class="comment-preview">

@@ -396,9 +396,16 @@ export default {
             </div>
             <!-- Like按鈕 -->
             <div class="heart">
-                <i v-if="!post.isLiked" class="fa-regular fa-heart fa-lg" style="color: #000000;" @click="clickLike(post)"></i>
-                <i v-if="post.isLiked" class="fa-solid fa-heart fa-lg" style="color: #ff0000;" @click="clickLike(post)"></i>
-                <span class="likes">{{ post.postInfo.postLikeNumber }}</span>
+                <!-- Like -->
+                <div style="width: 85%;">
+                    <i v-if="!post.isLiked" class="fa-regular fa-heart fa-lg" style="color: #000000;" @click="clickLike(post)"></i>
+                    <i v-if="post.isLiked" class="fa-solid fa-heart fa-lg" style="color: #ff0000;" @click="clickLike(post)"></i>
+                    <span class="likes">{{ post.postInfo.postLikeNumber }}</span>
+                </div>
+                <!-- 貼文更新時間 -->
+                <div>
+                    <p>{{this.formatCommentUpTime(post.postInfo.postUpdateTime)}}更新</p>
+                </div>
             </div>
             <!-- 預覽前兩筆留言 -->
             <div class="comment-preview">
