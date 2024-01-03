@@ -304,7 +304,7 @@ export default {
                 </div>
                 <div class="score">
                     <i class="fa-regular fa-star"></i>
-                    <span>{{ storeInfo.userLike }}</span>
+                    <span>{{ storeInfo.userLike.toFixed(2) }}</span>
                 </div>
             </div>
         </div>
