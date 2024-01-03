@@ -20,6 +20,7 @@ export default {
             updateFilePath: "",
             checkDelete: false, //確認刪除彈框
             loginUserPicture: "",
+            userName:"",
 
         }
     },
@@ -103,7 +104,7 @@ export default {
             console.log(this.userId)
             try {
                 const response = await axios.get(`http://${locohost}/posts/getPostByUser?userId=${this.userId}`);
-                this.postInfoList = response.data.postInfoList;
+                this.postInfoList = response.data.postVo;
                 console.log(this.postInfoList);
             } catch (error) {
                 console.error('Error getUserPost : ', error);
@@ -114,11 +115,11 @@ export default {
             this.showEditPage = true
             this.postObj = JSON.parse(JSON.stringify(post)); //將原有貼文資料post給予obj。序列化 深拷貝(可以在不影響原始數據情况下進行修改和操作) 
             console.log(this.postObj)
-            this.updatePostId = this.postObj.postId;
-            this.updatePostTitle = this.postObj.postTitle;
-            this.updateDescription = this.postObj.description;
-            this.updatePicture = this.postObj.picture;
-            this.updateFilePath = this.postObj.filePath
+            this.updatePostId = this.postObj.postInfo.postId;
+            this.updatePostTitle = this.postObj.postInfo.postTitle;
+            this.updateDescription = this.postObj.postInfo.description;
+            this.updatePicture = this.postObj.postInfo.picture;
+            this.updateFilePath = this.postObj.postInfo.filePath
             console.log(this.updatePicture);
             console.log(this.updateFilePath)
         },
@@ -270,14 +271,17 @@ export default {
         <div class="postArea">
             <span class="line">{{ userName }}的所有貼文</span>
             <div class="post" @click="updatePost(post)" v-for="(post, index) in this.postInfoList">
-                <div style="width: 40%;">
-                    <p class="postTitle">{{ post.postTitle }}</p>
+                <div style="width: 30%;">
+                    <p class="postTitle">{{ post.postInfo.postTitle }}</p>
+                </div>
+                <div style="width: 10%;" >
+                    <p class="postTitle">{{ post.postInfo.locationCity }}</p> 
+                </div>
+                <div style="width: 30%;">
+                    <p class="postTitle">{{ post.storeInfo.name }}</p> 
                 </div>
                 <div>
-                    <p class="postTitle">{{ post.locationCity }}</p> 
-                </div>
-                <div>
-                    <p class="postTitle">{{ post.postUpdateTime }}</p>
+                    <p class="postTitle">{{ post.postInfo.postUpdateTime }}</p>
                 </div>
             </div>
         </div>
