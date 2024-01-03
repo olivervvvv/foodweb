@@ -12,6 +12,11 @@ export default {
             isFnListVisible: false,
             inputValue: "",//搜尋欄輸入值
             loginUserPicture: "",
+            userInfoForPassword:{
+                oldPassword:null,
+                newPassword:null,
+                repeatNewPassword:null
+            }
         }
     },
     mounted() {
@@ -154,7 +159,31 @@ export default {
         },
         //變更密碼
         updatePwd() {
-
+            if(this.userInfoForPassword.newPassword != this.userInfoForPassword.repeatNewPassword){
+                    alert("新密碼不一致");
+                    return -1;
+                }
+            axios.post(`http://${locohost}/users/currentUser/updatePassword`,
+            {
+                oldPassword:this.userInfoForPassword.oldPassword,
+                newPassword:this.userInfoForPassword.newPassword
+            }, 
+            {
+                withCredentials: true,
+            })
+            .then(response => {
+                console.log(response);
+                if(response.status == 200){
+                    alert("修改成功");
+                    return -1;
+                }
+            })
+            .catch(error =>{
+                console.log(error);
+                if(error.response.status == 400){
+                    alert("請求錯誤");
+                }
+            });
         },
     },
 };
@@ -266,14 +295,11 @@ export default {
                 <div class="updateArea">
                     <div class="insideArea inputArea" style="width: 90%">
                         <label for="oldPwd">舊密碼：</label>
-                        <input type="text" id="oldPwd" placeholder="請輸入舊密碼" />
+                        <input type="text" id="oldPwd" placeholder="請輸入舊密碼" v-model="userInfoForPassword.oldPassword" />
                         <label for="newPwd">新密碼：</label>
-                        <input type="text" id="newPwd" placeholder="請輸入新密碼" />
+                        <input type="text" id="newPwd" placeholder="請輸入新密碼" v-model="userInfoForPassword.newPassword" />
                         <label for="checkPwd">確認新密碼：</label>
-                        <input type="text" id="checkPwd" placeholder="請再次確認密碼" />
-                        <label for="verificationCode">驗證碼：</label><br>
-                        <input class="code" type="text" id="verificationCode" placeholder="請輸入驗證碼" />
-                        <button class="btn">獲取驗證碼</button>
+                        <input type="text" id="checkPwd" placeholder="請再次確認密碼" v-model="userInfoForPassword.repeatNewPassword" />
                     </div>
                     <div class="btnArea">
                         <button class="cancel btn" @click="updatePwdPage = false">取消</button>
@@ -578,6 +604,8 @@ export default {
 
                 .image {
                     display: block;
+                    height: 100%;
+                    width: auto;
                 }
 
                 &:hover {
