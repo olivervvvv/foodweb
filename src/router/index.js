@@ -122,7 +122,11 @@ const router = createRouter({
       name: 'ooInfo',
       component: () => import('../components/oliver/UserInfos.vue')
     },
-    
+    {
+      path: '/forgetPassword',
+      name: 'forgetPassword',
+      component: () => import('../components/tong/forgetPassword.vue')
+    }
   ]
 })
 
