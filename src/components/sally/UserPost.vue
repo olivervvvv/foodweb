@@ -193,18 +193,19 @@ export default {
         },
         //------刪除貼文-----------------------------------------------------------------------------
         async deleteSubmit() {
-            const userId = 4; // Replace with the actual user ID
-            const postId = 43; // Replace with the actual post ID
+            const userId = this.userId; // Replace with the actual user ID
+            const postId = this.updatePostId; // Replace with the actual post ID
 
             try {
                 const response = await axios.post(
-                    `http://${locohost}/posts/normal/users/${userId}/posts/${postId}`,
+                    `http://${locohost}/posts/normal/users/${userId}/posts/${postId}`,{},
                     {
-                    withCredentials: true,
-                });
+                        withCredentials: true
+                    });
 
                 console.log(response.data); // Assuming the server returns a plain text response
                 alert('刪除成功');
+                location.reload();
                 // You can perform any additional actions here after successful deletion
             } catch (error) {
                 console.error(error);
