@@ -9,7 +9,7 @@ export default {
             isFnListVisible: false,
             inputValue: "",//搜尋欄輸入值
             loginUserPicture: "",
-            city: ['基隆', '台北', '新北', '桃園', '新竹', '苗栗', '台中', '彰化', '南投', '雲林', '嘉義', '台南', '高雄', '屏東', '台東', '花蓮', '宜蘭', '金馬',],
+            city: ['基隆縣', '台北市', '新北市', '桃園市', '新竹', '苗栗縣', '台中市', '彰化縣', '南投縣', '雲林縣', '嘉義縣', '台南市', '高雄市', '屏東縣', '台東縣', '花蓮縣', '宜蘭縣', '金馬',],
             showCityList: false,
             locationCity: "",
             address: "",
@@ -126,6 +126,11 @@ export default {
                 })
                 const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
                 console.log('postData from DB:', DBdata);
+                alert("成功創建店家:");
+                    // 發布后可以隱藏創建貼文的頁面
+                    this.showCreatePost = false;
+                    // 刷新頁面
+                    location.reload();
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -155,6 +160,7 @@ export default {
                 <!-- 會員中心 -->
                 <div class="userCenterArea">
                     <div class="userPhoto">
+                        <div style="width: 100px; height: auto; font-size:larger; color: white;"><span>您好! {{ loginUserName }}</span></div>
                         <!-- 登入者圖片有效，顯示圖片；否則顯示默認圖片 -->
                         <img class="userBtn" :src="getImage(loginUserPicture)" alt="" @mouseenter="this.showFnList"
                             v-if="getImage(loginUserPicture) && this.isLogIn">
