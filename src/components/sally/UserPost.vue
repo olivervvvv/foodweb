@@ -188,7 +188,7 @@ export default {
                 return "";
             }
             // 直接返回 Base64 Data URL
-            console.log("data:image/jpeg;base64," + picture)
+            // console.log("data:image/jpeg;base64," + picture)
             return "data:image/jpeg;base64," + picture;
         },
         //------刪除貼文-----------------------------------------------------------------------------
@@ -270,8 +270,15 @@ export default {
         <div class="postArea">
             <span class="line">{{ userName }}的所有貼文</span>
             <div class="post" @click="updatePost(post)" v-for="(post, index) in this.postInfoList">
-                <p class="postTitle">{{ post.postTitle }}</p>
-                <p class="postTitle">{{ post.postUpdateTime }}</p>
+                <div style="width: 40%;">
+                    <p class="postTitle">{{ post.postTitle }}</p>
+                </div>
+                <div>
+                    <p class="postTitle">{{ post.locationCity }}</p> 
+                </div>
+                <div>
+                    <p class="postTitle">{{ post.postUpdateTime }}</p>
+                </div>
             </div>
         </div>
 
