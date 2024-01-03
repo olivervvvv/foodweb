@@ -175,6 +175,10 @@ export default {
                 console.log(response);
                 if(response.status == 200){
                     alert("修改成功");
+                    // 關閉視窗
+                    this.updatePwdPage = false
+                    // 跳轉頁面
+                    this.$router.push("/login");
                     return -1;
                 }
             })

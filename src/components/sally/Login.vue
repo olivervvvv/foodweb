@@ -24,11 +24,17 @@ export default {
     ...mapState(indexState, ["piniaEmail", "piniaPassword", "statusNum"]),
   },
   methods: {
+    // 忘記密碼
+    forgetPassword(){
+      this.$router.push("/forgetPassword");
+    },
+    // 登入邏輯1(也許是廢棄的函數)
     setEmailAndPassword() {
       this.setEmail(this.email);
       this.setPassword(this.password);
     },
     ...mapActions(indexState, ["login", "setEmail", "setPassword"]),
+    // 登入邏輯2
     async login() {
       axios
         .post(
@@ -63,8 +69,6 @@ export default {
       const inputEmail = this.signupEmail;
       const inputPassword = this.signupPassword;
       const inputRepeatPassword = this.repeatPassword;
-
-
       if (inputAccount === "" || inputPassword === "" || inputEmail === "") {
         alert("帳號、Email及密碼不得為空");
         return;
@@ -99,7 +103,6 @@ export default {
                 this.showSendBtn = true;
               }
             });
-          //=======================註冊邏輯=========================
         } else {
           alert("輸入密碼不相同");
         }
@@ -142,15 +145,11 @@ export default {
             alert(error.response.data);
           }
         });
-        //=======================送出註冊驗證碼邏輯=========================
         } else {
             alert("輸入密碼不相同");
         }
       }
     },
-    //送出登入驗證碼
-    //sendloginCheckCord(){
-    //},
     //選轉時清除輸入
     cleartxt() {
       this.email = "";
@@ -312,7 +311,7 @@ export default {
                     </div>
 
                   <p class="mb-0 mt-4 text-center">
-                    <a href="#" class="link" style="color: white">忘記密碼?</a>
+                    <a href="#" class="link" style="color: white"  @click="this.forgetPassword()"  >忘記密碼?</a>
                   </p>
                 </div>
               </div>
