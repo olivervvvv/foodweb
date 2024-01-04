@@ -2,7 +2,7 @@
 import { mapState, mapActions } from "pinia";
 import indexState from "/src/stores/indexState.js";
 import axios from "axios";
-
+import Swal from 'sweetalert2';
 export default {
   data() {
     return {
@@ -59,7 +59,11 @@ export default {
         .catch((error) => {
           console.log(error);
           if (error.response.status != 200) {
-            alert(error.response.data);
+            // alert(error.response.data);
+            Swal.fire({
+                icon: "error",
+                title: error.response.data,
+            });
           }
         });
     },
@@ -70,13 +74,21 @@ export default {
       const inputPassword = this.signupPassword;
       const inputRepeatPassword = this.repeatPassword;
       if (inputAccount === "" || inputPassword === "" || inputEmail === "") {
-        alert("帳號、Email及密碼不得為空");
+        // alert("帳號、Email及密碼不得為空");
+        Swal.fire({
+            icon: "error",
+            title: "帳號、Email及密碼不得為空",
+        });
         return;
       } 
       else {
         if (inputPassword === inputRepeatPassword) {
           if (this.showSendBtn) {
-            alert("請先取得驗證碼");
+            //alert("請先取得驗證碼");
+            Swal.fire({
+                icon: "error",
+                title: "請先取得驗證碼",
+            });
             return;
           }
           //=======================註冊邏輯=========================
@@ -91,7 +103,12 @@ export default {
               console.log(response);
               if (response.status == 201) {
                 //   this.$router.push({ name: "loginAfter" });
-                alert("註冊成功");
+                // alert("註冊成功");
+                Swal.fire({
+                    icon: "success",
+                    title: "註冊成功",
+                    showConfirmButton: true,
+                });
                 this.isChecked = !this.isChecked;
               }
             })
@@ -99,12 +116,20 @@ export default {
               console.log("error:");
               console.log(error);
               if (error.response.status == 400) {
-                alert("驗證失敗,請重新取得驗證碼");
+                //alert("驗證失敗,請重新取得驗證碼");
+                Swal.fire({
+                    icon: "error",
+                    title: "驗證失敗,請重新取得驗證碼",
+                });
                 this.showSendBtn = true;
               }
             });
         } else {
-          alert("輸入密碼不相同");
+          // alert("輸入密碼不相同");
+          Swal.fire({
+              icon: "error",
+              title: "輸入密碼不相同",
+          });
         }
       }
     },
@@ -115,7 +140,11 @@ export default {
       const inputPassword = this.signupPassword;
       const inputRepeatPassword = this.repeatPassword;
       if (inputAccount === "" || inputPassword === "" || inputEmail === "") {
-        alert("帳號、Email及密碼不得為空");
+        // alert("帳號、Email及密碼不得為空");
+        Swal.fire({
+            icon: "error",
+            title: "帳號、Email及密碼不得為空",
+        });
       } else {
         if (inputPassword === inputRepeatPassword) {
       //=======================送出註冊驗證碼邏輯=========================
@@ -134,7 +163,12 @@ export default {
         .then((response) => {
           console.log(response);
           if (response.status == 200) {
-            alert("送出驗證碼成功");
+            // alert("送出驗證碼成功");
+            Swal.fire({
+                icon: "success",
+                title: "送出驗證碼成功",
+                showConfirmButton: true,
+            });
             this.showSendBtn=false;
           }
         })
@@ -142,11 +176,20 @@ export default {
           console.log("error:");
           console.log(error);
           if (error.response.status != 200) {
-            alert(error.response.data);
+            // alert(error.response.data);
+            Swal.fire({
+                icon: "error",
+                title: error.response.data,
+                showConfirmButton: true,
+            });
           }
         });
         } else {
-            alert("輸入密碼不相同");
+            // alert("輸入密碼不相同");
+            Swal.fire({
+                icon: "error",
+                title: "輸入密碼不相同",
+            });
         }
       }
     },

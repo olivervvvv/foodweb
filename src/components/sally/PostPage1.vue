@@ -3,6 +3,7 @@
 import { mapState } from "pinia";
 import indexState from "../../stores/indexState";
 import axios from "axios";
+import Swal from 'sweetalert2';
 export default {
     data() {
         return {
@@ -152,7 +153,11 @@ export default {
         },
         showCreatePostAndCheckLog(){
             if (!this.isLogIn) {
-                alert('請先登入');
+                // alert('請先登入');
+                Swal.fire({
+                    icon: "error",
+                    title: "請先登入",
+                });
                 return;
             }
             this.showCreatePost = true;
@@ -160,7 +165,11 @@ export default {
         async createPost() {
                  //判斷是否登入
                 if (!this.isLogIn) {
-                    alert('請先登入');
+                    // alert('請先登入');
+                    Swal.fire({
+                        icon: "error",
+                        title: "請先登入",
+                    });
                     return;
                 }
                 try {
@@ -185,7 +194,12 @@ export default {
 
                     console.log(response);
                     console.log("發布貼文:", this.postTitle);
-                    alert("成功發布貼文:");
+                    // alert("成功發布貼文:");
+                    Swal.fire({
+                        icon: "success",
+                        title: "成功發布貼文",
+                        showConfirmButton: true,
+                    });
                     // 發布後可以隱藏創建貼文的頁面
                     this.showCreatePost = false;
                     // 刷新頁面
@@ -193,7 +207,11 @@ export default {
                 } catch (error) {
                     console.log(error);
                     if (error.response && error.response.status === 401) {
-                        alert("你尚未登入");
+                        // alert("你尚未登入");
+                        Swal.fire({
+                            icon: "error",
+                            title: "你尚未登入",
+                        });
                     }
                 }
         },

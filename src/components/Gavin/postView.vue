@@ -1,6 +1,7 @@
 <!-- 顯示單一貼文 -->
 <script>
     import axios from 'axios';
+    import Swal from 'sweetalert2';
     export default {
         data() {
             return {
@@ -167,7 +168,11 @@
                 await this.logInCheck();
                 console.log("logInCheck : ", this.isLogIn)
                 if (!this.isLogIn) {
-                    alert('請先登入');
+                    // alert('請先登入');
+                    Swal.fire({
+                        icon: "error",
+                        title: "請先登入",
+                    });
                     return;
                 }
                 //顯示留言邏輯
@@ -205,7 +210,11 @@
             async clickLike(post) {
                 //判斷是否登入
                 if (!this.isLogIn) {
-                    alert('請先登入');
+                    // alert('請先登入');
+                    Swal.fire({
+                        icon: "error",
+                        title: "請先登入",
+                    });
                     return;
                 }
                 //改變like樣式

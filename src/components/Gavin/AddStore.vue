@@ -2,6 +2,7 @@
 <script>
 import { faListDots } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 export default {
     data() {
         return {
@@ -105,7 +106,11 @@ export default {
             // 检查必填字段
             if (!this.name || !this.address || !this.locationCity || !this.foodStyle) {
                 // 使用 alert 显示提示框
-                alert('請填寫所有資料');
+                // alert('請填寫所有資料');
+                Swal.fire({
+                    icon: "error",
+                    title: "請填寫所有資料",
+                });
                 return;
             }
             const formData = {
@@ -126,11 +131,18 @@ export default {
                 })
                 const DBdata = response.data; // 這裡假設後端返回的數據包含問卷的所有信息
                 console.log('postData from DB:', DBdata);
-                alert("成功創建店家:");
-                    // 發布后可以隱藏創建貼文的頁面
-                    this.showCreatePost = false;
-                    // 刷新頁面
-                    location.reload();
+
+                // alert("成功創建店家:");
+                Swal.fire({
+                    icon: "success",
+                    title: "成功創建店家",
+                    showConfirmButton: true,
+                });
+                
+                // 發布后可以隱藏創建貼文的頁面
+                this.showCreatePost = false;
+                // // 刷新頁面
+                // location.reload();
             } catch (error) {
                 console.error('Error fetching data:', error);
             }

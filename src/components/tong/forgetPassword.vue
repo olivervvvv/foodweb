@@ -28,6 +28,7 @@
 
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2';
 export default {
   data() {
     return {
@@ -54,17 +55,30 @@ export default {
         .then(Response => {
           console.log(Response);
           this.showRandomCode = !this.showRandomCode;
-          alert("驗證碼發送成功，請去信箱查看您的驗證碼");
+          // alert("驗證碼發送成功，請去信箱查看您的驗證碼");
+          Swal.fire({
+              icon: "success",
+              title: "驗證碼發送成功，請至信箱查看您的驗證碼",
+              showConfirmButton: true,
+          });
         })
         .catch(error => {
           if (error.response.status == 404) {
-            alert("此信箱並不存在");
+            // alert("此信箱並不存在");
+            Swal.fire({
+                icon: "error",
+                title: "此信箱並不存在",
+            });
           }
         })
     },
     updatePassword() {
       if (this.password != this.repeatPassword) {
-        alert("兩次密碼不一致");
+        // alert("兩次密碼不一致");
+        Swal.fire({
+            icon: "error",
+            title: "兩次密碼不一致",
+        });
         return -1;
       }
       axios.post(`http://${locohost}/forgetPassword?randomCode=` + this.randomCode,
@@ -77,14 +91,23 @@ export default {
         .then(Response => {
           console.log(Response);
           this.showRandomCode = !this.showRandomCode;
-          alert("修改成功");
+          // alert("修改成功");
+          Swal.fire({
+              icon: "success",
+              title: "修改成功",
+              showConfirmButton: true,
+          });
           this.$router.push({ name: "home" });
         })
         .catch(error => {
           console.log(error);
           this.showRandomCode = !this.showRandomCode;
           if (error.response.data == "驗證碼錯誤") {
-            alert("驗證碼錯誤, 請重新索取驗證碼");
+            // alert("驗證碼錯誤, 請重新索取驗證碼");
+            Swal.fire({
+                icon: "error",
+                title: "驗證碼錯誤, 請重新索取驗證碼",
+            });
           }
         })
     }
