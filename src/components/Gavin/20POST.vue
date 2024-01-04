@@ -230,7 +230,7 @@ export default {
             if (!this.isLogIn) {
                 Swal.fire({
                     icon: "error",
-                    title: "請先登入",
+                    title: "請先登陸",
                 });
                 // alert('請先登入');
                 return;
@@ -260,7 +260,7 @@ export default {
             if (!this.isLogIn) {
                 Swal.fire({
                     icon: "error",
-                    title: "請先登入",
+                    title: "請先登陸",
                     // text: "Something went wrong!",
                     // footer: '<a href="#">Why do I have this issue?</a>'
                 });

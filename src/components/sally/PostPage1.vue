@@ -156,7 +156,7 @@ export default {
                 // alert('請先登入');
                 Swal.fire({
                     icon: "error",
-                    title: "請先登入",
+                    title: "請先登陸",
                 });
                 return;
             }
@@ -168,7 +168,7 @@ export default {
                     // alert('請先登入');
                     Swal.fire({
                         icon: "error",
-                        title: "請先登入",
+                        title: "請先登陸",
                     });
                     return;
                 }
