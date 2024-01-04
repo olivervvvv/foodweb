@@ -238,16 +238,33 @@ export default {
             </div>
         </div>
         <!-- 城市按鈕區域 -->
-        <div class="cityArea">
-            <div class="btnBorder">
-                <button v-for="cityString in city" class="cityBtn" @click="searchCity(cityString)">
-                    {{ cityString }}
-                </button>
+        <div class="RWD">
+            <div class="cityArea">
+                <div class="btnBorder">
+                    <button v-for="cityString in city" class="cityBtn" @click="searchCity(cityString)">
+                        {{ cityString }}
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </template>
 <style lang="scss" scoped>
+@media screen and (max-width: 600px) {
+    .bgArea .headerArea .fixed .searchArea[data-v-92ddc0ae] {
+        width: 50%; /* 在螢幕寬度小於或等於 600px 時的寬度 */
+    }
+    .RWD{
+        display: none;
+    }
+    .bgArea .headerArea .fixed .userCenterArea .userPhoto .userBtn[data-v-92ddc0ae] {
+        margin-right: 0;
+    }
+    .bgArea .headerArea .fixed[data-v-92ddc0ae] {
+        justify-content: space-evenly;
+    }
+
+}
 * {
     margin: 0;
     padding: 0;
