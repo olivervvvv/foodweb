@@ -390,7 +390,7 @@ export default {
                   </div>
                   <div class="form-group mt-2">
                     <input
-                      type="text"
+                      type="password"
                       name="logemail"
                       class="form-style"
                       placeholder="請輸入密碼"
@@ -405,7 +405,7 @@ export default {
                   </div>
                   <div class="form-group mt-2">
                     <input
-                      type="text"
+                      type="password"
                       name="logpass"
                       class="form-style"
                       placeholder="請重複輸入密碼"
