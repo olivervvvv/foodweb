@@ -21,7 +21,7 @@ export default {
             updateFilePath: "",
             checkDelete: false, //確認刪除彈框
             loginUserPicture: "",
-            userName:"",
+            userName: "",
 
         }
     },
@@ -205,7 +205,7 @@ export default {
 
             try {
                 const response = await axios.post(
-                    `http://${locohost}/posts/normal/users/${userId}/posts/${postId}`,{},
+                    `http://${locohost}/posts/normal/users/${userId}/posts/${postId}`, {},
                     {
                         withCredentials: true
                     });
@@ -261,7 +261,7 @@ export default {
                 <!-- 會員中心 -->
                 <div class="userCenterArea">
                     <div class="userPhoto">
-                        <div style="width: 100px; height: auto; font-size:larger; color: white;"><span>您好! {{ userName
+                        <div style="width: 100px; height: auto; font-size:larger; color: white;"><span class="userHeaderName">您好! {{ userName
                         }}</span></div>
                         <!-- 登入者圖片有效，顯示圖片；否則顯示默認圖片 -->
                         <img class="userBtn" :src="getImage(loginUserPicture)" alt="" @mouseenter="this.showFnList"
@@ -293,11 +293,11 @@ export default {
                 <div style="width: 30%;">
                     <p class="postTitle">{{ post.postInfo.postTitle }}</p>
                 </div>
-                <div style="width: 10%;" >
-                    <p class="postTitle">{{ post.postInfo.locationCity }}</p> 
+                <div style="width: 10%;">
+                    <p class="postTitle">{{ post.postInfo.locationCity }}</p>
                 </div>
                 <div style="width: 30%;">
-                    <p class="postTitle">{{ post.storeInfo.name }}</p> 
+                    <p class="postTitle">{{ post.storeInfo.name }}</p>
                 </div>
                 <div>
                     <p class="postTitle">{{ post.postInfo.postUpdateTime }}</p>
@@ -354,6 +354,28 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+@media screen and (max-width: 600px) {
+    .bgArea .headerArea .fixed .searchArea[data-v-bc464b8d] {
+        width: 50%;
+    }
+
+    .bgArea .headerArea .fixed .userCenterArea .userPhoto .userBtn[data-v-bc464b8d] {
+        margin-right: 0;
+    }
+
+    .bgArea .headerArea .fixed[data-v-bc464b8d] {
+        justify-content: space-evenly;
+    }
+
+    .userHeaderName {
+        display: none;
+    }
+
+    .bgArea .headerArea .fixed .userCenterArea .userPhoto .userFnList[data-v-bc464b8d] {
+        right: 1%;
+    }
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -783,5 +805,4 @@ export default {
         font-weight: bolder;
         cursor: pointer;
     }
-}
-</style>
+}</style>
