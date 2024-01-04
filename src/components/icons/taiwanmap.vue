@@ -1,5 +1,6 @@
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2';
 export default {
   data() {
     return {
@@ -21,6 +22,14 @@ export default {
             // 直接返回 Base64 Data URL
             return "data:image/jpeg;base64," + picture;
         },
+    surprise(){
+      Swal.fire({
+          icon: "warning",
+          title: "注意!!!",
+          text: "啥都沒發生 =u= ",
+          showConfirmButton: true,
+      });
+    },
     // 檢查是否已登入
     async logInCheck(){
       try {
@@ -107,7 +116,9 @@ export default {
       <button class="green-btn" @click="logout()">登出</button>
       <button class="green-btn" @click="goTo20Post()">每日貼文</button>
     </div>
-    <div class="backImg"></div>
+
+    <!-- 右下角小人 -->
+    <div class="backImg"  @click="surprise()" ></div>
 <!-- 前四個商店詳細資訊欄位 -->
     <div style="display: flex;">
       <div class="showArea" style="user-select: none;">
@@ -486,5 +497,6 @@ path {
   max-height: 145px;
   width: 100px;
   background-image: url('../../../public/exploreMan.png');
+  cursor: pointer;
 }
 </style>
