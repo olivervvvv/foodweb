@@ -1,5 +1,6 @@
 <script>
 import axios from "axios";
+import Swal from 'sweetalert2';
 export default {
     data() {
         return {
@@ -160,7 +161,11 @@ export default {
         //變更密碼
         updatePwd() {
             if(this.userInfoForPassword.newPassword != this.userInfoForPassword.repeatNewPassword){
-                    alert("新密碼不一致");
+                    //alert("新密碼不一致");
+                    Swal.fire({
+                        icon: "error",
+                        title: "新密碼不一致",
+                    });
                     return -1;
                 }
             axios.post(`http://${locohost}/users/currentUser/updatePassword`,
@@ -174,7 +179,12 @@ export default {
             .then(response => {
                 console.log(response);
                 if(response.status == 200){
-                    alert("修改成功");
+                    // alert("修改成功");
+                    Swal.fire({
+                        icon: "success",
+                        title: "修改成功",
+                        showConfirmButton: true,
+                    });
                     // 關閉視窗
                     this.updatePwdPage = false
                     // 跳轉頁面
@@ -185,7 +195,11 @@ export default {
             .catch(error =>{
                 console.log(error);
                 if(error.response.status == 400){
-                    alert("請求錯誤");
+                    // alert("請求錯誤");
+                    Swal.fire({
+                        icon: "error",
+                        title: "請求錯誤",
+                    });
                 }
             });
         },

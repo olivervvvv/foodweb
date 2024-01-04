@@ -1,5 +1,6 @@
 <script>
 import axios from "axios";
+import Swal from 'sweetalert2';
 export default {
     data() {
         return {
@@ -143,7 +144,12 @@ export default {
                 })
                 .then((response) => {
                     console.log(response);
-                    alert("更新成功");
+                    // alert("更新成功");
+                    Swal.fire({
+                        icon: "success",
+                        title: "更新成功",
+                        showConfirmButton: true,
+                    });
                     this.showEditPage = false;
                     //更新後獲取貼文資料
                     this.getUserPost();
@@ -205,16 +211,29 @@ export default {
                     });
 
                 console.log(response.data); // Assuming the server returns a plain text response
-                alert('刪除成功');
+                // alert('刪除成功');
+                Swal.fire({
+                    icon: "success",
+                    title: "刪除成功",
+                    showConfirmButton: true,
+                });
                 location.reload();
                 // You can perform any additional actions here after successful deletion
             } catch (error) {
                 console.error(error);
                 // Handle errors here
                 if (error.response && error.response.status === 403) {
-                    alert('無權刪除');
+                    //alert('無權刪除');
+                    Swal.fire({
+                        icon: "error",
+                        title: "無權刪除",
+                    });
                 } else {
-                    alert('刪除失敗');
+                    // alert('刪除失敗');
+                    Swal.fire({
+                        icon: "error",
+                        title: "刪除失敗",
+                    });
                 }
             }
         }

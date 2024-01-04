@@ -1,6 +1,7 @@
 <!-- 登入後顯示此畫面 -->
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2';
 export default {
     data() {
         return {
@@ -129,7 +130,12 @@ export default {
             await this.logInCheck();
             console.log("logInCheck : ", this.isLogIn)
             if (!this.isLogIn) {
-                alert('請先登入');
+                //alert('請先登入');
+                Swal.fire({
+                    icon: "error",
+                    title: "請先登入",
+                });
+
                 return;
             }
 
