@@ -346,7 +346,7 @@ export default {
                 <div class="imgArea">
                     <div ref="wrapper" class="wrapper">
                         <div class="image">
-                            <img ref="img" src="" alt="">
+                            <img ref="img" src="" alt="" style="width: 100%; height: 100%;">
                         </div>
                         <div class="content">
                             <div class="icon">
