@@ -172,7 +172,7 @@ export default {
                 <!-- 會員中心 -->
                 <div class="userCenterArea">
                     <div class="userPhoto">
-                        <div style="width: 100px; height: auto; font-size:larger; color: white;"><span>您好! {{ loginUserName }}</span></div>
+                        <div style="width: 100px; height: auto; font-size:larger; color: white;"><span class="userHeaderName">您好! {{ loginUserName }}</span></div>
                         <!-- 登入者圖片有效，顯示圖片；否則顯示默認圖片 -->
                         <img class="userBtn" :src="getImage(loginUserPicture)" alt="" @mouseenter="this.showFnList"
                             v-if="getImage(loginUserPicture) && this.isLogIn">
@@ -234,6 +234,27 @@ export default {
     </div>
 </template>
 <style lang="scss" scoped>
+@media screen and (max-width: 600px) {
+    .bgArea .headerArea .fixed .searchArea[data-v-d5795f4c] {
+        width: 50%;
+    }
+
+    .bgArea .headerArea .fixed .userCenterArea .userPhoto .userBtn[data-v-d5795f4c] {
+        margin-right: 0;
+    }
+
+    .bgArea .headerArea .fixed[data-v-d5795f4c] {
+        justify-content: space-evenly;
+    }
+
+    .userHeaderName {
+        display: none;
+    }
+
+    .bgArea .headerArea .fixed .userCenterArea .userPhoto .userFnList[data-v-bc464b8d] {
+        right: 1%;
+    }
+}
 * {
     margin: 0;
     padding: 0;
