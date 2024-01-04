@@ -366,7 +366,7 @@ export default {
                         </ul>
                         <!-- 未登入顯示 -->
                         <ul v-if="!this.isLogIn">
-                            <li @click="login()">登入</li>
+                            <li @click="login()">登陸</li>
                         </ul>
                     </div>
                 </div>
